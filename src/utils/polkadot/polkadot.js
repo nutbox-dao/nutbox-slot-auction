@@ -20,10 +20,10 @@ import {
 import store from "../../store"
 
 export async function getApi() {
-  if (store.state.api) {
-    return store.state.api
+  if (store.state.polkadot.api) {
+    return store.state.polkadot.api
   }
-  store.commit('saveIsConnected', false)
+  store.commit('polkadot/saveIsConnected', false)
 
   console.log('connecting');
   const wsProvider = new WsProvider(POLKADOT_WEB_SOCKET)
@@ -36,8 +36,9 @@ export async function getApi() {
   })
   console.log('connected');
 
-  store.commit('saveIsConnected', true)
-  store.commit('saveApi', api)
+  store.commit('polkadot/saveIsConnected', true)
+  store.commit('polkadot/saveApi', api)
+  console.log('save api');
   return api
 }
 
@@ -52,8 +53,8 @@ export function token2Uni(amount, decimal = 10) {
 }
 
 export const getDecimal = async () => {
-  if (store.getters.decimal > 0) {
-    return store.getters.decimal
+  if (store.getters.polkadot.decimal > 0) {
+    return store.getters.polkadot.decimal
   }
   const api = await getApi()
   const decimal = new BN(api.registry.chainDecimals[0]);
@@ -133,7 +134,7 @@ export function getNodeId(address) {
  * @param {object} tx 待执行的交易 
  */
 export async function getTxPaymentInfo(tx) {
-  const info = await tx.paymentInfo(store.state.account.address)
+  const info = await tx.paymentInfo(store.state.polkadot.account.address)
   console.log(info.partialFee.toHuman());
   return info.partialFee.toNumber()
 }

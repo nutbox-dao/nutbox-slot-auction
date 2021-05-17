@@ -201,15 +201,15 @@ export default {
     };
   },
   computed: {
-    ...mapState([
+    ...mapState('polkadot',[
       'isConnected',
       'allAccounts',
       'account',
       'crowdstakings',
       'communitys',
       'projects',
-      'lang'
     ]),
+    ...mapState(['lang']),
     isProjectAdmin () {
       return this.projects.indexOf(this.account && this.account.address) !== -1
     },
@@ -225,7 +225,7 @@ export default {
     Identicon
   },
   methods: {
-    ...mapMutations(['saveAccount', 'saveCommunitys']),
+    ...mapMutations('polkadot',['saveAccount', 'saveCommunitys']),
     setLanguage(lang) {
       localStorage.setItem(LOCALE_KEY, lang);
       this.$store.commit('saveLang', lang)

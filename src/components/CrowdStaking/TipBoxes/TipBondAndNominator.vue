@@ -50,8 +50,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["symbol", "balance", "lang", "nominators"]),
-    ...mapGetters(["getFundInfo", "decimal", "available"]),
+    ...mapState('polkadot',["symbol", "balance", "nominators"]),
+    ...mapState(['lang']),
+    ...mapGetters('polkadot',["getFundInfo", "decimal", "available"]),
     formatBalance() {
       let uni = fb(this.available);
       return uni;

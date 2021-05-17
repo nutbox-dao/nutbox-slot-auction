@@ -37,24 +37,27 @@ export default {
     CrowdStakingCard,
   },
   computed: {
-    ...mapState(["projectFundInfos", "symbol", "isConnected", 'balance', 'crowdstakings']),
+    ...mapState('polkadot',["projectFundInfos", "symbol", "isConnected", 'balance', 'crowdstakings']),
     funds() {
       const fundInfos = this.getFundInfos();
       return fundInfos || [];
     },
   },
   methods: {
-    ...mapGetters(["getFundInfos", "paraIds"]),
-    ...mapMutations([
+    ...mapGetters('polkadot',["getFundInfos", "paraIds"]),
+    ...mapMutations('polkadot',[
       "saveProjectStatus",
       "saveProjectName",
       "saveCommunityName",
+      'saveCrowdstakings',
+      'saveCommunitys',
+      'saveProjects'
     ]),
   },
   created () {
     getCrowdstacking().then(res => {
       console.log('res', res);
-      this.$store.commit('saveCrowdstakings', res.map(({community, project}) => ({
+      this.saveCrowdstakings(res.map(({community, project}) => ({
         community:{
           ...community,
           communityId: stanfiAddress(community.communityId)
@@ -65,8 +68,8 @@ export default {
           validators: project.validators.map(v => stanfiAddress(v))
         }
       })))
-      this.$store.commit('saveCommunitys', res.map(({community}) => community.communityId))
-      this.$store.commit('saveProjects', res.map(({project}) => project.projectId))
+      this.saveCommunitys(res.map(({community}) => community.communityId))
+      this.saveProjects(res.map(({project}) => project.projectId))
     console.log('crowdstaking', this.crowdstakings);
     });
   },

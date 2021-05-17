@@ -9,7 +9,7 @@ export const subBlock = async () => {
     const subBlock = await api.rpc.chain.subscribeNewHeads((header) => {
       try {
         const number = header.number.toNumber()
-        store.commit('saveCurrentBlockNum', number)
+        store.commit('polkadot/saveCurrentBlockNum', number)
       } catch (e) {
   
       }

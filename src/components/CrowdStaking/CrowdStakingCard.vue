@@ -88,7 +88,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(["isConnected", "lang", 'bonded', 'nominators', 'loadingStaking']),
+    ...mapState('polkadot',["isConnected", "lang", 'bonded', 'nominators', 'loadingStaking']),
+    ...mapState(['lang']),
     // 用户已经投了该项目的节点
     nominated(){
       const val = this.crowdstaking.project.validators.map(tcd => stanfiAddress(tcd))

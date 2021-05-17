@@ -26,9 +26,9 @@ export const loadAccounts = async () => {
       address: stanfiAddress(address),
       meta
     }))
-    store.commit('saveAllAccounts', allAccounts)
-    let account = store.state.account !== 'undefined' && store.state.account? store.state.account : allAccounts[0]
-    store.commit('saveAccount', account)
+    store.commit('polkadot/saveAllAccounts', allAccounts)
+    let account = store.state.polkadot.account !== 'undefined' && store.state.polkadot.account? store.state.polkadot.account : allAccounts[0]
+    store.commit('polkadot/saveAccount', account)
     await getBalance(account)
     await subNominators()
     await subBonded()
@@ -49,8 +49,8 @@ export const injectAccount = async (account) => {
 export const getBalance = async (account) => {
   const api = await getApi()
   // cancel last
-  let subBalance = store.state.subBalance
-  let subLocked = store.state.subLocked
+  let subBalance = store.state.polkadot.subBalance
+  let subLocked = store.state.polkadot.subLocked
   try {
     subBalance()
   } catch (e) {}
@@ -58,24 +58,24 @@ export const getBalance = async (account) => {
     subLocked()
   } catch (e) {}
 
-  subBalance = await api.query.system.account(store.state.account.address, ({
+  subBalance = await api.query.system.account(store.state.polkadot.account.address, ({
     data: {
       free: currentFree
     },
     nonce: currentNonce
   }) => {
-    store.commit('saveBalance', new BN(currentFree))
+    store.commit('polkadot/saveBalance', new BN(currentFree))
   })
 
-  subLocked = await api.query.balances.locks(store.state.account.address, (locked) => {
+  subLocked = await api.query.balances.locks(store.state.polkadot.account.address, (locked) => {
     if (!locked.toJSON() || locked.toJSON().length === 0){
-      store.commit('saveLocked', new BN(0))
+      store.commit('polkadot/saveLocked', new BN(0))
       return
     }
-    store. commit('saveLocked', new BN(locked[0].amount))
+    store.commit('polkadot/saveLocked', new BN(locked[0].amount))
     // console.log('lock', locked[0].amount.toHuman());
   })
 
-  store. commit('saveSubLocked', subLocked)
-  store.commit('saveSubBalance', subBalance)
+  store.commit('polkadot/saveSubLocked', subLocked)
+  store.commit('polkadot/saveSubBalance', subBalance)
 }

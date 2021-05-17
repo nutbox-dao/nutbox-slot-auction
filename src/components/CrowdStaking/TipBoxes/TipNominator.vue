@@ -100,7 +100,8 @@ export default {
     },
   },
   computed: {
-    ...mapState(["symbol", "balance", "lang", "bonded", "nominators"]),
+    ...mapState('polkadot',["symbol", "balance", "bonded", "nominators"]),
+    ...mapState(['lang']),
     availableNominators() {
       return this.nominators.filter(
         ({ address }) =>

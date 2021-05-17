@@ -21,38 +21,38 @@ import {
  * 监听用户的绑定储蓄账户
  */
 export const subBonded = async () => {
-  let subBonded = store.state.subBonded
+  let subBonded = store.state.polkadot.subBonded
   try {
     subBonded()
   } catch (e) {}
   const api = await getApi()
-  subBonded = await api.query.staking.bonded(store.state.account.address, (bonded) => {
+  subBonded = await api.query.staking.bonded(store.state.polkadot.account.address, (bonded) => {
     if (!bonded.toJSON()) {
-      store.commit('saveBonded', null)
+      store.commit('polkadot/saveBonded', null)
       return;
     }
-    store.commit('saveBonded', bonded.toJSON())
+    store.commit('polkadot/saveBonded', bonded.toJSON())
   })
-  store.commit('saveSubBonded', subBonded)
+  store.commit('polkadot/saveSubBonded', subBonded)
 }
 
 /**
  * 监听用户的投票节点
  */
 export const subNominators = async () => {
-  let subNominators = store.state.subNominators
+  let subNominators = store.state.polkadot.subNominators
   try {
     subNominators()
   } catch (e) {}
   const api = await getApi()
   const {validators} = await api.derive.staking.overview()
 
-  store.commit('saveLoadingStaking', true)
+  store.commit('polkadot/saveLoadingStaking', true)
 // 获取用户投票的情况
-  const nominators = await api.query.staking.nominators(store.state.account.address, async (nominators) => {
+  const nominators = await api.query.staking.nominators(store.state.polkadot.account.address, async (nominators) => {
     if (!nominators.toJSON()) {
-      store.commit('saveNominators', [])
-      store.commit('saveLoadingStaking', false)
+      store.commit('polkadot/saveNominators', [])
+      store.commit('polkadot/saveLoadingStaking', false)
       return;
     }
     // 获取节点的昵称
@@ -87,10 +87,10 @@ export const subNominators = async () => {
       infos[i]['ownStake'] = validatorOwnStake
       infos[i]['commission'] = (validatorComissionRate['commission'].toString() / 10000000).toFixed(1) + '%'
     }
-    store.commit('saveLoadingStaking', false)
-    store.commit('saveNominators', infos)
+    store.commit('polkadot/saveLoadingStaking', false)
+    store.commit('polkadot/saveNominators', infos)
   })
-  store.commit('saveSubNominators', subNominators)
+  store.commit('polkadot/saveSubNominators', subNominators)
 }
 /**
  * 为社区投票, 适用已经有绑定的用户来操作
@@ -101,13 +101,13 @@ export const subNominators = async () => {
  * @param {function} callback callback
  */
 export const nominate = async (validators, communityId, projectId, toast, callback) => {
-    const from = store.state.account && store.state.account.address
+    const from = store.state.polkadot.account && store.state.polkadot.account.address
     communityId = stanfiAddress(communityId)
     projectId = stanfiAddress(projectId)
     if (!from) {
       reject('no account')
     }
-    const api = await injectAccount(store.state.account)
+    const api = await injectAccount(store.state.polkadot.account)
     const nominatorTx = api.tx.staking.nominate(validators)
     const remark = encodeRemark(communityId, projectId)
     const remarkTx = api.tx.system.remarkWithEvent(remark)
@@ -141,15 +141,15 @@ export const nominate = async (validators, communityId, projectId, toast, callba
  * @param {function} callback callback
  */
 export const bondAndNominate = async (amount, validators, communityId, projectId, toast, callback) => {
-  const from = store.state.account && store.state.account.address
+  const from = store.state.polkadot.account && store.state.polkadot.account.address
   communityId = stanfiAddress(communityId)
   projectId = stanfiAddress(projectId)
   if (!from) {
     reject('no account')
   }
-  const api = await injectAccount(store.state.account)
+  const api = await injectAccount(store.state.polkadot.account)
   const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
-  const bondTx = api.tx.staking.bond(store.state.account.address, uni, {
+  const bondTx = api.tx.staking.bond(store.state.polkadot.account.address, uni, {
     Staked: null
   })
 
