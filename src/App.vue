@@ -6,21 +6,6 @@
       <img src="./static/images/logo_small.png" style="width:42px;height:42px;margin-bottom:12px" alt="nutbox" class="logo_small" />
     </div>
       <b-nav pills vertical align="center" class="menu">
-        <b-nav-item to="/wallet">
-          <p id="wallet-icon" class="my-icon" />
-          <div style="padding: 0">
-            <p class="memu-wallet">
-              {{
-                tronAddrFromat && tronAddrFromat.length > 0
-                  ? tronAddrFromat
-                  : $t("wallet.wallet")
-              }}
-            </p>
-            <p style="font-size: 12px; font-weight: 400; color: var(--disable)"  class="memu-wallet">
-              {{ pnutBalance | amountForm }}
-            </p>
-          </div>
-        </b-nav-item>
         <b-nav-item to="/stake" router-tag="div">
           <p id="stake-icon" class="my-icon" />
           <span>{{ $t("stake.stake") }}</span>
@@ -29,49 +14,13 @@
           <p id="farming-icon" class="my-icon" />
           <span>{{ $t("farm.farm") }}</span>
         </b-nav-item>
-        <b-nav-item to="/liquid-staking">
-          <p id="liquid-staking-icon" class="my-icon" />
-          <span>{{ $t("liquidStaking.liquidStaking") }}</span>
-        </b-nav-item>
-        <b-nav-item to="/get-vote">
-          <p id="upvote-icon" class="my-icon" />
-          <span>{{ $t("vote.upvote") }}</span>
-        </b-nav-item>
-        <!-- <b-nav-item href="https://blog.nutbox.io/" target="_blank">
-          <p id="blog-icon" class="my-icon" />
-          <span>{{ $t("message.blog") }}</span>
-        </b-nav-item> -->
          <b-nav-item to="/blog">
           <p id="blog-icon" class="my-icon" />
           <span>{{ $t("message.blog") }}</span>
         </b-nav-item>
-        <b-nav-item to="/nps">
-          <p id="nps-icon" class="my-icon" />
-          <span>{{ $t("nps.nps") }}</span>
-        </b-nav-item>
-        <b-nav-item
-          to="/admin"
-          v-if="$store.state.steemAccount === nutboxMineAccount"
-        >
-          <p id="nps-icon" class="my-icon" />
-          <span>{{ $t("message.admin") }}</span>
-        </b-nav-item>
       </b-nav>
       <div class="bottom">
         <div class="links">
-          <a
-            id="justswap-icon"
-            href="https://justswap.org/#/home?tokenAddress=TPZddNpQJHu8UtKPY1PYDBv2J5p5QpJ6XW&type=swap"
-            target="_blank"
-          >
-            <b-popover
-              target="justswap-icon"
-              triggers="hover focus"
-              placement="top"
-            >
-              Justswap
-            </b-popover>
-          </a>
           <a
             id="github-icon"
             href="https://github.com/nutbox-dao"
@@ -119,28 +68,7 @@
         </div>
 
         <div class="settings">
-          <b-dd
-            id="steem-node"
-            :text="$t('message.changeSteemNode')"
-            size="sm"
-            block
-            dropup
-            no-caret
-          >
-            <b-dropdown-item
-              v-for="item in steemUrls"
-              :key="item"
-              @click="selectNode(item)"
-            >
-              <b-icon
-                :icon="item == currentSteemNode ? 'check' : 'blank'"
-                aria-hidden="true"
-                style="font-size: 20px"
-              ></b-icon>
-              <span style="font-size: 14px">{{ item }}</span>
-            </b-dropdown-item>
-          </b-dd>
-
+          
           <b-dd
             id="language"
             :text="lang.toUpperCase()"
@@ -502,9 +430,8 @@ input::-webkit-input-placeholder {
   }
   .settings {
     margin-top: 18px;
-    width: 192;
-    height: 84px;
     margin-bottom: 12px;
+    width: 192;
     background: #f6f7f9;
     border-radius: 16px;
     padding: 14px 20px;
