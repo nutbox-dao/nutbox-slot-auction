@@ -6,11 +6,11 @@
       <img src="./static/images/logo_small.png" style="width:42px;height:42px;margin-bottom:12px" alt="nutbox" class="logo_small" />
     </div>
       <b-nav pills vertical align="center" class="menu">
-        <b-nav-item to="/stake" router-tag="div">
+        <b-nav-item to="/crowdstaking" router-tag="div">
           <p id="stake-icon" class="my-icon" />
           <span>{{ $t("stake.stake") }}</span>
         </b-nav-item>
-        <b-nav-item to="/farm">
+        <b-nav-item to="/crowdloan">
           <p id="farming-icon" class="my-icon" />
           <span>{{ $t("farm.farm") }}</span>
         </b-nav-item>
@@ -136,6 +136,40 @@
       @hideMask="showMessage = false"
     />
     <div class="right">
+      <div style="float:right">
+        <div class="p-2">
+          <b-dropdown toggle-class="accounts-toggle" variant="text" right no-caret>
+            <template #button-content>
+              <div class="flex-between-center font18" @click="accountsPop=!accountsPop">
+                <Identicon :size='30' theme='polkadot' v-if="account" :value="account.address"/>
+                <b-avatar v-else class="mr-2" size="sm" text=""></b-avatar>
+                <span style="margin-left:8px">{{ formatUserAddress(account && account.meta && account.meta.name) }}</span>
+              </div>
+            </template>
+            <b-dropdown-item v-for="(item,index) of (allAccounts ? allAccounts : [])" :key="index" @click="changeAccount(item)">
+              <template>
+                <div class="flex-between-center">
+                  <Identicon class="ident-icon" :size='30' theme='polkadot' :value="item.address"/>
+                  <div class="account-info">
+                    <div class="font-bold">{{ item.meta?item.meta.name:'' }}</div>
+                    <div>{{ formatUserAddress(item.address) }}</div>
+                  </div>
+                  <img class="ml-3" v-if="item.address===(account && account.address)" src="~@/static/images/selected.png" alt="">
+                </div>
+              </template>
+            </b-dropdown-item>
+            <b-dropdown-divider v-if="Object.keys(allAccounts || []).length>0"></b-dropdown-divider>
+            <b-dropdown-item>
+              <div class="flex-start-center" @click="selectMenu('dashboard', '/dashboard')" v-if="isProjectAdmin">
+                <!-- <b-avatar square size="sm" class="mr-2" style="opacity: .2">·</b-avatar> -->
+                <img class="menu-icon" :src="dashboardIcon" alt="">
+                <span class="menu-text">{{ $t('account.dashboard') }}</span>
+              </div>
+            </b-dropdown-item>
+          </b-dropdown>
+        </div>
+        <!-- <ConnectWallet v-else/> -->
+      </div>
       <router-view></router-view>
     </div>
   </div>
@@ -151,8 +185,13 @@ import {
   STEEM_MINE_ACCOUNT,
 } from "./config";
 import TipMessage from "./components/ToolsComponents/TipMessage";
-import { mapState, mapGetters } from "vuex";
-import { storeApy } from "./utils/helper";
+import { mapState, mapGetters, mapMutations } from "vuex";
+import Identicon from '@polkadot/vue-identicon'
+import { getBalance, loadAccounts } from './utils/polkadot/account'
+import { getCrowdstacking } from './apis/api'
+import { subBlock } from "./utils/polkadot/block"
+import { subBonded, subNominators } from "./utils/polkadot/staking"
+import { stanfiAddress } from "./utils/polkadot/polkadot"
 
 export default {
   data() {
@@ -160,68 +199,74 @@ export default {
       tipMessage: "",
       tipTitle: "",
       showMessage: false,
-      steemUrls: STEEM_API_URLS,
-      steemNodeKey: STEEM_CONF_KEY,
-      currentSteemNode: window.localStorage.getItem(STEEM_CONF_KEY),
-      nutboxMineAccount: STEEM_MINE_ACCOUNT,
-      lang: "en",
+      accountsPop: false,
     };
   },
   computed: {
-    ...mapState(["tronAddress"]),
-    ...mapGetters(["tronAddrFromat", "pnutBalance"]),
+    ...mapState([
+      'isConnected',
+      'allAccounts',
+      'account',
+      'crowdstakings',
+      'communitys',
+      'projects',
+      'lang'
+    ]),
+    isProjectAdmin () {
+      return this.projects.indexOf(this.account && this.account.address) !== -1
+    },
+    contributionsIcon () {
+      return this.activeNav === 'contributions' ? require('./static/images/contributions_selected.png') : require('./static/images/contributions.png')
+    },
+    dashboardIcon (){
+      return this.activeNav === 'dashboard' ? require('./static/images/dashboard_selected.png') : require('./static/images/dashboard.png')
+    },
   },
   components: {
     TipMessage,
+    Identicon
   },
   methods: {
+    ...mapMutations(['saveAccount', 'saveCommunitys']),
     setLanguage(lang) {
-      this.lang = lang;
-      localStorage.setItem(LOCALE_KEY, this.lang);
+      localStorage.setItem(LOCALE_KEY, lang);
+      this.$store.commit('saveLang', lang)
       this.$i18n.locale = lang;
     },
-    selectNode(node) {
-      this.currentSteemNode = node;
-      window.localStorage.setItem(this.steemNodeKey, node);
-      this.$router.go(0);
+        formatUserAddress (address,long=true) {
+      if (!address) return 'Loading Account'
+      if (long){
+        if (address.length < 16) return address
+        const start = address.slice(0, 28)
+        const end = address.slice(-5)
+        return `${start}...`
+      }else{
+        const start = address.slice(0, 6)
+        const end = address.slice(-6)
+        return `${start}...${end}`
+      }
+    },
+    changeAccount (acc) {
+      if (!this.isConnected) return
+      this.saveAccount(acc)
+      getBalance(acc)
+      subBonded()
+      subNominators()
+    },
+    showError (err) {
+      this.$bvToast.toast(err, {
+        title: 'MFund',
+        autoHideDelay: 5000,
+        variant: 'danger'
+      })
     },
   },
   async mounted() {
-    var store = this.$store;
-    store.dispatch("setVestsToSteem");
-    this.lang = localStorage.getItem(LOCALE_KEY);
-
-    const address = await getTronLinkAddr();
-    if (address && address === TRON_LINK_ADDR_NOT_FOUND.noTronLink) {
-      store.commit("saveTronAddress", "");
-      // this.tipTitle = this.$t("error.needtronlink");
-      // this.tipMessage = "TronLink: https://www.tronlink.org";
-      // this.showMessage = true;
-    } else if (address && address === TRON_LINK_ADDR_NOT_FOUND.walletLocked) {
-      store.commit("saveTronAddress", "");
-      // this.tipTitle = this.$t("error.error");
-      // this.tipMessage = this.$t("error.unlockWallet");
-      // this.showMessage = true;
-    } else if (address) {
-      store.commit("saveTronAddress", address);
-      store.dispatch("getPnut");
-    }
-    watchWallet((address) => {
-      if (address && address === TRON_LINK_ADDR_NOT_FOUND.noTronLink) {
-        store.commit("saveTronAddress", "");
-        // this.tipTitle = this.$t("error.needtronlink");
-        // this.tipMessage = "TronLink: https://www.tronlink.org";
-        // this.showMessage = true;
-      } else if (address && address === TRON_LINK_ADDR_NOT_FOUND.walletLocked) {
-        store.commit("saveTronAddress", "");
-        // this.tipTitle = this.$t("error.error");
-        // this.tipMessage = this.$t("error.unlockWallet");
-        // this.showMessage = true;
-      } else if (address) {
-        store.dispatch("initializeTronAccount", address);
-      }
-    });
-    storeApy();
+    this.setLanguage(localStorage.getItem(LOCALE_KEY))
+  },
+  async created () {
+    await subBlock();
+    await loadAccounts()
   },
 };
 </script>
@@ -242,7 +287,7 @@ $blue: #ffdb1b;
   --warning: #ff9500;
   --backgroud-state: #b37012;
 }
-
+@import './static/css/common.scss';
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap-vue/src/index.scss";
 html,
@@ -460,6 +505,57 @@ input::-webkit-input-placeholder {
       padding-left: 22px;
     }
   }
+}
+.pc-menu{
+  height: 60px;
+  width:160px;
+  float: right;
+    .dropdown-menu {
+    border-radius: 1.2rem;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
+    border: none;
+    margin-top: .5rem;
+    min-width: 15rem;
+    padding: .8rem;
+    .dropdown-item {
+      padding: .2rem .5rem;
+    }
+    .account-info {
+      flex: 1;
+      font-size: .7rem;
+      margin-left: 6px;
+    }
+    .dropdown-item:hover {
+      background: transparent;
+    }
+    .menu-icon{
+      width: 28px;
+      height: 28px;
+    }
+    .menu-text {
+      padding: .4rem 0;
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: bold;
+    }
+  }
+  .ident-icon svg {
+    margin-right: .5rem;
+  }
+    .user-address {
+    a {
+      opacity: 1 !important;
+    }
+    img {
+      width: 23px;
+      margin-right: 10px;
+    }
+  }
+      .account-info {
+      flex: 1;
+      font-size: .7rem;
+      margin-left: 6px;
+    }
 }
 
 .my-icon {

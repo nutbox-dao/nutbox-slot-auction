@@ -27,12 +27,36 @@ import {
   PNUT_LP_TOKEN_ADDRESS,
   TSP_LP_POOL_ADDRESS,
   PNUT_LP_POOL_ADDRESS,
+  LOCALE_KEY
 } from '../config'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // polkadot
+    api: null,
+    apiState: null,
+    lang: Cookie.get(LOCALE_KEY),
+    subBalance: {},
+    subLocked: {},
+    subNominators: {},
+    subBonded: {},
+    bonded: '',
+    nominators: [],
+    // communityIds
+    communitys: [],
+    // projectIds
+    projects:[],
+    crowdstakings:[],
+    isConnected: true,
+    loadingStaking: true,
+    account: Cookie.get('polkadot-account'),
+    allAccounts: [],
+    balance: 0,
+    locked: 0,
+    currentBlockNum: {},
+
     // steem
     steemAccount: Cookie.get('steemAccount'),
     steemBalance: 0,
@@ -103,6 +127,69 @@ export default new Vuex.Store({
     tsteemApy: ""
   },
   mutations: {
+    // pokadot
+    saveCommunitys: (state, communitys) => {
+      state.communitys = communitys
+    },
+    saveProjects: (state, projects) => {
+      state.projects = projects
+    },
+    saveCrowdstakings: (state, crowdstakings) => {
+      state.crowdstakings = crowdstakings
+    },
+    saveSubBalance: (state, subBalance) => {
+      state.subBalance = subBalance
+    },
+    saveSubLocked: (state, subLocked) => {
+      state.subLocked = subLocked
+    },
+    saveSubNominators: (state, subNominators) => {
+      state.subNominators = subNominators
+    },
+    saveSubBonded: (state, subBonded) => {
+      state.subBonded = subBonded
+    },
+    saveLang: (state, lang) => {
+      state.lang = lang;
+      Cookie.set(LOCALE_KEY, lang, '30d')
+    },
+    saveBonded: (state, bonded) => {
+      state.bonded = bonded
+    },
+    saveNominators: (state, nominators) => {
+      state.nominators = nominators
+    },
+    saveApiState: (state, apiState) => {
+      state.apiState = apiState
+    },
+    saveIsConnected: (state, isConnected) => {
+      state.isConnected = isConnected
+    },
+    saveLoadingStaking: (state, loadingStaking) => {
+      state.loadingStaking = loadingStaking
+    },
+    saveApi: (state, api) => {
+      state.api = api
+    },
+    // saveIsConnected: (state, isConnected) => {
+    //   state.isConnected = isConnected
+    // },
+    saveAccount: (state, account) => {
+      state.account = account,
+      Cookie.set('polkadot-account', account, '30d')
+    },
+    saveAllAccounts: (state, allAccounts) => {
+      state.allAccounts = allAccounts
+    },
+    saveBalance: (state, balance) => {
+      state.balance = balance
+    },
+    saveLocked: (state, locked) => {
+      state.locked = locked
+    },
+    saveCurrentBlockNum: (state, blockNum) => {
+      state.currentBlockNum = blockNum
+    },
     // steem
     saveSteemAccount: function (state, steemAccount) {
       state.steemAccount = steemAccount
@@ -266,6 +353,15 @@ export default new Vuex.Store({
     },
   },
   getters: {
+    // polkadot 
+    available: (state) => {
+      if (state.balance && state.locked){
+        return state.balance.sub(state.locked)
+      }else{
+        return 0
+      }
+    },
+
     // steem
     spBalance: state => {
       return state.vestsBalance * state.vestsToSteem || 0

@@ -21,6 +21,10 @@ const i18n = new VueI18n({
   silentFallbackWarn: true
 })
 
+export function $t(args) {
+  return i18n.tc.call(i18n, args)
+}
+
 const setup = lang => {
   if (lang === undefined) {
     lang = window.localStorage.getItem(LOCALE_KEY)

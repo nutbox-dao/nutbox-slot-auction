@@ -1,17 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Wallet from '../components/Wallet/Wallet'
-import SteemWallet from '../components/Wallet/SteemWallet'
-import TronWallet from '../components/Wallet/TronWallet'
-import Swap from '../components/Wallet/Swap'
-import Stake from '../components/Stake/Stake'
-import Farm from '../components/Farm/Farm'
-import LiquidStaking from '../components/LiquidStaking/LiquidStaking'
-import TSP from '../components/LiquidStaking/TSP'
-import Nps from '../components/Nps/Nps'
-import Vote from '../components/Vote/Vote'
-import Admin from '../components/Admin/Admin'
-import Blog from '../components/Blog/Blog'
+
+import Blog from '../views/Blog/Blog'
+import CrowdStaking from '../views/CrowdStaking/CrowdStaking'
+import Crowdloan from '../views/Crowdloan/Crowdloan'
+
 
 Vue.use(VueRouter)
 
@@ -19,64 +12,32 @@ const routes = [
   {
     path: '/',
     name: 'index',
-    redirect: '/stake'
+    redirect: '/crowdstaking'
   },
   {
-    path: '/wallet',
-    name: 'wallet',
-    component: Wallet,
+    path: '/crowdloan',
+    name: 'crowdloan',
+    component: Crowdloan,
     children: [
       {
         path: '',
-        name: 'steem',
-        component: SteemWallet
+        name: 'kusama',
+        component: Crowdloan
       },
       {
-        path: 'tron',
-        name: 'tron',
-        component: TronWallet
-      },
-      {
-        path: 'swap',
-        name: 'swap',
-        component: Swap
+        path: 'polkadot',
+        name: 'polkadot',
+        component: Crowdloan
       }
     ]
   },
   {
-    path: '/stake',
-    component: Stake,
-  },
-  {
-    path: '/farm',
-    component: Farm,
-  },
-  {
-    path: '/liquid-staking',
-    component: LiquidStaking,
-    redirect: '/liquid-staking/tsp',
-    children: [
-      {
-        path: 'tsp',
-        component: TSP
-      }
-    ]
+    path: '/crowdstaking',
+    component: CrowdStaking,
   },
   {
     path: '/blog',
     component: Blog,
-  },
-  {
-    path: '/get-vote',
-    component:Vote,
-  },
-  {
-    path: '/nps',
-    component: Nps
-  },
-  {
-    path:'/admin',
-    component: Admin,
   }
 ]
 

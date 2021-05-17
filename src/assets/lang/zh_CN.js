@@ -69,6 +69,12 @@ module.exports = {
     swapSubTitle:"及时、安全的将资产转移到波场网络",
     install:"立即安装",
   },
+  cs:{
+    crowdstaking: "质押挖矿"
+  },
+  cl:{
+    crowdloan: "平行链拍卖"
+  },
   stake: {
     stake: '质押挖矿',
     creaseDelegation: "增加代理",

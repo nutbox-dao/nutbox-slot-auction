@@ -72,3 +72,9 @@ export const TRON_LINK_ADDR_NOT_FOUND = {
   walletLocked: 'walletLocked',
   noTronLink: 'noTronLink'
 }
+
+
+// polkadot
+export const POLKADOT_WEB_SOCKET = "wss://rpc.polkadot.io"
+export const KUSAMA_WEB_SOCKEY = "wss://kusama-rpc.polkadot.io"
+export const CROWD_STAKING_API_URL = "https://api.crowdstaking.nutbox.io"
