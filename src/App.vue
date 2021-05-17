@@ -8,11 +8,11 @@
       <b-nav pills vertical align="center" class="menu">
         <b-nav-item to="/crowdstaking" router-tag="div">
           <p id="stake-icon" class="my-icon" />
-          <span>{{ $t("stake.stake") }}</span>
+          <span>{{ $t("cs.crowdstaking") }}</span>
         </b-nav-item>
         <b-nav-item to="/crowdloan">
           <p id="farming-icon" class="my-icon" />
-          <span>{{ $t("farm.farm") }}</span>
+          <span>{{ $t("cl.crowdloan") }}</span>
         </b-nav-item>
          <b-nav-item to="/blog">
           <p id="blog-icon" class="my-icon" />
@@ -176,7 +176,6 @@
 </template>
 
 <script>
-import { watchWallet, getTronLinkAddr } from "./utils/chain/tron";
 import {
   TRON_LINK_ADDR_NOT_FOUND,
   STEEM_API_URLS,
@@ -188,7 +187,6 @@ import TipMessage from "./components/ToolsComponents/TipMessage";
 import { mapState, mapGetters, mapMutations } from "vuex";
 import Identicon from '@polkadot/vue-identicon'
 import { getBalance, loadAccounts } from './utils/polkadot/account'
-import { getCrowdstacking } from './apis/api'
 import { subBlock } from "./utils/polkadot/block"
 import { subBonded, subNominators } from "./utils/polkadot/staking"
 import { stanfiAddress } from "./utils/polkadot/polkadot"

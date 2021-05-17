@@ -1,11 +1,4 @@
 import store from '../store'
-import {
-  getApys,
-  getPnutLpExchangeInfo,
-  getTspLpExchangeInfo
-} from "../apis/api"
-
-
 export const firstToUpper = function (str) {
   if (!str) {
     return
@@ -63,24 +56,4 @@ export function getDateString(now, timezone, extra = 0) {
   const offset = timezone != null ? timezone * 60 : 0
   now = new Date(now.getTime() + (offset + extra) * 60 * 1000)
   return now.toISOString().replace('T', ' ').substring(0, 19)
-}
-
-export const storeApy = async function () {
-  const [apys, pnutLpInfo, tspLpInfo] = await Promise.all([getApys(), getPnutLpExchangeInfo(), getTspLpExchangeInfo()])
-  // calculate pnut-trx exchange pool apy
-  const {
-    volume24H,
-    totalLiquidity
-  } = pnutLpInfo.data
-  const pnutLpExchangePoolApy = parseFloat(volume24H) * 365 * 0.3 / parseFloat(totalLiquidity)
-  // calculate tsp-trx exchange pool apy
-  const data = tspLpInfo.data
-  const tspVolume24 = data.volume24H;
-  const tspTotalLiquidity = data.totalLiquidity;
-  const tspLpExchengePoolApy = parseFloat(tspVolume24) * 365 * 0.3 / parseFloat(tspTotalLiquidity)
-  // save to cache
-  store.commit('saveApy', parseFloat(apys.spApy).toFixed(1) + "%")
-  store.commit('saveTspLpApy', parseFloat(apys.spApy).toFixed(1) + "% + " + tspLpExchengePoolApy.toFixed(1) + "%")
-  store.commit('savePnutLpApy', parseFloat(apys.pnutLpApy).toFixed(1) + "% + " + pnutLpExchangePoolApy.toFixed(1) + "%")
-  store.commit('saveTsteemApy',parseFloat(apys.tsteemApy).toFixed(1) + "%")
 }
