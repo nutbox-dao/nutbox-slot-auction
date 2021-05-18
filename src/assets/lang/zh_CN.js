@@ -7,8 +7,8 @@ module.exports = {
     delegatemine: '代理挖矿',
     spbalance: 'SP余额',
     yourspdelegate: 'SP代理量',
-    cancel:'取消',
-    confirm:'确认',
+    cancel: '取消',
+    confirm: '确认',
 
     sptotaldelegate: '代理总量',
     totalpnut: 'PNUT总产量',
@@ -16,8 +16,8 @@ module.exports = {
     pnutprofits: 'PNUT收益',
     withdraw: '收获',
     balance: '余额',
-    approveContract:"授权合约",
-    max:'最大',
+    approveContract: "授权合约",
+    max: '最大',
     confirmconvert: '确认兑换',
     servicecharge: '手续费',
     delegatecharge: '代理手续费',
@@ -33,10 +33,10 @@ module.exports = {
     tsbdbalance: 'TSBD余额',
     pnutbalance: 'PNUT余额',
     input: '输入',
-    tips:"帮助信息",
+    tips: "帮助信息",
 
     setting: '设置',
-    admin:'管理员',
+    admin: '管理员',
     whitePaper: '白皮书',
     nps: 'Nutbox提案系统',
     userBook: '用户手册',
@@ -53,7 +53,7 @@ module.exports = {
     contractAddr: '合约地址',
 
     dashboard: "仪表盘",
-    contributions:"我的投票",
+    contributions: "我的投票",
 
     language: '语言',
     zh: '中文',
@@ -67,12 +67,12 @@ module.exports = {
   wallet: {
     wallet: '钱包',
     swap: '跨链转账',
-    connectSteem:"链接Steem钱包",
-    connectTron:"链接波场钱包",
-    swapSubTitle:"及时、安全的将资产转移到波场网络",
-    install:"立即安装",
+    connectSteem: "链接Steem钱包",
+    connectTron: "链接波场钱包",
+    swapSubTitle: "及时、安全的将资产转移到波场网络",
+    install: "立即安装",
   },
-  cs:{
+  cs: {
     crowdstaking: "质押投票",
     community: "社区",
     nominate: "投票",
@@ -86,15 +86,15 @@ module.exports = {
     bondInfo2: "建议至少绑定 1 DOT",
     bondInfo3: "解绑操作后需要等待28天",
     confirm: "确定",
-    cancelValidorsInfo:"请取消至少 {n} 个您已经投票过的节点，再进行本次投票"
+    cancelValidorsInfo: "请取消至少 {n} 个您已经投票过的节点，再进行本次投票"
   },
   validator: {
     commission: "佣金",
     otherStake: "其他人的质押",
     ownStake: "自己的质押",
     waiting: "候选"
-},
-  cl:{
+  },
+  cl: {
     crowdloan: "平行链拍卖",
     contribute: "投票",
     withdraw: "赎回",
@@ -107,16 +107,22 @@ module.exports = {
     optional: "(可选)",
     completed: "已完成"
   },
+  transaction: {
+    broadcasting: "正在广播交易",
+    inBlock: "交易已上链",
+    contributeOk: "投票成功",
+    withdrawOk: "赎回成功"
+  },
   stake: {
     stake: '质押挖矿',
     creaseDelegation: "增加代理",
     increaseDelegation: "减少代理",
     getSp: "获取 SP",
-    get:'获取',
+    get: '获取',
   },
   farm: {
     farm: '流动性挖矿',
-    stake:"储蓄",
+    stake: "储蓄",
     unStake: "减少储蓄",
     tsp: {
       tspMine: 'TSP挖矿',
@@ -143,13 +149,13 @@ module.exports = {
     tspLp: {
       tspLPBalance: 'S-TSP-TRX 余额',
       yourTSPLPAmount: '储蓄的S-TSP-TRX',
-      totalDepositTspLP:"储蓄总量",
+      totalDepositTspLP: "储蓄总量",
       totalTSP: 'TSP总量',
     },
     pnutLp: {
       pnutLPBalance: 'S-PNUT-TRX 余额',
       yourPNUTLPAmount: '储蓄的S-PNUT-TRX',
-      totalDepositPnutLP:'储蓄总量'
+      totalDepositPnutLP: '储蓄总量'
     }
   },
   liquidStaking: {
@@ -162,31 +168,31 @@ module.exports = {
   },
   tip: {
     loading: "加载中，请稍等",
-    noAuction : "没有进行中的众贷",
-    noProject:"没有进行中的项目",
+    noAuction: "没有进行中的众贷",
+    noProject: "没有进行中的项目",
     tokenSafeTip: "您的资产将被锁定到 {symbol} 的官方众贷合约内，而不是Nutbox的账户内。",
     belowMinContribution: "投票数小于最小投票数1.0000个。",
     belowMinBond: "绑定数小于最小绑定数0.1个。",
     wrongNominatorAddress: "推荐人地址格式错误",
     insufficientBalance: "余额不足",
     outOfCap: "超过最大需求数",
-    tips:"提示信息",
+    tips: "提示信息",
     error: "错误！",
     success: "成功！",
     warning: "警告！",
     noNeedWithdraw: '没有可赎回投票',
     comingSoon: '敬请期待'
-},
-  vote:{
-    upvote:"点赞",
-    vote:"点赞帖子",
-    title:"支付PNUT,获得nutbox.mine点赞",
-    link:"帖子链接",
-    payPnut:"支付PNUT",
-    linkPlaceholder:"请填写需要点赞的帖子链接",
-    pnutPlaceholder:"请填写支付金额",
-    transfer:"转账",
-    voteRate:"PNUT - 10% 点赞",
+  },
+  vote: {
+    upvote: "点赞",
+    vote: "点赞帖子",
+    title: "支付PNUT,获得nutbox.mine点赞",
+    link: "帖子链接",
+    payPnut: "支付PNUT",
+    linkPlaceholder: "请填写需要点赞的帖子链接",
+    pnutPlaceholder: "请填写支付金额",
+    transfer: "转账",
+    voteRate: "PNUT - 10% 点赞",
   },
   nps: {
     nps: '提案改善',
@@ -219,10 +225,10 @@ module.exports = {
     inputError: '输入值无效',
     inputOverflow: '输入超过最大值',
     inputOutOfRange: "请输入{lowerPnutAmount}-{upperPnutAmount}的值",
-    inputLinkIllegal:"请输入正确的链接",
-    transferFail:"转账失败",
+    inputLinkIllegal: "请输入正确的链接",
+    transferFail: "转账失败",
     notEnoughFee: '手续费不足',
-    insufficentPnut:"PNUT余额不足",
+    insufficentPnut: "PNUT余额不足",
     hasVoted: "Nutbox已经点赞了您的帖子。",
     pleaseRetry: "请重试"
   }

@@ -9,39 +9,39 @@
     <div class="tip-contribute">
       <div class="text-center mb-4 font20" v-if="lang==='en'">
         Contribute to<span class="big"> {{ paraName }} </span>crowdloan <br />
-        fund in<span class="big"> {{ symbol }} </span>network
+        fund in<span class="big"> {{ getSymbol }} </span>network
       </div>
       <div class="text-center mb-4 font20" v-else>
         为<span class="big"> {{ paraName }} </span>项目<br/>
-        在<span class="big"> {{ symbol }} </span>网络中的平行链竞拍投票
+        在<span class="big"> {{ getSymbol }} </span>网络中的平行链竞拍投票
       </div>
       <div class="text-center mb-4 font14" style="color: red;">
-        {{ $t('tip.tokenSafeTip', {symbol}) }}
+        {{ $t('tip.tokenSafeTip', {symbol: getSymbol}) }}
       </div>
       <div class="input-group-box">
-        <div class="label">{{ $t('crowdloan.amount')}}</div>
+        <div class="label">{{ $t('cl.amount')}}</div>
         <div class="flex-between-center">
           <input
             type="number"
             v-model="inputAmount"
-            :placeholder="$t('crowdloan.inputAmount')"
+            :placeholder="$t('cl.inputAmount')"
           />
           <span>{{ paraTokenSymbol }}</span>
         </div>
       </div>
       <div class="input-group-box">
-        <div class="label">{{ $t('crowdloan.nominator')}}</div>
+        <div class="label">{{ $t('cl.nominator')}}</div>
         <div class="flex-between-center">
           <input
             type="text"
             v-model="inputNonimator"
-            :placeholder="$t('crowdloan.inputNominator')"
+            :placeholder="$t('cl.inputNominator')"
           />
-          <span class="text-grey" style="opacity: 0.4">{{ $t('crowdloan.optional') }}</span>
+          <span class="text-grey" style="opacity: 0.4">{{ $t('cl.optional') }}</span>
         </div>
       </div>
       <button class="primary-btn" @click="confirm" :disabled="isComtribution">
-        <b-spinner small type="grow" v-show="isComtribution"></b-spinner>{{ $t('crowdloan.confirm') }}
+        <b-spinner small type="grow" v-show="isComtribution"></b-spinner>{{ $t('cl.confirm') }}
       </button>
     </div>
   </div>
@@ -49,10 +49,12 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { TOKEN_SYMBOL } from "@/config";
+import { POLKADOT_RELAYCHAIN_SYMBOL } from "@/constant";
 import { validAddress } from "@/utils/kusama/kusama";
 import { contribute } from "@/utils/kusama/crowdloan"
 import BN from "bn.js";
+import { KUSAMA_DECIMAL } from '@/constant'
+
 
 export default {
   data() {
@@ -72,11 +74,18 @@ export default {
     },
     paraName:{
       type: String,
+    },
+    symbol:{
+      type: String,
+      default: 'kusama'
     }
   },
   computed: {
-    ...mapState(["symbol", "balance", "lang"]),
-    ...mapGetters(["getFundInfo", "decimal"]),
+    ...mapState('kusama',["balance", "lang"]),
+    ...mapGetters('kusama', ["fundInfo"]),
+    getSymbol (){
+      return this.symbol.toUpperCase()
+    }
   },
   methods: {
     hide() {
@@ -123,7 +132,7 @@ export default {
       }
 
       // below cap
-      const fund = this.getFundInfo(this.paraId);
+      const fund = this.fundInfo(this.paraId);
       const raised = fund.raised;
       const cap = fund.cap;
       const gap = cap.sub(raised);
@@ -135,7 +144,7 @@ export default {
         });
         return false;
       }
-      if (this.balance.lte(new BN(amount).mul(new BN(10).pow(this.decimal)))) {
+      if (this.balance.lte(new BN(amount).mul(new BN(10).pow(new BN(KUSAMA_DECIMAL))))) {
         this.$bvToast.toast(this.$t('tip.insufficientBalance'), {
           title: this.$t('tip.tips'),
           autoHideDelay: 5000,
@@ -151,7 +160,7 @@ export default {
       }
       try {
         this.isComtribution = true;
-        const trieIndex = this.getFundInfo(this.paraId).trieIndex;
+        const trieIndex = this.fundInfo(this.paraId).trieIndex;
         const res = await contribute(
           this.paraId,
           parseFloat(this.inputAmount),
@@ -178,7 +187,7 @@ export default {
     },
   },
   mounted() {
-    this.paraTokenSymbol = TOKEN_SYMBOL[this.symbol];
+    this.paraTokenSymbol = POLKADOT_RELAYCHAIN_SYMBOL[this.symbol]
   },
 };
 </script>

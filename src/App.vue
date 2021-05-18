@@ -332,6 +332,7 @@ export default {
 $blue: #ffdb1b;
 :root {
   --yellow-background: #f5ecd8;
+  --primary-custom: #ffdb1b;
   --primary: #ffdb1b;
   --primary-text: #242629;
   --secondary-text: #717376;

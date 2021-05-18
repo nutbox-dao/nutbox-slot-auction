@@ -81,7 +81,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
         console.log('index', pId, trieIndex.toNumber());
         const childKey = createChildKey(trieIndex)
         const keys = await api.rpc.childstate.getKeys(childKey, '0x')
-        const ss58keys = keys.map(k => encodeAddress(k))
+        const ss58keys = keys.map(k => encodeAddress(k, 0))
         const values = await Promise.all(keys.map(k => api.rpc.childstate.getStorage(childKey, k)))
         const contributions = values.map((v, idx) => ({
           contributor: ss58keys[idx],
@@ -198,8 +198,8 @@ export function encodeMemo(memo) {
 
 export const withdraw = async (paraId, toast, isInblockCallback) => {
   return new Promise(async (resolve, reject) => {
-    const api = await injectAccount(store.state.account)
-    const from = store.state.account?.address
+    const api = await injectAccount(store.state.polkadot.account)
+    const from = store.state.polkadot.account?.address
     if (!from) {
       reject('no account')
     }
@@ -271,13 +271,13 @@ export const withdraw = async (paraId, toast, isInblockCallback) => {
 
 export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, inBlockCallback) => {
   return new Promise(async (resolve, reject) => {
-    const from = store.state.account && store.state.account.address
-    communityId = stanfiAddress(communityId)
-    childId = stanfiAddress(childId)
+    const from = store.state.polkadot.account && store.state.polkadot.account.address
+    communityId = stanfiAddress(communityId, 42)
+    childId = stanfiAddress(childId, 42)
     if (!from) {
       reject('no account')
     }
-    const api = await injectAccount(store.state.account)
+    const api = await injectAccount(store.state.polkadot.account)
     const decimal = await getDecimal()
     paraId = api.createType('Compact<u32>', paraId)
     amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))
@@ -339,7 +339,7 @@ export const contribute = async (paraId, amount, communityId, childId, trieIndex
           console.log("Transaction included at blockHash ", status.asInBlock.toJSON());
           const contriHash = status.asInBlock.toJSON()
           console.log({
-            relaychain: store.state.symbol.toLowerCase(),
+            relaychain: 'rococo',
             blockHash: contriHash,
             communityId: communityId,
             nominatorId: childId
@@ -347,7 +347,7 @@ export const contribute = async (paraId, amount, communityId, childId, trieIndex
           // upload to daemon
           try{
             postContribution({
-              relaychain: store.state.symbol.toLowerCase(),
+              relaychain: 'rococo',
               blockHash: contriHash,
               communityId: communityId,
               nominatorId: childId

@@ -12,6 +12,12 @@ export const TIME_PERIOD = {
     MONTH: 2592000,
 }
 
+export const POLKADOT_RELAYCHAIN_SYMBOL = {
+    polkadot: 'DOT',
+    kusama: 'KSM',
+    rococo: 'ROC'
+}
+
 export const API_CONNECT_STATE = {
     CONNECT_INIT: 'CONNECT_INIT',
     CONNECT: 'CONNECT',

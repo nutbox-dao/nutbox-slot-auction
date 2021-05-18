@@ -25,7 +25,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { TOKEN_SYMBOL } from "@/config";
+import { POLKADOT_RELAYCHAIN_SYMBOL } from "@/constant";
 import { withdraw } from "@/utils/kusama/crowdloan";
 import BN from "bn.js";
 import { formatBalance } from "@/utils/helper"
@@ -35,6 +35,10 @@ export default {
     paraId: {
       type: Number,
     },
+    symbol: {
+      type: String,
+      default: 'kusama'
+    }
   },
   data() {
     return {
@@ -43,10 +47,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["symbol", "balance", "account"]),
+    ...mapState(["balance", "account"]),
     ...mapGetters(["getFundInfo", "decimal"]),
     tokenSymbol() {
-      return TOKEN_SYMBOL[this.symbol];
+      return POLKADOT_RELAYCHAIN_SYMBOL[this.symbol];
     },
   },
   async mounted () {

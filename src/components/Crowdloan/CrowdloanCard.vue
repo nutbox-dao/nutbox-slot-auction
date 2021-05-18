@@ -81,6 +81,7 @@
         :communityId="communityId"
         :paraId="paraId"
         :paraName="getCardInfo && getCardInfo.para.paraName"
+        :symbol='symbol'
         @hideContribute="showContribute = false"
       />
     </b-modal>

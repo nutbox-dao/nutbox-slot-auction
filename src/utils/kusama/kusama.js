@@ -103,13 +103,13 @@ export const validAddress = (address) => {
 }
 
 // 将地址统一成substrate的格式
-export const stanfiAddress = (address) => {
+export const stanfiAddress = (address, type=0) => {
   try {
     return encodeAddress(
       isHex(address) ?
       hexToU8a(address) :
       decodeAddress(address),
-      0
+      type
     );
   } catch (e) {
     console.log(e);
