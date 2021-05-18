@@ -73,7 +73,7 @@ module.exports = {
     install:"立即安装",
   },
   cs:{
-    crowdstaking: "质押挖矿",
+    crowdstaking: "质押投票",
     community: "社区",
     nominate: "投票",
     nominated: "已投票",

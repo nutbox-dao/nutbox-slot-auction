@@ -129,9 +129,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
 export const calStatus = async (end, firstSlot, raised, cap, pId, bestBlockNumber) => {
   const api = await getApi()
   const auctionEnd = await getAuctionEnd()
-  console.log({auctionEnd});
   const leasePeriod = await getLeasePeriod()
-  console.log({leasePeriod});
   const currentPeriod = Math.floor(bestBlockNumber / leasePeriod)
   const leases = (await api.query.slots.leases(pId)).toJSON()
   const isWinner = leases.length > 0

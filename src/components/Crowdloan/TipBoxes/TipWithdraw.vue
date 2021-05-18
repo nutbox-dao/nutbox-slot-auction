@@ -28,7 +28,7 @@ import { mapState, mapGetters } from "vuex";
 import { TOKEN_SYMBOL } from "@/config";
 import { withdraw } from "@/utils/kusama/crowdloan";
 import BN from "bn.js";
-import { formatBalance } from "@/utils/helpers"
+import { formatBalance } from "@/utils/helper"
 
 export default {
   props: {

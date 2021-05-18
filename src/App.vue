@@ -364,6 +364,7 @@ body {
   min-height: 700px;
   display: flex;
   align-items: left;
+  font-size: 14px;
   background-color: var(--background);
 }
 h3 {

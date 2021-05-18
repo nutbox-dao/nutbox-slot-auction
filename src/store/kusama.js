@@ -136,6 +136,9 @@ export default {
       }
       return null
     },
+    currentBlockNum: state => {
+      return state.currentBlockNum
+    },
     paraIds: state => {
         return state.showingCrowdloan?.map(c => c.para?.paraId)
     },
@@ -149,6 +152,9 @@ export default {
     projectStatus: (state, getters) => paraId => {
         const fund = getters.fundInfo(paraId)
         return fund && fund.status
+    },
+    showingCard: (state) => {
+      return state.showingCrowdloan
     }
   }
 }

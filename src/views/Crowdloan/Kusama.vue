@@ -13,12 +13,12 @@
       <div class="cards-container">
         <div class="container">
           <div class="row">
-            <!-- <div class="col-lg-4 col-md-6" v-for="card, idx of showingCard()" :key="idx">
+            <div class="col-lg-4 col-md-6" v-for="card, idx of showingCard()" :key="idx">
                 <CrowdloanCard
                   :paraId="parseInt(card.para.paraId)"
                   :communityId="card.community.communityId"
                 />
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-// import CrowdloanCard from "../../components/Crowdloan/CrowdloanCard";
+import CrowdloanCard from "../../components/Crowdloan/CrowdloanCard";
 import {
   subscribeFundInfo as subscribeKusamaFundInfo
 } from "../../utils/kusama/crowdloan";
@@ -37,14 +37,17 @@ import { getOnshowingCrowdloanCard } from "../../apis/api"
 export default {
   name: "Kusama",
   components: {
-    // CrowdloanCard,
+    CrowdloanCard,
   },
   computed: {
-    ...mapState('kusama', ["clProjectFundInfos", "loadingFunds", 'showingCard']),
+    ...mapState('kusama', ["clProjectFundInfos", "loadingFunds"]),
     funds() {
       const fundInfos = this.clProjectFundInfos;
       return fundInfos || [];
     },
+  },
+  methods: {
+    ...mapGetters('kusama', ['showingCard']),
   },
   async created() {
     const res = await getOnshowingCrowdloanCard({relaychain:"rococo"})

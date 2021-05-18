@@ -8,17 +8,17 @@
     </div>
     <div class="card-title-box flex-start-center">
       <div class="icons">
-        <img class="icon2" :src="cardInfo && cardInfo.para.iconUrl" alt="" />
+        <img class="icon2" :src="getCardInfo && getCardInfo.para.iconUrl" alt="" />
         <img
           class="icon1"
-          :src="cardInfo && cardInfo.community.iconUrl"
+          :src="getCardInfo && getCardInfo.community.iconUrl"
           alt=""
         />
       </div>
       <div class="title-text font20 font-bold">
-        <span>{{ cardInfo && cardInfo.community.communityName }}</span>
+        <span>{{ getCardInfo && getCardInfo.community.communityName }}</span>
         <img src="~@/static/images/close.svg" alt="" />
-        <span>{{ cardInfo && cardInfo.para.paraName }}</span>
+        <span>{{ getCardInfo && getCardInfo.para.paraName }}</span>
       </div>
     </div>
     <div class="h-line"></div>
@@ -51,29 +51,24 @@
         v-show="status === 'Active'"
         @click="showContribute = true"
       >
-        {{ $t('crowdloan.contribute') }}
+        {{ $t('cl.contribute') }}
       </button>
       <button
         class="primary-btn"
         v-show="status === 'Retired'"
         @click="showWithdraw = true"
       >
-        {{ $t('crowdloan.withdraw') }}
+        {{ $t('cl.withdraw') }}
       </button>
       <button
         class="action-btn primary-btn"
         disabled
         v-show="status === 'Completed'"
       >
-        {{ $t('crowdloan.completed') }}
+        {{ $t('cl.completed') }}
       </button>
     </div>
-    <ConnectWallet v-else />
-    <!--    <TipContribute-->
-    <!--      v-if="showContribute"-->
-    <!--      @hideContribute="showContribute = false"-->
-    <!--    />-->
-    <!--    <TipWithdraw v-if="showWithdraw" @hideWithdraw="showWithdraw = false" />-->
+    <!-- <ConnectWallet v-else /> -->
     <b-modal
       v-model="showContribute"
       modal-class="custom-modal"
@@ -85,7 +80,7 @@
       <TipContribute
         :communityId="communityId"
         :paraId="paraId"
-        :paraName="cardInfo && cardInfo.para.paraName"
+        :paraName="getCardInfo && getCardInfo.para.paraName"
         @hideContribute="showContribute = false"
       />
     </b-modal>
@@ -118,7 +113,6 @@ export default {
     return {
       showContribute: false,
       showWithdraw: false,
-      tokenSymbol: TOKEN_SYMBOL,
       status: PARA_STATUS.COMPLETED,
     };
   },
@@ -129,9 +123,12 @@ export default {
     communityId: {
       type: String,
     },
+    symbol:{
+      type: String,
+      default:'kusama'
+    }
   },
   components: {
-    ConnectWallet,
     TipContribute,
     TipWithdraw,
     ContributorsLabel,
@@ -139,7 +136,7 @@ export default {
   },
   watch: {
     async currentBlockNum(newValue, _) {
-      const fund = this.fundInfo;
+      const fund = this.getFundInfo;
       const end = fund.end;
       const raised = fund.raised;
       const cap = fund.cap;
@@ -156,37 +153,37 @@ export default {
     },
   },
   computed: {
-    ...mapState(["isConnected", "symbol", "projectFundInfos", "lang"]),
-    ...mapGetters([
-      "getProjectStatus",
-      "getFundInfo",
+    ...mapState('kusama', ["isConnected", "clProjectFundInfos"]),
+    ...mapState(['lang']),
+    ...mapGetters('kusama', [
+      "fundInfo",
       "currentBlockNum",
-      "getCardInfo",
+      "cardInfo",
     ]),
-    fundInfo() {
-      return this.getFundInfo(this.paraId);
+    getFundInfo() {
+      return this.fundInfo(this.paraId);
     },
-    cardInfo() {
-      const card = this.getCardInfo(this.paraId, this.communityId);
+    getCardInfo() {
+      const card = this.cardInfo(this.paraId, this.communityId);
       return card;
     },
     leasePeriod() {
       try {
-        const first = parseInt(this.fundInfo.firstSlot);
-        const last = parseInt(this.fundInfo.lastSlot);
+        const first = parseInt(this.getFundInfo.firstSlot);
+        const last = parseInt(this.getFundInfo.lastSlot);
         return first === last
           ? first + ""
-          : parseInt(this.fundInfo.firstSlot) +
+          : parseInt(this.getFundInfo.firstSlot) +
               " - " +
-              parseInt(this.fundInfo.lastSlot);
+              parseInt(this.getFundInfo.lastSlot);
       } catch (e) {
         return "0";
       }
     },
     countDown() {
       try {
-        if (!this.fundInfo) return;
-        const end = parseInt(this.fundInfo.end);
+        if (!this.getFundInfo) return;
+        const end = parseInt(this.getFundInfo.end);
         const diff = end - parseInt(this.currentBlockNum);
         const timePeriod = TIME_PERIOD;
         if (diff > 0) {
@@ -220,8 +217,8 @@ export default {
     },
     completion() {
       try {
-        const raised = parseFloat(this.fundInfo.raised);
-        const cap = parseFloat(this.fundInfo.cap);
+        const raised = parseFloat(this.getFundInfo.raised);
+        const cap = parseFloat(this.getFundInfo.cap);
         return parseFloat((raised * 100) / cap).toFixed(2) + "%";
       } catch (e) {
         return "0.0%";
@@ -229,7 +226,7 @@ export default {
     },
     contributions() {
       try {
-        return this.fundInfo.funds.length;
+        return this.getFundInfo.funds.length;
       } catch (e) {
         return 0;
       }
@@ -237,16 +234,16 @@ export default {
     statusIcon() {
       switch (this.status) {
         case "Active":
-          return this.lang === 'en' ? require("../static/images/card-active.svg") : require("../static/images/card-active-cn.png");
+          return this.lang === 'en' ? require("../../static/images/card-active.svg") : require("../../static/images/card-active-cn.png");
         case "Retired":
-          return this.lang === 'en' ? require("../static/images/card-retired.svg") : require('../static/images/card-retired-cn.png');
+          return this.lang === 'en' ? require("../../static/images/card-retired.svg") : require('../../static/images/card-retired-cn.png');
         default:
-          return this.lang === 'en' ? require("../static/images/card-completed.svg") : require('../static/images/card-completed-cn.png');
+          return this.lang === 'en' ? require("../../static/images/card-completed.svg") : require('../../static/images/card-completed-cn.png');
       }
     },
   },
   mounted() {
-    this.status = this.fundInfo.status;
+    this.status = this.getFundInfo.status;
   },
 };
 </script>

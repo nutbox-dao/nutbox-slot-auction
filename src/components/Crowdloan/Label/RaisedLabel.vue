@@ -20,6 +20,7 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
+import { KUSAMA_DECIMAL } from '@/constant'
 import BN from "bn.js";
 export default {
   props: {
@@ -35,7 +36,7 @@ export default {
   computed: {
     ...mapState('polkadot', ["account"]),
     ...mapState('kusama', ["balance"]),
-    ...mapGetters('kusama', ["fundInfo", "decimal"]),
+    ...mapGetters('kusama', ["fundInfo"]),
     fund() {
       return this.fundInfo(this.paraId);
     },
@@ -64,14 +65,14 @@ export default {
         raisedStr[1],
         raised[1] + "/" + capStr[0],
         capStr[1],
-        cap[1] + TOKEN_SYMBOL[this.symbol],
+        cap[1] + 'KSM',
       ];
     },
   },
   methods: {
     convertUni(uni) {
       let unit = " ";
-      uni = uni.div(new BN(10).pow(this.decimal.sub(new BN(4))))
+      uni = uni.div(new BN(10).pow(new BN(KUSAMA_DECIMAL).sub(new BN(4))))
       if (uni >= 1e22) {
         uni = uni.div(new BN(1e18));
         unit = " E";
