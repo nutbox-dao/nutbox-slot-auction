@@ -50,8 +50,9 @@ export const subscribeFundInfo = async (crowdloanCard) => {
       console.log('have sub');
       unsubFund()
     }catch(e){}
-  };
-  store.commit('kusama/saveLoadingFunds', true)
+  }else{
+    store.commit('kusama/saveLoadingFunds', true)
+  }
   let paraId = crowdloanCard.map(c => parseInt(c.para.paraId))
   paraId = [...new Set(paraId)] 
   const api = await getApi()
