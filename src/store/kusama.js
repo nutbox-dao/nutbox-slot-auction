@@ -41,6 +41,9 @@ export default {
     saveCommunitys: (state, communitys) => {
       state.communitys = communitys
     },
+    saveClCommunitys: (state, clCommnunitys) => {
+      state.clCommnunitys = clCommnunitys
+    },
     saveProjects: (state, projects) => {
       state.projects = projects
     },

@@ -9,7 +9,6 @@ export const subBlock = async () => {
     const subBlock = await api.rpc.chain.subscribeNewHeads((header) => {
       try {
         const number = header.number.toNumber()
-        console.log('kusama block', number);
         store.commit('kusama/saveCurrentBlockNum', number)
       } catch (e) {
   

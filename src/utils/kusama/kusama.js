@@ -15,9 +15,10 @@ import {
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import BN from "bn.js"
 import {
-  KUSAMA_WEB_SOCKEY
-} from "../../config"
-import store from "../../store"
+  KUSAMA_WEB_SOCKET
+} from "@/config"
+import { KUSAMA_DECIMAL } from '@/constant'
+import store from "@/store"
 
 export async function getApi() {
   if (store.state.kusama.api) {
@@ -26,7 +27,7 @@ export async function getApi() {
   store.commit('kusama/saveIsConnected', false)
 
   console.log('connecting');
-  const wsProvider = new WsProvider(KUSAMA_WEB_SOCKEY)
+  const wsProvider = new WsProvider(KUSAMA_WEB_SOCKET)
   const api = await ApiPromise.create({
     provider: wsProvider,
     rpc: jsonrpc,
@@ -42,24 +43,18 @@ export async function getApi() {
   return api
 }
 
-export function uni2Token(uni, decimal = 10) {
+export function uni2Token(uni, decimal = KUSAMA_DECIMAL) {
   return uni.div(new BN(10).pow(decimal))
 }
 
-export function token2Uni(amount, decimal = 10) {
+export function token2Uni(amount, decimal = KUSAMA_DECIMAL) {
   amount = parseFloat(amount)
   // need to convert amount to int first.Other wise the new BN method will cast the decimal part
   return new BN(amount * 1e6).mul(new BN(10).pow(new BN(decimal - 6)))
 }
 
 export const getDecimal = async () => {
-  if (store.getters.kusama.decimal > 0) {
-    return store.getters.kusama.decimal
-  }
-  const api = await getApi()
-  const decimal = new BN(api.registry.chainDecimals[0]);
-  store.commit('kusama/saveDecimal', decimal)
-  return decimal
+  return new BN(KUSAMA_DECIMAL)
 }
 
 export const formatBalance = (b) => {

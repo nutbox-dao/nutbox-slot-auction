@@ -49,9 +49,9 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { TOKEN_SYMBOL } from "../../config";
-import { validAddress } from "../../utils/polkadot";
-import { contribute } from "../../utils/crowdloan"
+import { TOKEN_SYMBOL } from "@/config";
+import { validAddress } from "@/utils/kusama/kusama";
+import { contribute } from "@/utils/kusama/crowdloan"
 import BN from "bn.js";
 
 export default {

@@ -26,6 +26,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.crowdloan-page{
+    height: 100%;
+  position: relative;
   .empty-bg {
     position: relative;
     top: 200px;
@@ -35,5 +38,5 @@ export default {
       height: 7rem;
     }
   }
-
+}
 </style>

@@ -18,6 +18,7 @@ import {
   POLKADOT_WEB_SOCKET
 } from "../../config"
 import store from "../../store"
+import { POLKADOT_DECIMAL } from '@/constant'
 
 export async function getApi() {
   if (store.state.polkadot.api) {
@@ -42,11 +43,11 @@ export async function getApi() {
   return api
 }
 
-export function uni2Token(uni, decimal = 10) {
+export function uni2Token(uni, decimal = POLKADOT_DECIMAL) {
   return uni.div(new BN(10).pow(decimal))
 }
 
-export function token2Uni(amount, decimal = 10) {
+export function token2Uni(amount, decimal = POLKADOT_DECIMAL) {
   amount = parseFloat(amount)
   // need to convert amount to int first.Other wise the new BN method will cast the decimal part
   return new BN(amount * 1e6).mul(new BN(10).pow(new BN(decimal - 6)))

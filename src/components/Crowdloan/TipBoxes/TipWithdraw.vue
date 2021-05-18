@@ -25,10 +25,10 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { TOKEN_SYMBOL } from "../../config";
-import { withdraw } from "../../utils/crowdloan";
+import { TOKEN_SYMBOL } from "@/config";
+import { withdraw } from "@/utils/kusama/crowdloan";
 import BN from "bn.js";
-import { formatBalance } from "../../utils/polkadot"
+import { formatBalance } from "@/utils/helpers"
 
 export default {
   props: {

@@ -1,7 +1,8 @@
 
 export const BLOCK_SECOND = 6
 
-export const decimal = 10
+export const POLKADOT_DECIMAL = 10
+export const KUSAMA_DECIMAL = 12
 
 export const TIME_PERIOD = {
     MINUTES:60,

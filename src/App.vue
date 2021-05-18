@@ -1,10 +1,20 @@
 <template>
   <div id="app">
     <div class="left">
-    <div class="logo-container">
-      <img src="./static/images/logo.png" style="width:180px;height:70px" alt="nutbox" class="logo" />
-      <img src="./static/images/logo_small.png" style="width:42px;height:42px;margin-bottom:12px" alt="nutbox" class="logo_small" />
-    </div>
+      <div class="logo-container">
+        <img
+          src="./static/images/logo.png"
+          style="width: 180px; height: 70px"
+          alt="nutbox"
+          class="logo"
+        />
+        <img
+          src="./static/images/logo_small.png"
+          style="width: 42px; height: 42px; margin-bottom: 12px"
+          alt="nutbox"
+          class="logo_small"
+        />
+      </div>
       <b-nav pills vertical align="center" class="menu">
         <b-nav-item to="/crowdstaking" router-tag="div">
           <p id="stake-icon" class="my-icon" />
@@ -14,7 +24,7 @@
           <p id="farming-icon" class="my-icon" />
           <span>{{ $t("cl.crowdloan") }}</span>
         </b-nav-item>
-         <b-nav-item to="/blog">
+        <b-nav-item to="/blog">
           <p id="blog-icon" class="my-icon" />
           <span>{{ $t("message.blog") }}</span>
         </b-nav-item>
@@ -68,7 +78,6 @@
         </div>
 
         <div class="settings">
-          
           <b-dd
             id="language"
             :text="lang.toUpperCase()"
@@ -136,34 +145,73 @@
       @hideMask="showMessage = false"
     />
     <div class="right">
-      <div style="float:right">
+      <div style="float: right">
         <div class="p-2">
-          <b-dropdown toggle-class="accounts-toggle" variant="text" right no-caret>
+          <b-dropdown
+            toggle-class="accounts-toggle"
+            variant="text"
+            right
+            no-caret
+          >
             <template #button-content>
-              <div class="flex-between-center font18" @click="accountsPop=!accountsPop">
-                <Identicon :size='30' theme='polkadot' v-if="account" :value="account.address"/>
+              <div
+                class="flex-between-center font18"
+                @click="accountsPop = !accountsPop"
+              >
+                <Identicon
+                  :size="30"
+                  theme="polkadot"
+                  v-if="account"
+                  :value="account.address"
+                />
                 <b-avatar v-else class="mr-2" size="sm" text=""></b-avatar>
-                <span style="margin-left:8px">{{ formatUserAddress(account && account.meta && account.meta.name) }}</span>
+                <span style="margin-left: 8px">{{
+                  formatUserAddress(
+                    account && account.meta && account.meta.name
+                  )
+                }}</span>
               </div>
             </template>
-            <b-dropdown-item v-for="(item,index) of (allAccounts ? allAccounts : [])" :key="index" @click="changeAccount(item)">
+            <b-dropdown-item
+              v-for="(item, index) of allAccounts ? allAccounts : []"
+              :key="index"
+              @click="changeAccount(item)"
+            >
               <template>
                 <div class="flex-between-center">
-                  <Identicon class="ident-icon" :size='30' theme='polkadot' :value="item.address"/>
+                  <Identicon
+                    class="ident-icon"
+                    :size="30"
+                    theme="polkadot"
+                    :value="item.address"
+                  />
                   <div class="account-info">
-                    <div class="font-bold">{{ item.meta?item.meta.name:'' }}</div>
+                    <div class="font-bold">
+                      {{ item.meta ? item.meta.name : "" }}
+                    </div>
                     <div>{{ formatUserAddress(item.address) }}</div>
                   </div>
-                  <img class="ml-3" v-if="item.address===(account && account.address)" src="~@/static/images/selected.png" alt="">
+                  <img
+                    class="ml-3"
+                    v-if="item.address === (account && account.address)"
+                    src="~@/static/images/selected.png"
+                    alt=""
+                  />
                 </div>
               </template>
             </b-dropdown-item>
-            <b-dropdown-divider v-if="Object.keys(allAccounts || []).length>0"></b-dropdown-divider>
+            <b-dropdown-divider
+              v-if="Object.keys(allAccounts || []).length > 0"
+            ></b-dropdown-divider>
             <b-dropdown-item>
-              <div class="flex-start-center" @click="selectMenu('dashboard', '/dashboard')" v-if="isProjectAdmin">
+              <div
+                class="flex-start-center"
+                @click="selectMenu('dashboard', '/dashboard')"
+                v-if="isProjectAdmin"
+              >
                 <!-- <b-avatar square size="sm" class="mr-2" style="opacity: .2">·</b-avatar> -->
-                <img class="menu-icon" :src="dashboardIcon" alt="">
-                <span class="menu-text">{{ $t('account.dashboard') }}</span>
+                <img class="menu-icon" :src="dashboardIcon" alt="" />
+                <span class="menu-text">{{ $t("account.dashboard") }}</span>
               </div>
             </b-dropdown-item>
           </b-dropdown>
@@ -177,21 +225,21 @@
 
 <script>
 import {
-  TRON_LINK_ADDR_NOT_FOUND,
-  STEEM_API_URLS,
-  STEEM_CONF_KEY,
   LOCALE_KEY,
-  STEEM_MINE_ACCOUNT,
 } from "./config";
 import TipMessage from "./components/ToolsComponents/TipMessage";
-import { mapState, mapGetters, mapMutations } from "vuex";
-import Identicon from '@polkadot/vue-identicon'
-import { getBalance as getPolkadotBalance, loadAccounts as loadPolkadotAccounts } from './utils/polkadot/account'
-import { getBalance as getKusamaBalance } from './utils/kusama/account'
-import { subBlock as subPolkadotBlock } from "./utils/polkadot/block"
-import { subBlock as subKusamaBlock } from "./utils/kusama/block"
-import { subBonded, subNominators } from "./utils/polkadot/staking"
-import { stanfiAddress } from "./utils/polkadot/polkadot"
+import { mapState, mapMutations } from "vuex";
+import Identicon from "@polkadot/vue-identicon";
+import { getCommnunitys } from '@/apis/api'
+import {
+  getBalance as getPolkadotBalance,
+  loadAccounts as loadPolkadotAccounts,
+} from "./utils/polkadot/account";
+import { getBalance as getKusamaBalance } from "./utils/kusama/account";
+import { subBlock as subPolkadotBlock } from "./utils/polkadot/block";
+import { subBlock as subKusamaBlock } from "./utils/kusama/block";
+import { subBonded, subNominators } from "./utils/polkadot/staking";
+import { stanfiAddress } from "./utils/polkadot/polkadot";
 
 export default {
   data() {
@@ -203,71 +251,79 @@ export default {
     };
   },
   computed: {
-    ...mapState('polkadot',[
-      'isConnected',
-      'allAccounts',
-      'account',
-      'crowdstakings',
-      'communitys',
-      'projects',
+    ...mapState("polkadot", [
+      "isConnected",
+      "allAccounts",
+      "account",
+      "crowdstakings",
+      "communitys", 
+      "projects",
     ]),
-    ...mapState(['lang']),
-    isProjectAdmin () {
-      return this.projects.indexOf(this.account && this.account.address) !== -1
+    ...mapState(["lang"]),
+    isProjectAdmin() {
+      return this.projects.indexOf(this.account && this.account.address) !== -1;
     },
-    contributionsIcon () {
-      return this.activeNav === 'contributions' ? require('./static/images/contributions_selected.png') : require('./static/images/contributions.png')
+    contributionsIcon() {
+      return this.activeNav === "contributions"
+        ? require("./static/images/contributions_selected.png")
+        : require("./static/images/contributions.png");
     },
-    dashboardIcon (){
-      return this.activeNav === 'dashboard' ? require('./static/images/dashboard_selected.png') : require('./static/images/dashboard.png')
+    dashboardIcon() {
+      return this.activeNav === "dashboard"
+        ? require("./static/images/dashboard_selected.png")
+        : require("./static/images/dashboard.png");
     },
   },
   components: {
     TipMessage,
-    Identicon
+    Identicon,
   },
   methods: {
-    ...mapMutations('polkadot',['saveAccount', 'saveCommunitys']),
+    ...mapMutations("polkadot", ["saveAccount"]),
     setLanguage(lang) {
       localStorage.setItem(LOCALE_KEY, lang);
-      this.$store.commit('saveLang', lang)
+      this.$store.commit("saveLang", lang);
       this.$i18n.locale = lang;
     },
-        formatUserAddress (address,long=true) {
-      if (!address) return 'Loading Account'
-      if (long){
-        if (address.length < 16) return address
-        const start = address.slice(0, 28)
-        const end = address.slice(-5)
-        return `${start}...`
-      }else{
-        const start = address.slice(0, 6)
-        const end = address.slice(-6)
-        return `${start}...${end}`
+    formatUserAddress(address, long = true) {
+      if (!address) return "Loading Account";
+      if (long) {
+        if (address.length < 16) return address;
+        const start = address.slice(0, 28);
+        const end = address.slice(-5);
+        return `${start}...`;
+      } else {
+        const start = address.slice(0, 6);
+        const end = address.slice(-6);
+        return `${start}...${end}`;
       }
     },
-    changeAccount (acc) {
-      if (!this.isConnected) return
-      this.saveAccount(acc)
-      getPolkadotBalance(acc)
-      getKusamaBalance(acc)
-      subBonded()
-      subNominators()
+    changeAccount(acc) {
+      if (!this.isConnected) return;
+      this.saveAccount(acc);
+      getPolkadotBalance(acc);
+      getKusamaBalance(acc);
+      subBonded();
+      subNominators();
     },
-    showError (err) {
+    showError(err) {
       this.$bvToast.toast(err, {
-        title: 'MFund',
+        title: "MFund",
         autoHideDelay: 5000,
-        variant: 'danger'
-      })
+        variant: "danger",
+      });
     },
   },
   async mounted() {
-    this.setLanguage(localStorage.getItem(LOCALE_KEY))
+    this.setLanguage(localStorage.getItem(LOCALE_KEY));
+    getCommnunitys().then(res => {
+      console.log('commnituy', res);
+      this.$store.commit('kusama/saveClCommunitys', res)
+    })
   },
-  async created () {
-    await Promise.all([subPolkadotBlock(), subKusamaBlock()])
-    await loadPolkadotAccounts()
+  async created() {
+    await Promise.all([subPolkadotBlock(), subKusamaBlock()]);
+    await loadPolkadotAccounts();
   },
 };
 </script>
@@ -288,7 +344,7 @@ $blue: #ffdb1b;
   --warning: #ff9500;
   --backgroud-state: #b37012;
 }
-@import './static/css/common.scss';
+@import "./static/css/common.scss";
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap-vue/src/index.scss";
 html,
@@ -376,7 +432,7 @@ input::-webkit-input-placeholder {
   }
 }
 
-.logo-container{
+.logo-container {
   display: flex;
   align-content: center;
   justify-content: center;
@@ -507,43 +563,43 @@ input::-webkit-input-placeholder {
     }
   }
 }
-.pc-menu{
+.pc-menu {
   height: 60px;
-  width:160px;
+  width: 160px;
   float: right;
-    .dropdown-menu {
+  .dropdown-menu {
     border-radius: 1.2rem;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
     border: none;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     min-width: 15rem;
-    padding: .8rem;
+    padding: 0.8rem;
     .dropdown-item {
-      padding: .2rem .5rem;
+      padding: 0.2rem 0.5rem;
     }
     .account-info {
       flex: 1;
-      font-size: .7rem;
+      font-size: 0.7rem;
       margin-left: 6px;
     }
     .dropdown-item:hover {
       background: transparent;
     }
-    .menu-icon{
+    .menu-icon {
       width: 28px;
       height: 28px;
     }
     .menu-text {
-      padding: .4rem 0;
+      padding: 0.4rem 0;
       display: inline-block;
-      font-size: .7rem;
+      font-size: 0.7rem;
       font-weight: bold;
     }
   }
   .ident-icon svg {
-    margin-right: .5rem;
+    margin-right: 0.5rem;
   }
-    .user-address {
+  .user-address {
     a {
       opacity: 1 !important;
     }
@@ -552,11 +608,11 @@ input::-webkit-input-placeholder {
       margin-right: 10px;
     }
   }
-      .account-info {
-      flex: 1;
-      font-size: .7rem;
-      margin-left: 6px;
-    }
+  .account-info {
+    flex: 1;
+    font-size: 0.7rem;
+    margin-left: 6px;
+  }
 }
 
 .my-icon {
@@ -642,61 +698,60 @@ input::-webkit-input-placeholder {
 #telegram-icon:hover {
   background-image: url("./static/images/telegram-hover.svg");
 }
-.logo{
+.logo {
   display: block;
 }
-  .logo_small{
-    display: none;
-  }
-@media only screen and (max-width: 991px){
-  .logo_small{
-    display: block;
-  }
-   .logo{
-    display: none;
-  }
-.nav-item span  {
-   display: none;
-}
-.left{
-width: 75px;
-min-width: 75px;
-}
-.nav-link{
-  display: inherit;
-
-}
-.left .nav-item{
-  height: 40px;
-}
-.left .nav-link {
-     padding-left: 0px;
-}
-.left .bottom {
-  width: 100%;
-}
-.left .bottom .links {
-    display: block;
-}
-.left .bottom .links a {
-  margin-bottom: 6px;
-    display: block;
-}
-.menu .nav-link{
-  flex-wrap:inherit;
-}
-.memu-wallet{
+.logo_small {
   display: none;
 }
-.left .bottom .settings{
-  background: transparent;
-}
-.left .bottom .settings .btn-secondary{
-   color: transparent !important;
-}
-.left .bottom .settings{
-  padding: 0;
-  display: block;
-}
+@media only screen and (max-width: 991px) {
+  .logo_small {
+    display: block;
+  }
+  .logo {
+    display: none;
+  }
+  .nav-item span {
+    display: none;
+  }
+  .left {
+    width: 75px;
+    min-width: 75px;
+  }
+  .nav-link {
+    display: inherit;
+  }
+  .left .nav-item {
+    height: 40px;
+  }
+  .left .nav-link {
+    padding-left: 0px;
+  }
+  .left .bottom {
+    width: 100%;
+  }
+  .left .bottom .links {
+    display: block;
+  }
+  .left .bottom .links a {
+    margin-bottom: 6px;
+    display: block;
+  }
+  .menu .nav-link {
+    flex-wrap: inherit;
+  }
+  .memu-wallet {
+    display: none;
+  }
+  .left .bottom .settings {
+    background: transparent;
+  }
+  .left .bottom .settings .btn-secondary {
+    color: transparent !important;
+  }
+  .left .bottom .settings {
+    padding: 0;
+    display: block;
+  }
 }
 </style>

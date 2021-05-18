@@ -9,8 +9,7 @@ import {
 import BN from "bn.js"
 import {
   PARA_STATUS,
-  CHAIN_ID,
-} from "../config"
+} from "@/config"
 import store from "../../store"
 
 import { $t } from '../../i18n'
@@ -27,7 +26,7 @@ import {
 } from './account'
 import {
   NumberTo4BytesU8A
-} from './utils'
+} from '../polkadot/utils'
 
 import {
   postContribution
@@ -45,9 +44,13 @@ function createChildKey(trieIndex) {
 }
 
 export const subscribeFundInfo = async (crowdloanCard) => {
-  // cancel last 
-  let unsubFund = store.getters.kusama.getSubFund()
-  if (unsubFund) return;
+  let unsubFund = store.state.kusama.subFund
+  if (unsubFund) {
+    try{
+      console.log('have sub');
+      unsubFund()
+    }catch(e){}
+  };
   store.commit('kusama/saveLoadingFunds', true)
   let paraId = crowdloanCard.map(c => parseInt(c.para.paraId))
   paraId = [...new Set(paraId)] 
@@ -85,8 +88,9 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
           memo: api.createType('(Balance, Vec<u8>)', v.unwrap())[1].toHuman()
         }))
-        // console.log('contri', contributions);
+        console.log('contri', contributions);
         const [status, statusIndex] = await calStatus(end, firstSlot, raised, cap, pId, bestBlockNumber)
+        console.log('contri');
         funds.push({
           paraId: pId,
           status,
@@ -107,17 +111,17 @@ export const subscribeFundInfo = async (crowdloanCard) => {
       if (funds.length > 0) {
         const  showingcrowdloanCard = crowdloanCard.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
         console.log('fund info', funds);
-        store.commit('saveProjectFundInfos', funds)
-        store.commit('saveShowingCrowdloan', showingcrowdloanCard)
+        store.commit('kusama/saveClProjectFundInfos', funds)
+        store.commit('kusama/saveShowingCrowdloan', showingcrowdloanCard)
       } else {
-        store.commit('saveSubFund', null);
+        store.commit('kusama/saveSubFund', null);
       }
-      store.commit('saveLoadingFunds', false)
+      store.commit('kusama/saveLoadingFunds', false)
     }));
-    store.commit('saveSubFund', unsubFund);
+    store.commit('kusama/saveSubFund', unsubFund);
   } catch (e) {
     console.error('error', e);
-    store.commit('saveLoadingFunds', false)
+    store.commit('kusama/saveLoadingFunds', false)
   }
 }
 
@@ -125,7 +129,9 @@ export const subscribeFundInfo = async (crowdloanCard) => {
 export const calStatus = async (end, firstSlot, raised, cap, pId, bestBlockNumber) => {
   const api = await getApi()
   const auctionEnd = await getAuctionEnd()
+  console.log({auctionEnd});
   const leasePeriod = await getLeasePeriod()
+  console.log({leasePeriod});
   const currentPeriod = Math.floor(bestBlockNumber / leasePeriod)
   const leases = (await api.query.slots.leases(pId)).toJSON()
   const isWinner = leases.length > 0
@@ -150,25 +156,25 @@ export const calStatus = async (end, firstSlot, raised, cap, pId, bestBlockNumbe
 }
 
 export const getAuctionEnd = async () => {
-  if (store.state.auctionEnd[store.state.symbol]) {
-    return store.state.auctionEnd[store.state.symbol]
+  if (store.state.auctionEnd) {
+    return store.state.auctionEnd
   }
   const api = await getApi()
   const bestBlockHash = await api.rpc.chain.getBlockHash();
   const auctionInfo = (await api.query.auctions.auctionInfo.at(bestBlockHash)).toJSON();
   const auctionEnd = auctionInfo ? auctionInfo[1] : 0
-  store.commit('saveAuctionEnd', auctionEnd)
+  store.commit('kusama/saveAuctionEnd', auctionEnd)
   return auctionEnd
 }
 
 //  一个租赁周期
 export const getLeasePeriod = async () => {
-  if (store.getters.leasePeriod > 0) {
-    return store.getters.leasePeriod
+  if (store.state.kusama.clLeasePeriod > 0) {
+    return store.state.kusama.clLeasePeriod
   }
   const api = await getApi()
   const leasePeriod = new BN(api.consts.slots.leasePeriod)
-  store.commit('saveLeasePeriod', leasePeriod)
+  store.commit('kusama/saveClLeasePeriod', leasePeriod)
   return leasePeriod
 }
 
@@ -280,7 +286,7 @@ export const contribute = async (paraId, amount, communityId, childId, trieIndex
     const nonce = (await api.query.system.account(from)).nonce.toNumber()
     const contributeTx = api.tx.crowdloan.contribute(paraId, amount, null)
     const memo = {
-      chain: CHAIN_ID[store.state.symbol],
+      chain: 1,
       parent: getNodeId(communityId),
       child: getNodeId(childId),
       height: 0,

@@ -104,14 +104,14 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import ConnectWallet from "./Buttons/ConnectWallet";
+// import ConnectWallet from "./Buttons/ConnectWallet";
 import TipContribute from "./TipBoxes/TipContribute";
 import TipWithdraw from "./TipBoxes/TipWithdraw";
 import ContributorsLabel from "./Label/ContributorsLabel";
 import RaisedLabel from "./Label/RaisedLabel";
-import { TOKEN_SYMBOL, PARA_STATUS, LOCALE_KEY } from "../config";
-import { BLOCK_SECOND, TIME_PERIOD } from "../constant";
-import { calStatus } from "../utils/crowdloan";
+import { PARA_STATUS } from "@/config";
+import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
+import { calStatus } from "@/utils/kusama/crowdloan";
 
 export default {
   data() {

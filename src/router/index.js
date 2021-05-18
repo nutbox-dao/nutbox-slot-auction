@@ -5,6 +5,7 @@ import Blog from '../views/Blog/Blog'
 import CrowdStaking from '../views/CrowdStaking/CrowdStaking'
 import Crowdloan from '../views/Crowdloan/Crowdloan'
 import Polkadot from '../views/Crowdloan/Polkadot'
+import Kusama from '../views/Crowdloan/Kusama'
 
 
 Vue.use(VueRouter)
@@ -23,7 +24,7 @@ const routes = [
       {
         path: '',
         name: 'kusama',
-        component: Crowdloan
+        component: Kusama
       },
       {
         path: 'polkadot',
