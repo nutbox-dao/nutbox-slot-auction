@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Blog from '../views/Blog/Blog'
 import CrowdStaking from '../views/CrowdStaking/CrowdStaking'
 import Crowdloan from '../views/Crowdloan/Crowdloan'
+import Polkadot from '../views/Crowdloan/Polkadot'
 
 
 Vue.use(VueRouter)
@@ -27,7 +28,7 @@ const routes = [
       {
         path: 'polkadot',
         name: 'polkadot',
-        component: Crowdloan
+        component: Polkadot
       }
     ]
   },

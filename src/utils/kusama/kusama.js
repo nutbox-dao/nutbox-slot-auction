@@ -15,18 +15,18 @@ import {
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import BN from "bn.js"
 import {
-  POLKADOT_WEB_SOCKET
+  KUSAMA_WEB_SOCKEY
 } from "../../config"
 import store from "../../store"
 
 export async function getApi() {
-  if (store.state.polkadot.api) {
-    return store.state.polkadot.api
+  if (store.state.kusama.api) {
+    return store.state.kusama.api
   }
-  store.commit('polkadot/saveIsConnected', false)
+  store.commit('kusama/saveIsConnected', false)
 
   console.log('connecting');
-  const wsProvider = new WsProvider(POLKADOT_WEB_SOCKET)
+  const wsProvider = new WsProvider(KUSAMA_WEB_SOCKEY)
   const api = await ApiPromise.create({
     provider: wsProvider,
     rpc: jsonrpc,
@@ -36,8 +36,8 @@ export async function getApi() {
   })
   console.log('connected');
 
-  store.commit('polkadot/saveIsConnected', true)
-  store.commit('polkadot/saveApi', api)
+  store.commit('kusama/saveIsConnected', true)
+  store.commit('kusama/saveApi', api)
   console.log('save api');
   return api
 }
@@ -53,12 +53,12 @@ export function token2Uni(amount, decimal = 10) {
 }
 
 export const getDecimal = async () => {
-  if (store.getters.polkadot.decimal > 0) {
-    return store.getters.polkadot.decimal
+  if (store.getters.kusama.decimal > 0) {
+    return store.getters.kusama.decimal
   }
   const api = await getApi()
   const decimal = new BN(api.registry.chainDecimals[0]);
-  store.commit('polkadot/saveDecimal', decimal)
+  store.commit('kusama/saveDecimal', decimal)
   return decimal
 }
 
@@ -91,7 +91,7 @@ export const formatBalance = (b) => {
   }
   uni = parseFloat(uni)
   uni = (uni / 1e4).toFixed(4)
-  return uni + unit + 'DOT';
+  return uni + unit + 'KSM';
 }
 
 export const validAddress = (address) => {
@@ -134,7 +134,7 @@ export function getNodeId(address) {
  * @param {object} tx 待执行的交易 
  */
 export async function getTxPaymentInfo(tx) {
-  const info = await tx.paymentInfo(store.state.polkadot.account.address)
+  const info = await tx.paymentInfo(store.state.kusama.account.address)
   console.log(info.partialFee.toHuman());
   return info.partialFee.toNumber()
 }

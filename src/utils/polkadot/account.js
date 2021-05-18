@@ -11,12 +11,13 @@ import {
 import BN from "bn.js"
 import store from "../../store"
 import { subBonded, subNominators } from './staking'
+import { getBalance as getKusamaBalance } from '../kusama/account'
 
 import { getApi, stanfiAddress } from './polkadot'
 
 export const loadAccounts = async () => {
   try {
-    await web3Enable('crowdstaking')
+    await web3Enable('nutbox')
     let allAccounts = await web3Accounts()
     await cryptoWaitReady();
     keyring.loadAll({
@@ -29,9 +30,10 @@ export const loadAccounts = async () => {
     store.commit('polkadot/saveAllAccounts', allAccounts)
     let account = store.state.polkadot.account !== 'undefined' && store.state.polkadot.account? store.state.polkadot.account : allAccounts[0]
     store.commit('polkadot/saveAccount', account)
-    await getBalance(account)
-    await subNominators()
-    await subBonded()
+    getBalance(account)
+    getKusamaBalance(account)
+    subNominators()
+    subBonded()
     // inject
     await injectAccount(account)
   } catch (e) {

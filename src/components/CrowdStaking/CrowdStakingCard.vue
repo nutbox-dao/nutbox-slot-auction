@@ -58,7 +58,6 @@
 import TipBondAndNominator from './TipBoxes/TipBondAndNominator'
 import TipNominator from './TipBoxes/TipNominator'
 import { mapState } from "vuex";
-import { TOKEN_SYMBOL } from "../../config";
 import { stanfiAddress } from "@/utils/polkadot/polkadot"
 
 export default {
@@ -66,13 +65,16 @@ export default {
     return {
       showNominate: false,
       showBondAndNominator: false,
-      tokenSymbol: TOKEN_SYMBOL,
     };
   },
   props: {
     crowdstaking: {
       type: Object,
     },
+    symbol: {
+      type: String,
+      default: 'Kusama'
+    }
   },
   components: {
     TipBondAndNominator,

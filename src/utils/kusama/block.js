@@ -1,6 +1,6 @@
 
   import store from "../../store"
-  import { getApi } from './polkadot'
+  import { getApi } from './kusama'
 
 // subscribe new block
 export const subBlock = async () => {
@@ -9,8 +9,8 @@ export const subBlock = async () => {
     const subBlock = await api.rpc.chain.subscribeNewHeads((header) => {
       try {
         const number = header.number.toNumber()
-        console.log('polkadot block', number);
-        store.commit('polkadot/saveCurrentBlockNum', number)
+        console.log('kusama block', number);
+        store.commit('kusama/saveCurrentBlockNum', number)
       } catch (e) {
   
       }

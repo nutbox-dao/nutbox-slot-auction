@@ -10,7 +10,6 @@ export default {
       // polkadot
       api: null,
       apiState: null,
-      lang: Cookie.get(LOCALE_KEY),
       subBalance: {},
       subLocked: {},
       subNominators: {},
@@ -52,10 +51,6 @@ export default {
       },
       saveSubBonded: (state, subBonded) => {
         state.subBonded = subBonded
-      },
-      saveLang: (state, lang) => {
-        state.lang = lang;
-        Cookie.set(LOCALE_KEY, lang, '30d')
       },
       saveBonded: (state, bonded) => {
         state.bonded = bonded

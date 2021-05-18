@@ -1,4 +1,3 @@
-import store from '../store'
 export const firstToUpper = function (str) {
   if (!str) {
     return
@@ -49,6 +48,20 @@ export const formatBalance = function (value, digit = 3) {
     fraction = '.' + str.split('.')[1]
   }
   return integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + fraction
+}
+
+export const formatUserAddress = (address, long=true) => {
+  if (!address) return 'Loading Account'
+  if (long){
+    if (address.length < 16) return address
+    const start = address.slice(0, 28)
+    const end = address.slice(-5)
+    return `${start}...`
+  }else{
+    const start = address.slice(0, 6)
+    const end = address.slice(-6)
+    return `${start}...${end}`
+  }
 }
 
 export function getDateString(now, timezone, extra = 0) {

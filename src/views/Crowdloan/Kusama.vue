@@ -1,21 +1,22 @@
 <template>
-  <div class="k-page crowdstaking-page">
-    <div class="loading-bg" v-if="!isConnected">
+  <div class="k-page crowdloan-page">
+    <div class="loading-bg" v-if="loadingFunds">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t('tip.loading') }}</p>
     </div>
     <template v-else>
-      <div v-if="crowdstakings.length > 0"></div>
+      <div class="bg" v-if="funds.length > 0"></div>
       <div class="empty-bg" v-else>
         <img src="~@/static/images/empty-data.png" alt="" />
-        <p> {{ $t('tip.noProject') }} </p>
+        <p> {{ $t('tip.noAuction') }} </p>
       </div>
       <div class="cards-container">
         <div class="container">
           <div class="row">
-            <div class="col-lg-4 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
-                <CrowdStakingCard
-                  :crowdstaking="card"
+            <div class="col-lg-4 col-md-6" v-for="card, idx of showingCard()" :key="idx">
+                <CrowdloanCard
+                  :paraId="parseInt(card.para.paraId)"
+                  :communityId="card.community.communityId"
                 />
             </div>
           </div>
@@ -26,57 +27,49 @@
 </template>
 
 <script>
-import CrowdStakingCard from "../../components/CrowdStaking/CrowdStakingCard";
+import CrowdloanCard from "../../components/CrowdloanCard";
+import {
+  subscribeFundInfo
+} from "../../utils/crowdloan";
+import { subBlock } from "../../utils/block"
 import { mapMutations, mapState, mapGetters } from "vuex";
-import { getCrowdstacking } from '@/apis/api'
-import { stanfiAddress } from '@/utils/polkadot/polkadot'
+import TipContribute from "../../components/TipBoxes/TipContribute";
+import TipWithdraw from "../../components/TipBoxes/TipWithdraw";
+import { getOnshowingCrowdloanCard } from "../../apis/api"
 
 export default {
-  name: "Home",
+  name: "Kusama",
   components: {
-    CrowdStakingCard,
+    CrowdloanCard,
+    TipContribute,
+    TipWithdraw,
   },
   computed: {
-    ...mapState('polkadot',["projectFundInfos", "symbol", "isConnected", 'balance', 'crowdstakings']),
+    ...mapState(["projectFundInfos", "symbol", "loadingFunds", 'balance']),
     funds() {
       const fundInfos = this.getFundInfos();
       return fundInfos || [];
     },
   },
   methods: {
-    ...mapGetters('polkadot',["getFundInfos", "paraIds"]),
-    ...mapMutations('polkadot',[
+    ...mapGetters(["getFundInfos", "paraIds", "showingCard"]),
+    ...mapMutations([
       "saveProjectStatus",
       "saveProjectName",
       "saveCommunityName",
-      'saveCrowdstakings',
-      'saveCommunitys',
-      'saveProjects'
     ]),
   },
-  created () {
-    getCrowdstacking().then(res => {
-      this.saveCrowdstakings(res.map(({community, project}) => ({
-        community:{
-          ...community,
-          communityId: stanfiAddress(community.communityId)
-        },
-        project: {
-          ...project,
-          projectId: stanfiAddress(project.projectId),
-          validators: project.validators.map(v => stanfiAddress(v))
-        }
-      })))
-      this.saveCommunitys(res.map(({community}) => community.communityId))
-      this.saveProjects(res.map(({project}) => project.projectId))
-    console.log('crowdstaking', this.crowdstakings);
-    });
+  async created() {
+    this.$store.commit("saveSymbol", "ROCOCO");
+    const res = await getOnshowingCrowdloanCard({relaychain:this.symbol.toLowerCase()})
+    subBlock();
+    await subscribeFundInfo(res);
   },
 };
 </script>
 
 <style lang="less">
-.crowdstaking-page {
+.crowdloan-page {
   height: 100%;
   background: rgba(246, 247, 249, 1);
   overflow: hidden;

@@ -186,8 +186,10 @@ import {
 import TipMessage from "./components/ToolsComponents/TipMessage";
 import { mapState, mapGetters, mapMutations } from "vuex";
 import Identicon from '@polkadot/vue-identicon'
-import { getBalance, loadAccounts } from './utils/polkadot/account'
-import { subBlock } from "./utils/polkadot/block"
+import { getBalance as getPolkadotBalance, loadAccounts as loadPolkadotAccounts } from './utils/polkadot/account'
+import { getBalance as getKusamaBalance } from './utils/kusama/account'
+import { subBlock as subPolkadotBlock } from "./utils/polkadot/block"
+import { subBlock as subKusamaBlock } from "./utils/kusama/block"
 import { subBonded, subNominators } from "./utils/polkadot/staking"
 import { stanfiAddress } from "./utils/polkadot/polkadot"
 
@@ -247,7 +249,8 @@ export default {
     changeAccount (acc) {
       if (!this.isConnected) return
       this.saveAccount(acc)
-      getBalance(acc)
+      getPolkadotBalance(acc)
+      getKusamaBalance(acc)
       subBonded()
       subNominators()
     },
@@ -263,8 +266,8 @@ export default {
     this.setLanguage(localStorage.getItem(LOCALE_KEY))
   },
   async created () {
-    await subBlock();
-    await loadAccounts()
+    await Promise.all([subPolkadotBlock(), subKusamaBlock()])
+    await loadPolkadotAccounts()
   },
 };
 </script>

@@ -174,7 +174,8 @@ module.exports = {
     error: "错误！",
     success: "成功！",
     warning: "警告！",
-    noNeedWithdraw: '没有可赎回投票'
+    noNeedWithdraw: '没有可赎回投票',
+    comingSoon: '敬请期待'
 },
   vote:{
     upvote:"点赞",
