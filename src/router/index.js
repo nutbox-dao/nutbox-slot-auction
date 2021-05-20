@@ -6,6 +6,9 @@ import CrowdStaking from '../views/CrowdStaking/CrowdStaking'
 import Crowdloan from '../views/Crowdloan/Crowdloan'
 import Polkadot from '../views/Crowdloan/Polkadot'
 import Kusama from '../views/Crowdloan/Kusama'
+import Wallet from '../views/Wallet/Wallet'
+import PolkadotWallet from '../views/Wallet/Polkadot'
+import KusamaWallet from '../views/Wallet/Kusama'
 
 
 Vue.use(VueRouter)
@@ -14,7 +17,21 @@ const routes = [
   {
     path: '/',
     name: 'index',
-    redirect: '/crowdstaking'
+    redirect: '/crowdloan'
+  },
+  {
+    path:'/wallet',
+    component: Wallet,
+    children: [
+      {
+        path:'',
+        component: PolkadotWallet
+      },
+      {
+        path:'kusama',
+        component: KusamaWallet
+      }
+    ]
   },
   {
     path: '/crowdloan',

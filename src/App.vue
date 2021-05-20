@@ -16,13 +16,17 @@
         />
       </div>
       <b-nav pills vertical align="center" class="menu">
-        <b-nav-item to="/crowdstaking" router-tag="div">
-          <p id="stake-icon" class="my-icon" />
-          <span>{{ $t("cs.crowdstaking") }}</span>
+        <b-nav-item to="/wallet" router-tag="div">
+          <p id="wallet-icon" class="my-icon" />
+          <span>{{ $t("wallet.wallet") }}</span>
         </b-nav-item>
         <b-nav-item to="/crowdloan">
           <p id="farming-icon" class="my-icon" />
           <span>{{ $t("cl.crowdloan") }}</span>
+        </b-nav-item>
+        <b-nav-item to="/crowdstaking" router-tag="div">
+          <p id="stake-icon" class="my-icon" />
+          <span>{{ $t("cs.crowdstaking") }}</span>
         </b-nav-item>
         <b-nav-item to="/blog">
           <p id="blog-icon" class="my-icon" />
@@ -200,9 +204,6 @@
                 </div>
               </template>
             </b-dropdown-item>
-            <b-dropdown-divider
-              v-if="Object.keys(allAccounts || []).length > 0"
-            ></b-dropdown-divider>
             <b-dropdown-item>
               <div
                 class="flex-start-center"

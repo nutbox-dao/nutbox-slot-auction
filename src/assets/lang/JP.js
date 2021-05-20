@@ -68,6 +68,7 @@ module.exports = {
       connectTron:'Tron財布を接続',
       swapSubTitle:'Tronにプロパティを転送',
       install:'インストール',
+      transfer:'転送',
     },
     stake: {
       stake: '誓約マイニング',

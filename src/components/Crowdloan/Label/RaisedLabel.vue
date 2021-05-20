@@ -72,6 +72,7 @@ export default {
   methods: {
     convertUni(uni) {
       let unit = " ";
+      uni = new BN(uni)
       uni = uni.div(new BN(10).pow(new BN(KUSAMA_DECIMAL).sub(new BN(4))))
       if (uni >= 1e22) {
         uni = uni.div(new BN(1e18));

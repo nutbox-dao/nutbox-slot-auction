@@ -71,6 +71,7 @@ module.exports = {
     connectTron: "链接波场钱包",
     swapSubTitle: "及时、安全的将资产转移到波场网络",
     install: "立即安装",
+    transfer: "转账",
   },
   cs: {
     crowdstaking: "质押投票",

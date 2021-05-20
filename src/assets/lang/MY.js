@@ -68,6 +68,7 @@ module.exports = {
     connectTron:"Sambungkan Dompet Tron",
     swapSubTitle:"Pindahkan Aset ke Rangkaian Tron secara Segera dan Selamat",
     install:"Memasang Segera",
+    transfer:"Pemindahan",
   },
   stake: {
     stake: 'Melombong dengan Delegasi',
