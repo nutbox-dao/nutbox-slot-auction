@@ -81,3 +81,14 @@ export const getBalance = async (account) => {
   store.commit('polkadot/saveSubLocked', subLocked)
   store.commit('polkadot/saveSubBalance', subBalance)
 }
+
+/**
+ * 转账dot
+ * @param {String} to 转账对象
+ * @param {Number} amount 转账数目 单位为dot
+ */
+export const transfer = async (to, amount) => {
+  const api = await getApi()
+  amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))
+  const tx = api.tx.balances.transfer(to, amount)
+}
