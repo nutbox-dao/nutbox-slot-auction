@@ -32,6 +32,10 @@
           <p id="blog-icon" class="my-icon" />
           <span>{{ $t("message.blog") }}</span>
         </b-nav-item>
+        <b-nav-item to="/admin" v-if="true">
+          <p id="blog-icon" class="my-icon" />
+          <span>{{ $t("message.admin") }}</span>
+        </b-nav-item>
       </b-nav>
       <div class="bottom">
         <div class="links">
@@ -204,17 +208,16 @@
                 </div>
               </template>
             </b-dropdown-item>
-            <b-dropdown-item>
+            <!-- <b-dropdown-item>
               <div
                 class="flex-start-center"
                 @click="selectMenu('dashboard', '/dashboard')"
                 v-if="isProjectAdmin"
               >
-                <!-- <b-avatar square size="sm" class="mr-2" style="opacity: .2">·</b-avatar> -->
                 <img class="menu-icon" :src="dashboardIcon" alt="" />
                 <span class="menu-text">{{ $t("account.dashboard") }}</span>
               </div>
-            </b-dropdown-item>
+            </b-dropdown-item> -->
           </b-dropdown>
         </div>
         <!-- <ConnectWallet v-else/> -->
@@ -225,13 +228,11 @@
 </template>
 
 <script>
-import {
-  LOCALE_KEY,
-} from "./config";
+import { LOCALE_KEY } from "./config";
 import TipMessage from "./components/ToolsComponents/TipMessage";
 import { mapState, mapMutations } from "vuex";
 import Identicon from "@polkadot/vue-identicon";
-import { getCommnunitys } from '@/apis/api'
+import { getCommnunitys, getCrowdstacking } from "@/apis/api";
 import {
   getBalance as getPolkadotBalance,
   loadAccounts as loadPolkadotAccounts,
@@ -257,13 +258,11 @@ export default {
       "allAccounts",
       "account",
       "crowdstakings",
-      "communitys", 
-      "projects",
+      "communitys",
+      "projects"
     ]),
+    ...mapState("kusama", ["clCommunitys"]),
     ...mapState(["lang"]),
-    isProjectAdmin() {
-      return this.projects.indexOf(this.account && this.account.address) !== -1;
-    },
     contributionsIcon() {
       return this.activeNav === "contributions"
         ? require("./static/images/contributions_selected.png")
@@ -274,13 +273,24 @@ export default {
         ? require("./static/images/dashboard_selected.png")
         : require("./static/images/dashboard.png");
     },
+    isAdmin() {
+      return this.projects?.indexOf(this.account && this.account.address) !== -1 || this.clCommunitys?.indexOf(this.account && this.account.address) !== -1;
+    },
   },
   components: {
     TipMessage,
     Identicon,
   },
   methods: {
-    ...mapMutations("polkadot", ["saveAccount"]),
+    ...mapMutations('polkadot',[
+      'saveCrowdstakings',
+      'saveCommunitys',
+      'saveProjects',
+      'saveAccount'
+    ]),
+    ...mapMutations('kusama',[
+      'saveClCommunitys'
+    ]),
     setLanguage(lang) {
       localStorage.setItem(LOCALE_KEY, lang);
       this.$store.commit("saveLang", lang);
@@ -317,10 +327,31 @@ export default {
   },
   async mounted() {
     this.setLanguage(localStorage.getItem(LOCALE_KEY));
-    getCommnunitys().then(res => {
-      console.log('commnituy', res);
-      this.$store.commit('kusama/saveClCommunitys', res)
-    })
+    // 获取支持平行链项目的社区信息
+    getCommnunitys().then((res) => {
+      console.log("commnituy", res);
+      this.saveClCommunitys(res.map(r => stanfiAddress(r.communityId)));
+    });
+    // 获取验证者节点投票卡片信息
+    getCrowdstacking().then((res) => {
+      this.saveCrowdstakings(
+        res.map(({ community, project }) => ({
+          community: {
+            ...community,
+            communityId: stanfiAddress(community.communityId),
+          },
+          project: {
+            ...project,
+            projectId: stanfiAddress(project.projectId),
+            validators: project.validators.map((v) => stanfiAddress(v)),
+          },
+        }))
+      );
+      this.saveCommunitys(res.map(({ community }) => community.communityId));
+      this.saveProjects(res.map(({ project }) => project.projectId));
+      // console.log("crowdstaking", this.crowdstakings);
+      // console.log('projects', this.projects);
+    });
   },
   async created() {
     await Promise.all([subPolkadotBlock(), subKusamaBlock()]);

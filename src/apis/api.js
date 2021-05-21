@@ -7,11 +7,18 @@ import {
   CROWD_LOAN_API_URL
 } from '../config'
 
+// crowdstaking
 export const getCrowdstacking = async () => post(CROWD_STAKING_API_URL + '/crowdstaking/find/all')
+
+export const getDarshboardCard = async (param) => post(CROWD_STAKING_API_URL + '/crowdstaking/find/summary', param)
+
+export const getNominationSummary = async (param) => post(CROWD_STAKING_API_URL + '/crowdstaking/find/nominations', param)
+
+
+// crowdloan
 
 // 获取所有注册的社区信息
 export const getCommnunitys = async () => post(CROWD_LOAN_API_URL + '/community/all')
-
 /**
  * 上传contribution数据
  * params：

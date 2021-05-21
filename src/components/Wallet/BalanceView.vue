@@ -36,14 +36,14 @@
           </div>
         </div>
       </div>
-      <div class="bottom">
+      <!-- <div class="bottom">
         <b-button v-if="walletType==='DOT'" variant="primary" @click="showTransfer=true">
           {{ $t('wallet.transfer') }}
         </b-button>
         <b-button v-if="walletType==='DOT-BONDED'" variant="primary"> 
           {{ $t('cs.bond') }}
         </b-button>
-      </div>
+      </div> -->
     </Card>
     <TipMessage
       :showMessage="tipMessage"
@@ -76,8 +76,8 @@ export default {
       default: "DOT",
     },
     balances: {
-      type: String,
-      default: "0.00",
+      type: Number,
+      default: 0.00,
     },
     logo: {
       type: String,

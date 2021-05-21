@@ -1,25 +1,31 @@
 <template>
-  <div class="steem-wallet">
-    <div class="steem-wallet">
+  <div class="dot-wallet">
+    <div class="dot-wallet">
+      <p class="item-title">
+        {{ $t('wallet.asset') }}
+      </p>
       <div class="balance-box">
         <BalanceView
           name="DOT"
-          :balances="balance / 1e10"
+          :balances="balance / 1e10 - locked / 1e10"
           desc="DOT"
-          :logo="steemLogo"
+          :logo="dotLogo"
           :transfer='true'
           walletType="DOT"
         />
         <BalanceView
           name="DOT"
-          :balances="bonded / 1e10"
-          desc="Bonded DOT"
-          :logo="steemLogo"
+          :balances="locked / 1e10"
+          desc="Locked DOT"
+          :logo="dotLogo"
           :transfer='true'
-          walletType="DOT-BONDED"
+          walletType="DOT-Locked"
         />
       </div>
-      <div class="nominations">
+      <p class="item-title">
+        {{ $t('wallet.nomination') }}
+      </p>
+      <div class="nomination">
 
       </div>
     </div>
@@ -34,10 +40,11 @@ export default {
   name: "SteemWallet",
   data() {
     return {
+      dotLogo: require("../../static/images/tokens/dot.png"),
     };
   },
   computed: {
-    ...mapState('polkadot',['balance','bonded'])
+    ...mapState('polkadot',['balance','locked', 'bonded'])
   },
   components: {
     BalanceView,
@@ -48,8 +55,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.steem-wallet {
-  margin-top: 20px;
+.dot-wallet {
+  // margin-top: 20px;
+  .item-title{
+    text-align: left;
+    color: var(--primary-text);
+    font-size: 16px;
+    line-height: 32px;
+    margin-top: 32px;
+    border-bottom: 1px solid var(--dividers);
+  }
   .balance-box {
     display: flex;
     align-content: left;

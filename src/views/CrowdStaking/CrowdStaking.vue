@@ -1,35 +1,20 @@
 <template>
-  <div class="k-page crowdstaking-page">
-    <div class="loading-bg" v-if="!isConnected">
-      <img src="~@/static/images/loading.gif" alt="" />
-      <p class="font16">{{ $t('tip.loading') }}</p>
+  <div class="crowdstaking">
+    <h3>
+      {{ this.$t("cl.crowdloan") }}
+    </h3>
+    <div class="nav">
+      <router-link to="/crowdstaking/kusama" exact>Kusama</router-link>
+      <router-link to="/crowdstaking">Polkadot</router-link>
+      <div class="center-blank"></div>
     </div>
-    <template v-else>
-      <div v-if="crowdstakings.length > 0"></div>
-      <div class="empty-bg" v-else>
-        <img src="~@/static/images/empty-data.png" alt="" />
-        <p> {{ $t('tip.noProject') }} </p>
-      </div>
-      <div class="cards-container">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-4 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
-                <CrowdStakingCard
-                  :crowdstaking="card"
-                />
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import CrowdStakingCard from "../../components/CrowdStaking/CrowdStakingCard";
 import { mapMutations, mapState, mapGetters } from "vuex";
-import { getCrowdstacking } from '@/apis/api'
-import { stanfiAddress } from '@/utils/polkadot/polkadot'
 
 export default {
   name: "Home",
@@ -55,81 +40,78 @@ export default {
     ]),
   },
   created () {
-    getCrowdstacking().then(res => {
-      this.saveCrowdstakings(res.map(({community, project}) => ({
-        community:{
-          ...community,
-          communityId: stanfiAddress(community.communityId)
-        },
-        project: {
-          ...project,
-          projectId: stanfiAddress(project.projectId),
-          validators: project.validators.map(v => stanfiAddress(v))
-        }
-      })))
-      this.saveCommunitys(res.map(({community}) => community.communityId))
-      this.saveProjects(res.map(({project}) => project.projectId))
-    console.log('crowdstaking', this.crowdstakings);
-    });
+
   },
 };
 </script>
 
 <style lang="less">
-.crowdstaking-page {
-  height: 100%;
-  background: rgba(246, 247, 249, 1);
-  overflow: hidden;
-  position: relative;
-  .bg {
-    position: absolute;
-    left: 50%;
-    top: 4.6rem;
-    transform: translateX(-50%);
-    margin: auto;
-    max-width: 34rem;
-    max-height: 34rem;
-    width: 90vw;
-    height: 90vw;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(255, 219, 27, 0.7),
-      rgba(141, 231, 255, 0)
-    );
-    background-repeat: repeat-x;
-    border-radius: 34rem;
-    background-position: center top;
-  }
-  .empty-bg {
-    position: relative;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    img {
-      height: 7rem;
-    }
-  }
-  .loading-bg {
+.crowdstaking {
+  padding: 0px 40px 64px;
+  .nav {
     display: flex;
-    align-content: center;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    img {
-      margin-top: 12rem;
+    border-bottom: 1px solid var(--dividers);
+    a {
+      border: 0;
+      font-size: 16px;
+      padding: 18px 28px 14px 28px;
+      color: #666;
+      box-sizing: border-box;
+      color: var(--secondary-text);
+      font-weight: 600;
+      line-height: 16px !important;
     }
-    p {
-      margin-top: 1rem;
-      font-weight: 400;
-      color: #bdbfc2;
-      line-height: 22px;
+    a:hover {
+      background: linear-gradient(
+        270deg,
+        rgba(227, 229, 232, 0) 0%,
+        rgba(227, 229, 232, 0.4) 100%
+      ) !important;
+      text-decoration: none;
+
+      font-weight: 300;
+      line-height: 16px;
     }
-  }
-  .cards-container {
-    height: 100%;
-    overflow: auto;
-    padding-top: 6.6rem;
-    padding-bottom: 3rem;
+    .active {
+      color: var(--primary-text);
+      border-bottom: 3px solid var(--primary);
+    }
+    .center-blank {
+      flex: 1;
+    }
+    .steem-account {
+      height: 38px;
+      background-color: #ffffff;
+      box-shadow: 0px 10px 60px -5px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      border: 0;
+      position: relative;
+      box-sizing: border-box;
+      font-size: 15px;
+      background-repeat: no-repeat;
+      background-position: center right;
+      p {
+        margin: 0;
+        line-height: 38px;
+        padding-left: 36px;
+        padding-right: 4px;
+        img{
+          margin-left: 16px;
+        }
+      }
+      button {
+        position: relative;
+        background-color:white;
+        top: 8px;
+        border: 0;
+        width: 100%;
+        padding: 8px 0px;
+        font-size: 15px;
+        box-sizing: border-box;
+    
+      }
+    }
   }
 }
 </style>

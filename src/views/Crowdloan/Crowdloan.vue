@@ -1,5 +1,5 @@
 <template>
-  <div class="crowdloan" @click="showLogout=false">
+  <div class="crowdloan">
     <h3>
       {{ this.$t("cl.crowdloan") }}
     </h3>

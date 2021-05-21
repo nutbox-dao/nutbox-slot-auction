@@ -1,11 +1,11 @@
 <template>
-  <div class="wallet">
+  <div class="admin">
     <h3>
-      {{ this.$t("wallet.wallet") }}
+      {{ this.$t("admin.admin") }}
     </h3>
     <div class="nav">
-      <router-link to="/wallet" exact>Pokadot</router-link>
-      <router-link to="/wallet/kusama">Kusama</router-link>
+      <router-link to="/admin" exact>Pokadot</router-link>
+      <router-link to="/admin/kusama">Kusama</router-link>
       <div class="center-blank"></div>
     </div>
     <router-view></router-view>
@@ -22,6 +22,7 @@ export default {
     };
   },
   computed: {
+      
   },
   methods: {
   },
@@ -30,7 +31,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.wallet {
+.admin {
   padding: 0px 40px 64px;
   .nav {
     display: flex;

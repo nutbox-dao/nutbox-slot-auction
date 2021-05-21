@@ -1,22 +1,22 @@
 <template>
-  <div class="steem-wallet">
-    <div class="steem-wallet">
+  <div class="ksm-wallet">
+    <div class="ksm-wallet">
       <div class="balance-box">
         <BalanceView
           name="KSM"
-          :balances="balance / 1e12"
+          :balances="balance / 1e12 - locked / 1e12"
           desc="KSM"
-          :logo="steemLogo"
+          :logo="ksmLogo"
           :transfer='true'
           walletType="KSM"
         />
         <BalanceView
           name="KSM"
-          :balances="bonded / 1e12"
-          desc="Bonded KSM"
-          :logo="steemLogo"
+          :balances="locked / 1e12"
+          desc="Locked KSM"
+          :logo="ksmLogo"
           :transfer='true'
-          walletType="KSM-BONDED"
+          walletType="KSM-Locked"
         />
       </div>
       <div class="nominations">
@@ -34,10 +34,11 @@ export default {
   name: "SteemWallet",
   data() {
     return {
+      ksmLogo: require("../../static/images/tokens/ksm.png"),
     };
   },
   computed: {
-    ...mapState('kusama',['balance','bonded'])
+    ...mapState('kusama',['balance','locked'])
   },
   components: {
     BalanceView,
@@ -48,7 +49,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.steem-wallet {
+.ksm-wallet {
   margin-top: 20px;
   .balance-box {
     display: flex;

@@ -1,22 +1,21 @@
 <template>
-  <div class="k-page crowdloan-page">
-    <div class="loading-bg" v-if="loadingFunds">
+  <div class="k-page crowdstaking-page">
+    <div class="loading-bg" v-if="!isConnected">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t('tip.loading') }}</p>
     </div>
     <template v-else>
-      <div v-if="funds.length > 0"></div>
+      <div v-if="crowdstakings.length > 0"></div>
       <div class="empty-bg" v-else>
         <img src="~@/static/images/empty-data.png" alt="" />
-        <p> {{ $t('tip.noAuction') }} </p>
+        <p> {{ $t('tip.noProject') }} </p>
       </div>
       <div class="cards-container">
         <div class="container">
           <div class="row">
-            <div class="col-lg-4 col-md-6" v-for="card, idx of showingCard()" :key="idx">
-                <CrowdloanCard
-                  :paraId="parseInt(card.para.paraId)"
-                  :communityId="card.community.communityId"
+            <div class="col-lg-4 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
+                <CrowdStakingCard
+                  :crowdstaking="card"
                 />
             </div>
           </div>
@@ -27,38 +26,40 @@
 </template>
 
 <script>
-import CrowdloanCard from "../../components/Crowdloan/CrowdloanCard";
-import {
-  subscribeFundInfo as subscribeKusamaFundInfo
-} from "../../utils/kusama/crowdloan";
-import { mapState, mapGetters } from "vuex";
-import { getOnshowingCrowdloanCard } from "../../apis/api"
+import CrowdStakingCard from "../../components/CrowdStaking/CrowdStakingCard";
+import { mapMutations, mapState, mapGetters } from "vuex";
 
 export default {
-  name: "Kusama",
+  name: "Home",
   components: {
-    CrowdloanCard,
+    CrowdStakingCard,
   },
   computed: {
-    ...mapState('kusama', ["clProjectFundInfos", "loadingFunds"]),
+    ...mapState('polkadot',["projectFundInfos", "symbol", "isConnected", 'balance', 'crowdstakings']),
     funds() {
-      const fundInfos = this.clProjectFundInfos;
+      const fundInfos = this.getFundInfos();
       return fundInfos || [];
     },
   },
   methods: {
-    ...mapGetters('kusama', ['showingCard']),
+    ...mapGetters('polkadot',["getFundInfos", "paraIds"]),
+    ...mapMutations('polkadot',[
+      "saveProjectStatus",
+      "saveProjectName",
+      "saveCommunityName",
+      'saveCrowdstakings',
+      'saveCommunitys',
+      'saveProjects'
+    ]),
   },
-  async created() {
-    const res = await getOnshowingCrowdloanCard({relaychain:"rococo"})
-    console.log('kusama crowdloan card res', res);
-    await subscribeKusamaFundInfo(res);
+  created () {
+
   },
 };
 </script>
 
-<style lang="less" scoped>
-.crowdloan-page {
+<style lang="less">
+.crowdstaking-page {
   height: 100%;
   background: rgba(246, 247, 249, 1);
   overflow: hidden;
@@ -66,7 +67,7 @@ export default {
   .bg {
     position: absolute;
     left: 50%;
-    top: 4.8rem;
+    top: 4.6rem;
     transform: translateX(-50%);
     margin: auto;
     max-width: 34rem;

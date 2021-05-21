@@ -183,6 +183,10 @@ button {
   outline: none;
 }
 
+.boder-bottom{
+  border-bottom: 1px solid var(--dividers);
+}
+
 @media (min-width: 960px) {
   .mobile-menu {
     display: none !important;

@@ -72,6 +72,11 @@ module.exports = {
     swapSubTitle: "及时、安全的将资产转移到波场网络",
     install: "立即安装",
     transfer: "转账",
+    asset: "资产",
+    nomination: "投票节点"
+  },
+  admin: {
+    admin: "管理员"
   },
   cs: {
     crowdstaking: "质押投票",
@@ -94,6 +99,10 @@ module.exports = {
     otherStake: "其他人的质押",
     ownStake: "自己的质押",
     waiting: "候选"
+  },
+  dashboard: {
+    export: "导出",
+    nominators: "提名人数"
   },
   cl: {
     crowdloan: "平行链拍卖",
