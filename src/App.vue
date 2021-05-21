@@ -614,6 +614,14 @@ input::-webkit-input-placeholder {
     line-height: 22px;
   }
 }
+  .item-title{
+    text-align: left;
+    color: var(--primary-text);
+    font-size: 16px;
+    line-height: 32px;
+    margin-top: 32px;
+    border-bottom: 1px solid var(--dividers);
+  }
 .pc-menu {
   height: 60px;
   width: 160px;

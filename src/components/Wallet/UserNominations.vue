@@ -49,7 +49,8 @@ export default {
     },
   },
   computed: {
-    ...mapState("polkadot", ["account", "nominators", "loadingStaking"]),
+    ...mapState(['account']),
+    ...mapState('polkadot', ["nominators", "loadingStaking"]),
   },
   components: {
     Identicon,
@@ -63,26 +64,26 @@ export default {
   async mounted() {
     console.log(123, "nominators", this.nominators);
     this.fields = [
-      { key: "icon", label: "", class: "test-left" },
+      { key: "icon", label: "", class: "text-right" },
       {
         key: "nick",
         label: this.$t("validator.validator"),
-        class: "test-left",
+        class: "text-left",
       },
       {
         key: "otherStake",
         label: this.$t("validator.otherStake"),
-        class: "test-right",
+        class: "text-right",
       },
       {
         key: "ownStake",
         label: this.$t("validator.ownStake"),
-        class: "test-right",
+        class: "text-right",
       },
       {
         key: "commission",
         label: this.$t("validator.commission"),
-        class: "test-right",
+        class: "text-right",
       },
     ];
   },

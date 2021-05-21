@@ -57,14 +57,6 @@ export default {
 <style lang="less" scoped>
 .dot-wallet {
   // margin-top: 20px;
-  .item-title{
-    text-align: left;
-    color: var(--primary-text);
-    font-size: 16px;
-    line-height: 32px;
-    margin-top: 32px;
-    border-bottom: 1px solid var(--dividers);
-  }
   .balance-box {
     display: flex;
     align-content: left;

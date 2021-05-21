@@ -73,7 +73,8 @@ module.exports = {
     install: "立即安装",
     transfer: "转账",
     asset: "资产",
-    nomination: "投票节点"
+    nomination: "投票节点",
+    contribution: "平行链投票"
   },
   admin: {
     admin: "管理员"

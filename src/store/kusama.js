@@ -34,6 +34,7 @@ export default {
     showingCrowdloan: {},
     clCommnunitys: [],
     loadingFunds: true,
+    loadingContributions: true,
     clProjectFundInfos: [],
     clLeasePeriod: {}
   },
@@ -109,6 +110,9 @@ export default {
     },
     saveLoadingFunds: (state, loadingFunds) => {
       state.loadingFunds = loadingFunds
+    },
+    saveLoadingContributions: (state, loadingContributions) => {
+      state.loadingContributions = loadingContributions
     },
     saveClLeasePeriod: (state, clLeasePeriod) => {
       state.clLeasePeriod = clLeasePeriod
