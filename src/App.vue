@@ -597,6 +597,23 @@ input::-webkit-input-placeholder {
     }
   }
 }
+.loading-bg {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  img {
+    margin-top: 12rem;
+  }
+  p {
+    margin-top: 1rem;
+    font-weight: 400;
+    color: #bdbfc2;
+    line-height: 22px;
+  }
+}
 .pc-menu {
   height: 60px;
   width: 160px;

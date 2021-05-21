@@ -95,6 +95,7 @@ module.exports = {
     cancelValidorsInfo: "请取消至少 {n} 个您已经投票过的节点，再进行本次投票"
   },
   validator: {
+    validator: '验证人',
     commission: "佣金",
     otherStake: "其他人的质押",
     ownStake: "自己的质押",
@@ -180,6 +181,7 @@ module.exports = {
     loading: "加载中，请稍等",
     noAuction: "没有进行中的众贷",
     noProject: "没有进行中的项目",
+    noNominations: "没有投票验证者节点",
     tokenSafeTip: "您的资产将被锁定到 {symbol} 的官方众贷合约内，而不是Nutbox的账户内。",
     belowMinContribution: "投票数小于最小投票数1.0000个。",
     belowMinBond: "绑定数小于最小绑定数0.1个。",

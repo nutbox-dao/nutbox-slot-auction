@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-        <div class="loading-bg" v-if="isLoading">
+    <div class="loading-bg" v-if="isLoading">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t("tip.loading") }}</p>
     </div>
@@ -28,7 +28,9 @@
             <div class="info">{{ item.raised }}</div>
           </div>
         </div>
-        <button class="primary-btn" @click="downloadCsv(index)">{{ $t('dashboard.export') }}</button>
+        <button class="primary-btn" @click="downloadCsv(index)">
+          {{ $t("dashboard.export") }}
+        </button>
       </div>
     </div>
   </div>
@@ -83,7 +85,7 @@ export default {
         .then(async (res) => {
           let csv = res.data;
           let result = [];
-          console.log('csv1', csv);
+          console.log("csv1", csv);
           for (let r of csv) {
             const amount = await formatBalance(r.amount);
             result.push({
@@ -106,7 +108,8 @@ export default {
               "-" +
               card.para.paraName +
               "-" +
-              card.trieIndex + '.csv'
+              card.trieIndex +
+              ".csv"
           );
         })
         .catch((err) => {
@@ -116,11 +119,11 @@ export default {
   },
   created() {
     getDashboardSummary({
-      relaychain: 'rococo',
-      communityId: '5ChZmLcNRWAbvM38BKgnFPjF6uUbWWr5FKFyBBjPtsb6F4jF',
+      relaychain: "rococo",
+      communityId: "5ChZmLcNRWAbvM38BKgnFPjF6uUbWWr5FKFyBBjPtsb6F4jF",
     })
       .then(async (res) => {
-        this.isLoading = false
+        this.isLoading = false;
         console.log("dashboard", res);
         let cards = [];
         for (let card of res) {
@@ -138,21 +141,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.loading-bg {
-  display: flex;
-  align-content: center;
-  align-items: center;
-  width: 100%;
-  justify-content: center;
-  flex-direction: column;
-  img {
-    margin-top: 12rem;
-  }
-  p {
-    margin-top: 1rem;
-    font-weight: 400;
-    color: #bdbfc2;
-    line-height: 22px;
-  }
-}
+
 </style>

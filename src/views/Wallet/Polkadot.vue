@@ -25,9 +25,7 @@
       <p class="item-title">
         {{ $t('wallet.nomination') }}
       </p>
-      <div class="nomination">
-
-      </div>
+      <UserNominations/>
     </div>
   </div>
 </template>
@@ -35,6 +33,7 @@
 <script>
 import BalanceView from "@/components/Wallet/BalanceView";
 import { mapState } from 'vuex'
+import UserNominations from '@/components/Wallet/UserNominations'
 
 export default {
   name: "SteemWallet",
@@ -48,6 +47,7 @@ export default {
   },
   components: {
     BalanceView,
+    UserNominations
   },
   async mounted() {
   },
