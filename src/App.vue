@@ -33,7 +33,7 @@
           <span>{{ $t("message.blog") }}</span>
         </b-nav-item>
         <b-nav-item to="/admin" v-if="true">
-          <p id="blog-icon" class="my-icon" />
+          <p id="admin-icon" class="my-icon" />
           <span>{{ $t("message.admin") }}</span>
         </b-nav-item>
       </b-nav>
@@ -701,6 +701,9 @@ input::-webkit-input-placeholder {
 #nps-icon {
   background-image: url("./static/images/nps.svg");
 }
+#admin-icon {
+  background-image: url("./static/images/admin.svg");
+}
 
 .active {
   #wallet-icon {
@@ -723,6 +726,9 @@ input::-webkit-input-placeholder {
   }
   #nps-icon {
     background-image: url("./static/images/nps-hover.svg");
+  }
+  #admin-icon {
+    background-image: url("./static/images/admin-hover.svg");
   }
 }
 

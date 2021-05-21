@@ -85,7 +85,7 @@ export const formatBalance = (b) => {
     unit = " milli "
   }
   uni = parseFloat(uni)
-  uni = (uni / 1e4).toFixed(4)
+  uni = (uni / 1e6).toFixed(4)
   return uni + unit + 'KSM';
 }
 

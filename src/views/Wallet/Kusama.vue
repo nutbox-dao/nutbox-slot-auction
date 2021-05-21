@@ -7,7 +7,7 @@
       <div class="balance-box">
         <BalanceView
           name="KSM"
-          :balances="balance / 1e12 - locked / 1e12"
+          :balances="available / 1e12"
           desc="KSM"
           :logo="ksmLogo"
           :transfer="true"
@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import BalanceView from "@/components/Wallet/BalanceView";
-import UserContributions from "@/components/Wallet/UserContributions"
-import { mapState } from "vuex";
+import BalanceView from "@/components/Wallet/Kusama/BalanceView";
+import UserContributions from "@/components/Wallet/Kusama/UserContributions"
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "SteemWallet",
@@ -45,6 +45,7 @@ export default {
   },
   computed: {
     ...mapState("kusama", ["balance", "locked"]),
+    ...mapGetters('kusama', ['available'])
   },
   components: {
     BalanceView,

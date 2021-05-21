@@ -14,7 +14,7 @@
               </span>
               <img
                 style="width: 14px; height: 14px"
-                src="../../static/images/copy.svg"
+                src="~@/static/images/copy.svg"
                 :id="address"
                 :data-clipboard-text="address"
                 v-if="address.length > 0"
@@ -36,14 +36,14 @@
           </div>
         </div>
       </div>
-      <!-- <div class="bottom">
+      <div class="bottom">
         <b-button v-if="walletType==='DOT'" variant="primary" @click="showTransfer=true">
           {{ $t('wallet.transfer') }}
         </b-button>
         <b-button v-if="walletType==='DOT-BONDED'" variant="primary"> 
           {{ $t('cs.bond') }}
         </b-button>
-      </div> -->
+      </div>
     </Card>
     <TipMessage
       :showMessage="tipMessage"

@@ -74,7 +74,8 @@ module.exports = {
     transfer: "转账",
     asset: "资产",
     nomination: "投票节点",
-    contribution: "平行链投票"
+    contribution: "平行链投票",
+    balance: "余额"
   },
   admin: {
     admin: "管理员"
@@ -123,7 +124,9 @@ module.exports = {
     broadcasting: "正在广播交易",
     inBlock: "交易已上链",
     contributeOk: "投票成功",
-    withdrawOk: "赎回成功"
+    withdrawOk: "赎回成功",
+    transactionOk:"交易成功",
+
   },
   stake: {
     stake: '质押挖矿',

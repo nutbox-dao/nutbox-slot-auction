@@ -7,7 +7,7 @@
       @click="hide"
     />
     <div class="tip-contribute">
-      <div class="text-center font20">{{ $t('crowdloan.youWillWithdraw')}}</div>
+      <div class="text-center font20">{{ $t('cl.youWillWithdraw')}}</div>
       <div class="tip-withdraw mt-3 mb-1">
         {{ contributed + " " + tokenSymbol }}
       </div>
@@ -17,7 +17,7 @@
         :disabled="isWithdraw"
       >
       <b-spinner small type="grow" v-show="isWithdraw"></b-spinner>
-        {{ $t('crowdloan.confirm') }}
+        {{ $t('cl.confirm') }}
       </button>
     </div>
   </div>

@@ -2,16 +2,13 @@
   <div class="c-card">
     <div class="card-title-box flex-start-center">
       <div class="icons">
-        <img
-          class="icon1"
-          :src="crowdstaking.community.iconUrl"
-          alt=""
-        />
+        <img class="icon1" :src="crowdstaking.community.iconUrl" alt="" />
       </div>
       <div class="title-text font20 font-bold">
-        <span>{{ crowdstaking.community.communityName + ' ' + $t('cs.community') }}</span>
+        <span>{{
+          crowdstaking.community.communityName + " " + $t("cs.community")
+        }}</span>
       </div>
-
     </div>
     <div class="h-line"></div>
     <div v-if="isConnected">
@@ -19,12 +16,13 @@
         class="primary-btn"
         @click="nominate"
         :disabled="nominated || loadingStaking"
-      ><b-spinner small type="grow" v-show="loadingStaking"></b-spinner
-        >{{ nominated ? $t('cs.nominated') : $t('cs.nominate') }}
+      >
+        <b-spinner small type="grow" v-show="loadingStaking"></b-spinner
+        >{{ nominated ? $t("cs.nominated") : $t("cs.nominate") }}
       </button>
     </div>
 
-      <b-modal
+    <b-modal
       v-model="showNominate"
       modal-class="custom-modal"
       centered
@@ -38,7 +36,7 @@
       />
     </b-modal>
 
-          <b-modal
+    <b-modal
       v-model="showBondAndNominator"
       modal-class="custom-modal"
       centered
@@ -55,10 +53,10 @@
 </template>
 
 <script>
-import TipBondAndNominator from './TipBoxes/TipBondAndNominator'
-import TipNominator from './TipBoxes/TipNominator'
+import TipBondAndNominator from "./TipBoxes/TipBondAndNominator";
+import TipNominator from "./TipBoxes/TipNominator";
 import { mapState } from "vuex";
-import { stanfiAddress } from "@/utils/polkadot/polkadot"
+import { stanfiAddress } from "@/utils/polkadot/polkadot";
 
 export default {
   data() {
@@ -73,33 +71,43 @@ export default {
     },
     symbol: {
       type: String,
-      default: 'Kusama'
-    }
+      default: "Kusama",
+    },
   },
   components: {
     TipBondAndNominator,
-    TipNominator
+    TipNominator,
   },
   methods: {
     async nominate() {
-      if (this.bonded){
-        this.showNominate = true
-      }else {
-        this.showBondAndNominator = true
+      if (this.bonded) {
+        this.showNominate = true;
+      } else {
+        this.showBondAndNominator = true;
       }
-    }
+    },
   },
   computed: {
-    ...mapState('polkadot',["isConnected", "lang", 'bonded', 'nominators', 'loadingStaking']),
-    ...mapState(['lang']),
+    ...mapState("polkadot", [
+      "isConnected",
+      "lang",
+      "bonded",
+      "nominators",
+      "loadingStaking",
+    ]),
+    ...mapState(["lang"]),
     // 用户已经投了该项目的节点
-    nominated(){
-      const val = this.crowdstaking.project.validators.map(tcd => stanfiAddress(tcd))
-      return this.nominators.filter(({address}) => val.indexOf(address) !== -1).length === val.length
-    }
+    nominated() {
+      const val = this.crowdstaking.project.validators.map((tcd) =>
+        stanfiAddress(tcd)
+      );
+      return (
+        this.nominators.filter(({ address }) => val.indexOf(address) !== -1)
+          .length === val.length
+      );
+    },
   },
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 
@@ -129,7 +137,7 @@ export default {
       margin-right: 2.4rem;
       img {
         width: 2rem;
-        height:2rem;
+        height: 2rem;
       }
       .icon2 {
         position: absolute;
@@ -145,12 +153,11 @@ export default {
         border-radius: 1rem;
       }
     }
-    .title-text{
+    .title-text {
       display: flex;
       justify-items: center;
       align-items: center;
     }
-
   }
   .h-line {
     width: 1.6rem;

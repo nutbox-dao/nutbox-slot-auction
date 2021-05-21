@@ -7,7 +7,7 @@
       <div class="balance-box">
         <BalanceView
           name="DOT"
-          :balances="balance / 1e10 - locked / 1e10"
+          :balances="available / 1e10"
           desc="DOT"
           :logo="dotLogo"
           :transfer='true'
@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import BalanceView from "@/components/Wallet/BalanceView";
-import { mapState } from 'vuex'
-import UserNominations from '@/components/Wallet/UserNominations'
+import BalanceView from "@/components/Wallet/Polkadot/BalanceView";
+import { mapState, mapGetters } from 'vuex'
+import UserNominations from '@/components/Wallet/Polkadot/UserNominations'
 
 export default {
   name: "SteemWallet",
@@ -43,7 +43,8 @@ export default {
     };
   },
   computed: {
-    ...mapState('polkadot',['balance','locked', 'bonded'])
+    ...mapState('polkadot',['balance','locked']),
+    ...mapGetters('polkadot', ['available'])
   },
   components: {
     BalanceView,
