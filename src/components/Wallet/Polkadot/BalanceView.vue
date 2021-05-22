@@ -22,9 +22,9 @@
         </div>
       </div>
       <div class="bottom">
-        <b-button variant="primary" @click="showTransfer=true">
+        <button class="primary-btn" @click="showTransfer=true">
           {{ $t('wallet.transfer') }}
-        </b-button>
+        </button>
       </div>
     </Card>
     <TipMessage
@@ -85,8 +85,8 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-  width: 30%;
-  min-width: 320px;
+  width: 100%;
+  margin-bottom: 20px;
   .top {
     margin: 0;
     padding: 0;
@@ -123,7 +123,7 @@ export default {
     padding: 14px 0 0 0 ;
   }
   button {
-    width: 90% !important;
+    width: 100%;
   }
 }
 </style>

@@ -11,13 +11,11 @@
         <p> {{ $t('tip.noProject') }} </p>
       </div>
       <div class="cards-container">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-4 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
-                <CrowdStakingCard
-                  :crowdstaking="card"
-                />
-            </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
+            <CrowdStakingCard
+              :crowdstaking="card"
+            />
           </div>
         </div>
       </div>

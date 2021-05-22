@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="h-line"></div>
-    <div v-if="isConnected">
+    <template v-if="isConnected">
       <button
         class="primary-btn"
         @click="nominate"
@@ -20,7 +20,7 @@
         <b-spinner small type="grow" v-show="loadingStaking"></b-spinner
         >{{ nominated ? $t("cs.nominated") : $t("cs.nominate") }}
       </button>
-    </div>
+    </template>
 
     <b-modal
       v-model="showNominate"
@@ -122,6 +122,9 @@ export default {
   position: relative;
   padding: 2.2rem 1.2rem;
   background-color: white;
+  .primary-btn {
+    width: 100%;
+  }
   .status-container {
     position: absolute;
     right: 0;
