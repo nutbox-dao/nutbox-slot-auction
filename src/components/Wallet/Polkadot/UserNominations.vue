@@ -93,6 +93,9 @@ export default {
 <style lang="less" scoped>
 .nominations {
 }
+.empty-bg img {
+  height: 7rem;
+}
 .table-card {
   border-radius: 1.4rem;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);

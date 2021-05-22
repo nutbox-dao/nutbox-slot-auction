@@ -4,23 +4,27 @@
       <p class="item-title">
         {{ $t('wallet.asset') }}
       </p>
-      <div class="balance-box">
-        <BalanceView
-          name="DOT"
-          :balances="available / 1e10"
-          desc="DOT"
-          :logo="dotLogo"
-          :transfer='true'
-          walletType="DOT"
-        />
-        <LockedBalanceView
-          name="DOT"
-          :balances="locked / 1e10"
-          desc="Locked DOT"
-          :logo="dotLogo"
-          :transfer='true'
-          walletType="DOT-Locked"
-        />
+      <div class="balance-box row">
+        <div class="col-sm-6 col-md-6 col-lg-4">
+          <BalanceView
+            name="DOT"
+            :balances="available / 1e10"
+            desc="DOT"
+            :logo="dotLogo"
+            :transfer='true'
+            walletType="DOT"
+          />
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-4">
+          <BalanceView
+            name="DOT"
+            :balances="locked / 1e10"
+            desc="Locked DOT"
+            :logo="dotLogo"
+            :transfer='true'
+            walletType="DOT-Locked"
+          />
+        </div>
       </div>
       <p class="item-title">
         {{ $t('wallet.nomination') }}
@@ -59,17 +63,5 @@ export default {
 
 <style lang="less" scoped>
 .dot-wallet {
-  // margin-top: 20px;
-  .balance-box {
-    display: flex;
-    align-content: left;
-    // z-index: 1;
-    // justify-content: space-between;
-    flex-wrap: wrap;
-    >div{
-      margin-top: 24px;
-      margin-right: 24px;
-    }
-  }
 }
 </style>

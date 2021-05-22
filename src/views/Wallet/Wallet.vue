@@ -31,7 +31,6 @@ export default {
 
 <style lang="less" scoped>
 .wallet {
-  padding: 0px 40px 64px;
   .nav {
     display: flex;
     align-items: center;
@@ -42,7 +41,6 @@ export default {
       padding: 18px 28px 14px 28px;
       color: #666;
       box-sizing: border-box;
-      color: var(--secondary-text);
       font-weight: 600;
       line-height: 16px !important;
     }
@@ -93,7 +91,7 @@ export default {
         padding: 8px 0px;
         font-size: 15px;
         box-sizing: border-box;
-    
+
       }
     }
   }

@@ -22,7 +22,7 @@ export default {
     };
   },
   computed: {
-      
+
   },
   methods: {
   },
@@ -32,7 +32,6 @@ export default {
 
 <style lang="less" scoped>
 .admin {
-  padding: 0px 40px 64px;
   .nav {
     display: flex;
     align-items: center;
@@ -94,7 +93,7 @@ export default {
         padding: 8px 0px;
         font-size: 15px;
         box-sizing: border-box;
-    
+
       }
     }
   }
