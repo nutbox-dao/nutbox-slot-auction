@@ -16,7 +16,7 @@
           </div>
           <div class="balance">
             <span class="title">
-              {{ balances | amountForm(balanceDigit) }}
+              {{ balances | amountForm(4) }}
             </span>
           </div>
         </div>

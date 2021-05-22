@@ -53,7 +53,6 @@ export default {
   name: "BalanceView",
   data() {
     return {
-      showTransfer: false,
       showUnbond: false
     };
   },
@@ -96,7 +95,7 @@ export default {
   },
   methods: {
     async redeem(){
-
+      console.log('redeem');
     }
   },
 };

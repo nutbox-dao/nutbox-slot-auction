@@ -9,7 +9,7 @@
       <img src="~@/static/images/empty-data.png" alt="" />
       <p>{{ $t("tip.noNominations") }}</p>
     </div>
-    <div v-show="items.length > 0">
+    <div v-show="items.length > 0 && !loadingContributions">
       <b-card class="table-card">
         <b-table
           :items="items"
@@ -82,6 +82,9 @@ export default {
       if (newValue == oldValue) return;
       this.requstData((newValue - 1) * this.perPage, this.perPage);
     },
+    account(newValue, oldValue) {
+      this.requstData(0, this.perPage);
+    }
   },
   methods: {
     ...mapMutations("kusama", ["saveLoadingContributions"]),

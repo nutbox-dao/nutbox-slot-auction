@@ -59,7 +59,11 @@
               target="_blank"
             >
             </a>
-            <b-popover target="docs-icon" triggers="hover focus" placement="top">
+            <b-popover
+              target="docs-icon"
+              triggers="hover focus"
+              placement="top"
+            >
               {{ $t("message.docs") }}
             </b-popover>
             <a
@@ -75,7 +79,11 @@
             >
               Discord
             </b-popover>
-            <a id="telegram-icon" href="https://t.me/nutbox_defi" target="_blank">
+            <a
+              id="telegram-icon"
+              href="https://t.me/nutbox_defi"
+              target="_blank"
+            >
             </a>
             <b-popover
               target="telegram-icon"
@@ -175,10 +183,10 @@
                   />
                   <b-avatar v-else class="mr-2" size="sm" text=""></b-avatar>
                   <span style="margin-left: 8px">{{
-                      formatUserAddress(
-                        account && account.meta && account.meta.name
-                      )
-                    }}</span>
+                    formatUserAddress(
+                      account && account.meta && account.meta.name
+                    )
+                  }}</span>
                 </div>
               </template>
               <b-dropdown-item
@@ -198,7 +206,9 @@
                       <div class="font-bold">
                         {{ item.meta ? item.meta.name : "" }}
                       </div>
-                      <div class="address">{{ formatUserAddress(item.address) }}</div>
+                      <div class="address">
+                        {{ formatUserAddress(item.address) }}
+                      </div>
                     </div>
                     <img
                       class="ml-3"
@@ -245,7 +255,7 @@ import { getBalance as getKusamaBalance } from "./utils/kusama/account";
 import { subBlock as subPolkadotBlock } from "./utils/polkadot/block";
 import { subBlock as subKusamaBlock } from "./utils/kusama/block";
 import { subBonded, subNominators } from "./utils/polkadot/staking";
-import { subBonded as subKusamaBonded } from "./utils/kusama/staking"
+import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
 import { stanfiAddress } from "./utils/polkadot/polkadot";
 
 export default {
@@ -264,7 +274,7 @@ export default {
       "account",
       "crowdstakings",
       "communitys",
-      "projects"
+      "projects",
     ]),
     ...mapState("kusama", ["clCommunitys"]),
     ...mapState(["lang"]),
@@ -279,7 +289,10 @@ export default {
         : require("./static/images/dashboard.png");
     },
     isAdmin() {
-      return this.projects?.indexOf(this.account && this.account.address) !== -1 || this.clCommunitys?.indexOf(this.account && this.account.address) !== -1;
+      return (
+        this.projects?.indexOf(this.account && this.account.address) !== -1 ||
+        this.clCommunitys?.indexOf(this.account && this.account.address) !== -1
+      );
     },
   },
   components: {
@@ -287,15 +300,13 @@ export default {
     Identicon,
   },
   methods: {
-    ...mapMutations('polkadot',[
-      'saveCrowdstakings',
-      'saveCommunitys',
-      'saveProjects',
-      'saveAccount'
+    ...mapMutations("polkadot", [
+      "saveCrowdstakings",
+      "saveCommunitys",
+      "saveProjects",
+      "saveAccount",
     ]),
-    ...mapMutations('kusama',[
-      'saveClCommunitys'
-    ]),
+    ...mapMutations("kusama", ["saveClCommunitys"]),
     setLanguage(lang) {
       localStorage.setItem(LOCALE_KEY, lang);
       this.$store.commit("saveLang", lang);
@@ -322,6 +333,8 @@ export default {
       subKusamaBonded();
       subBonded();
       subNominators();
+      this.getCommnunitys();
+      this.getCrowdstacking();
     },
     showError(err) {
       this.$bvToast.toast(err, {
@@ -330,34 +343,41 @@ export default {
         variant: "danger",
       });
     },
+    getCommnunitys() {
+      // 获取支持平行链项目的社区信息
+      getCommnunitys().then((res) => {
+        console.log("commnituy", res);
+        this.saveClCommunitys(res.map((r) => stanfiAddress(r.communityId)));
+      });
+    },
+
+    getCrowdstacking() {
+      // 获取验证者节点投票卡片信息
+      getCrowdstacking().then((res) => {
+        this.saveCrowdstakings(
+          res.map(({ community, project }) => ({
+            community: {
+              ...community,
+              communityId: stanfiAddress(community.communityId),
+            },
+            project: {
+              ...project,
+              projectId: stanfiAddress(project.projectId),
+              validators: project.validators.map((v) => stanfiAddress(v)),
+            },
+          }))
+        );
+        this.saveCommunitys(res.map(({ community }) => community.communityId));
+        this.saveProjects(res.map(({ project }) => project.projectId));
+        // console.log("crowdstaking", this.crowdstakings);
+        // console.log('projects', this.projects);
+      });
+    },
   },
   async mounted() {
     this.setLanguage(localStorage.getItem(LOCALE_KEY));
-    // 获取支持平行链项目的社区信息
-    getCommnunitys().then((res) => {
-      console.log("commnituy", res);
-      this.saveClCommunitys(res.map(r => stanfiAddress(r.communityId)));
-    });
-    // 获取验证者节点投票卡片信息
-    getCrowdstacking().then((res) => {
-      this.saveCrowdstakings(
-        res.map(({ community, project }) => ({
-          community: {
-            ...community,
-            communityId: stanfiAddress(community.communityId),
-          },
-          project: {
-            ...project,
-            projectId: stanfiAddress(project.projectId),
-            validators: project.validators.map((v) => stanfiAddress(v)),
-          },
-        }))
-      );
-      this.saveCommunitys(res.map(({ community }) => community.communityId));
-      this.saveProjects(res.map(({ project }) => project.projectId));
-      // console.log("crowdstaking", this.crowdstakings);
-      // console.log('projects', this.projects);
-    });
+    this.getCommnunitys();
+    this.getCrowdstacking();
   },
   async created() {
     await Promise.all([subPolkadotBlock(), subKusamaBlock()]);
@@ -644,14 +664,14 @@ input::-webkit-input-placeholder {
     line-height: 22px;
   }
 }
-  .item-title{
-    text-align: left;
-    color: var(--primary-text);
-    font-size: 16px;
-    line-height: 32px;
-    margin-top: 32px;
-    border-bottom: 1px solid var(--dividers);
-  }
+.item-title {
+  text-align: left;
+  color: var(--primary-text);
+  font-size: 16px;
+  line-height: 32px;
+  margin-top: 32px;
+  border-bottom: 1px solid var(--dividers);
+}
 .pc-menu {
   height: 60px;
   width: 160px;
@@ -855,7 +875,7 @@ input::-webkit-input-placeholder {
   }
   .dropdown-menu {
     max-width: 200px;
-    .account-info{
+    .account-info {
       overflow: hidden;
       .address {
         overflow: hidden;

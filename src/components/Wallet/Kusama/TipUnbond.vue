@@ -16,8 +16,8 @@
           <input type="number" v-model="inputAmount" />
         </div>
       </div>
-      <button class="primary-btn" @click="confirm" :disabled="isBonding">
-        <b-spinner small type="grow" v-show="isBonding"></b-spinner
+      <button class="primary-btn" @click="confirm" :disabled="isUnBonding">
+        <b-spinner small type="grow" v-show="isUnBonding"></b-spinner
         >{{ $t("cs.confirm") }}
       </button>
     </div>
@@ -27,7 +27,7 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import BN from "bn.js";
-import { bond } from "@/utils/kusama/account";
+import { unBond } from "@/utils/kusama/account";
 
 export default {
   data() {
@@ -35,7 +35,7 @@ export default {
       inputAmount: "",
       inputNonimator: "",
       paraTokenSymbol: "",
-      isBonding: false,
+      isUnBonding: false,
     };
   },
   computed: {
@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     hide() {
-      if (this.isBonding) return;
+      if (this.isUnBonding) return;
       this.$emit("hideBond");
     },
     checkInput() {
@@ -84,8 +84,8 @@ export default {
         return;
       }
       try {
-        this.isBonding = true
-        await bond(
+        this.isUnBonding = true
+        await unBond(
           this.inputAmount,
           (info, param) => {
             this.$bvToast.toast(info, param);
@@ -102,7 +102,7 @@ export default {
           variant: "danger",
         });
       } finally {
-        this.isBonding = false
+        this.isUnBonding = false
       }
     },
   },

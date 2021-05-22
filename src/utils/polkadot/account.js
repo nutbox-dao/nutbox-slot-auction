@@ -110,7 +110,7 @@ export const getBalance = async (account) => {
  * @param {Number} amount 转账数目 单位为dot
  */
 export const transfer = async (to, amount, toast, callback) => {
-  const api = await getApi()
+  const api = await injectAccount(store.state.polkadot.account)
   const decimal = new BN(10)
   amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))
   const nonce = (await api.query.system.account(from)).nonce.toNumber()

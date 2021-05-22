@@ -10,7 +10,7 @@
       <p>{{ $t("tip.noNominations") }}</p>
     </div>
 
-    <div v-show="nominators.length > 0">
+    <div v-show="nominators.length > 0 && !loadingStaking">
       <b-card class="table-card">
         <b-table
           :items="nominators"
