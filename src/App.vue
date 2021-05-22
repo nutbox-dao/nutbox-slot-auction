@@ -198,7 +198,7 @@
                       <div class="font-bold">
                         {{ item.meta ? item.meta.name : "" }}
                       </div>
-                      <div>{{ formatUserAddress(item.address) }}</div>
+                      <div class="address">{{ formatUserAddress(item.address) }}</div>
                     </div>
                     <img
                       class="ml-3"
@@ -654,35 +654,6 @@ input::-webkit-input-placeholder {
   height: 60px;
   width: 160px;
   float: right;
-  .dropdown-menu {
-    border-radius: 1.2rem;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
-    border: none;
-    margin-top: 0.5rem;
-    min-width: 15rem;
-    padding: 0.8rem;
-    .dropdown-item {
-      padding: 0.2rem 0.5rem;
-    }
-    .account-info {
-      flex: 1;
-      font-size: 0.7rem;
-      margin-left: 6px;
-    }
-    .dropdown-item:hover {
-      background: transparent;
-    }
-    .menu-icon {
-      width: 28px;
-      height: 28px;
-    }
-    .menu-text {
-      padding: 0.4rem 0;
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: bold;
-    }
-  }
   .ident-icon svg {
     margin-right: 0.5rem;
   }
@@ -701,7 +672,35 @@ input::-webkit-input-placeholder {
     margin-left: 6px;
   }
 }
-
+.dropdown-menu {
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
+  border: none;
+  margin-top: 0.5rem;
+  min-width: 15rem;
+  padding: 0.8rem;
+  .dropdown-item {
+    padding: 0.2rem 0.5rem;
+  }
+  .account-info {
+    flex: 1;
+    font-size: 0.7rem;
+    margin-left: 6px;
+  }
+  .dropdown-item:hover {
+    background: transparent;
+  }
+  .menu-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .menu-text {
+    padding: 0.4rem 0;
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: bold;
+  }
+}
 .my-icon {
   width: 24px;
   height: 24px;
@@ -851,6 +850,17 @@ input::-webkit-input-placeholder {
   .left .bottom .settings {
     padding: 0;
     display: block;
+  }
+  .dropdown-menu {
+    max-width: 200px;
+    .account-info{
+      overflow: hidden;
+      .address {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
   }
 }
 </style>
