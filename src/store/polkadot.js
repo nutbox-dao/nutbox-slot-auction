@@ -27,6 +27,7 @@ export default {
       allAccounts: [],
       balance: 0,
       locked: 0,
+      totalStaked: 0,
       unLocking: 0,
       redeemable: 0,
       currentBlockNum: {},
@@ -87,6 +88,9 @@ export default {
       },
       saveLocked: (state, locked) => {
         state.locked = locked
+      },
+      saveTotalStaked: (state, totalStaked) => {
+        state.totalStaked = totalStaked
       },
       saveUnlocking: (state, unLocking) => {
         state.unLocking = unLocking

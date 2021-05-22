@@ -6,7 +6,6 @@
     <div class="nav">
       <router-link to="/wallet" exact>Pokadot</router-link>
       <router-link to="/wallet/kusama">Kusama</router-link>
-      <div class="center-blank"></div>
     </div>
     <router-view></router-view>
   </div>
@@ -58,9 +57,6 @@ export default {
     .active {
       color: var(--primary-text);
       border-bottom: 3px solid var(--primary);
-    }
-    .center-blank {
-      flex: 1;
     }
     .steem-account {
       height: 38px;

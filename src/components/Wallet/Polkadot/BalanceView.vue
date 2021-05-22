@@ -110,7 +110,7 @@ export default {
 <style lang="scss" scoped>
 .card {
   width: 100%;
-  margin-bottom: 20px;
+  min-width: 320px;
   .top {
     margin: 0;
     padding: 0;

@@ -26,6 +26,7 @@ export default {
     projects: [],
     crowdstakings: [],
     loadingStaking: true,
+    totalStaked: 0,
     locked: 0,
     unLocking: 0,
     redeemable: 0,
@@ -58,6 +59,9 @@ export default {
     },
     saveSubLocked: (state, subLocked) => {
       state.subLocked = subLocked
+    },
+    saveTotalStaked: (state, totalStaked) => {
+      state.totalStaked = totalStaked
     },
     saveUnlocking: (state, unLocking) => {
       state.unLocking = unLocking
@@ -131,8 +135,8 @@ export default {
   },
   getters: {
     available: (state) => {
-      if (state.balance && state.locked) {
-        return state.balance.sub(state.locked)
+      if (state.balance && state.totalStaked) {
+        return state.balance.sub(state.totalStaked)
       } else {
         return 0
       }

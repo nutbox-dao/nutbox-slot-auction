@@ -20,23 +20,21 @@
           :transfer="true"
         />
       </div>
-      <div class="nominations"></div>
       <p class="item-title">
         {{ $t("wallet.contribution") }}
       </p>
-      <UserContributions/>
+      <UserContributions />
     </div>
   </div>
 </template>
 
 <script>
 import BalanceView from "@/components/Wallet/Kusama/BalanceView";
-import LockedBalanceView from "@/components/Wallet/Kusama/LockedBalanceView"
-import UserContributions from "@/components/Wallet/Kusama/UserContributions"
+import LockedBalanceView from "@/components/Wallet/Kusama/LockedBalanceView";
+import UserContributions from "@/components/Wallet/Kusama/UserContributions";
 import { mapState, mapGetters } from "vuex";
 
 export default {
-  name: "SteemWallet",
   data() {
     return {
       ksmLogo: require("../../static/images/tokens/ksm.png"),
@@ -44,12 +42,12 @@ export default {
   },
   computed: {
     ...mapState("kusama", ["balance", "locked"]),
-    ...mapGetters('kusama', ['available'])
+    ...mapGetters("kusama", ["available"]),
   },
   components: {
     BalanceView,
     UserContributions,
-    LockedBalanceView
+    LockedBalanceView,
   },
   async mounted() {},
 };

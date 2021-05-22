@@ -51,12 +51,16 @@ export const getBalance = async () => {
   subLocked = await api.query.staking.ledger(store.state.polkadot.account.address, (locked) => {
     if (!locked.toJSON() || locked.toJSON().length === 0) {
       store.commit('kusama/saveLocked', new BN(0))
+      store.commit('kusama/saveTotalStaked', new BN(0))
+      store.commit('kusama/saveUnlocking', new BN(0))
+      store.commit('kusama/saveRedeemable', new BN(0))
       return
     }
     locked = locked.toJSON()
     const total = new BN(locked.total)
     const active = new BN(locked.active)
     const unlocking = new BN(locked.unlocking.reduce((t,u) => t.add(new BN(u.value)), new BN(0)))
+    store.commit('kusama/saveTotalStaked', total)
     store.commit('kusama/saveLocked',  active)
     store.commit('kusama/saveUnlocking', unlocking)
     store.commit('kusama/saveRedeemable', total.sub(active).sub(unlocking))
@@ -111,6 +115,7 @@ export const bond = async (amount, toast, callback) => {
   const api = await injectAccount(store.state.polkadot.account)
   const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
   const bonded = store.state.kusama.bonded
+  console.log('bonded', bonded);
   const bondTx = bonded ? api.tx.staking.bondExtra(uni) : api.tx.staking.bond(from, uni, {
     Staked: null
   })

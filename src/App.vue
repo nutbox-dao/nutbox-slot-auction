@@ -245,6 +245,7 @@ import { getBalance as getKusamaBalance } from "./utils/kusama/account";
 import { subBlock as subPolkadotBlock } from "./utils/polkadot/block";
 import { subBlock as subKusamaBlock } from "./utils/kusama/block";
 import { subBonded, subNominators } from "./utils/polkadot/staking";
+import { subBonded as subKusamaBonded } from "./utils/kusama/staking"
 import { stanfiAddress } from "./utils/polkadot/polkadot";
 
 export default {
@@ -318,6 +319,7 @@ export default {
       this.saveAccount(acc);
       getPolkadotBalance(acc);
       getKusamaBalance(acc);
+      subKusamaBonded();
       subBonded();
       subNominators();
     },
