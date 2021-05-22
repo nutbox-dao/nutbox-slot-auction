@@ -11,15 +11,13 @@
           desc="KSM"
           :logo="ksmLogo"
           :transfer="true"
-          walletType="KSM"
         />
-        <BalanceView
+        <LockedBalanceView
           name="KSM"
           :balances="locked / 1e12"
           desc="Locked KSM"
           :logo="ksmLogo"
           :transfer="true"
-          walletType="KSM-Locked"
         />
       </div>
       <div class="nominations"></div>
@@ -33,6 +31,7 @@
 
 <script>
 import BalanceView from "@/components/Wallet/Kusama/BalanceView";
+import LockedBalanceView from "@/components/Wallet/Kusama/LockedBalanceView"
 import UserContributions from "@/components/Wallet/Kusama/UserContributions"
 import { mapState, mapGetters } from "vuex";
 
@@ -49,7 +48,8 @@ export default {
   },
   components: {
     BalanceView,
-    UserContributions
+    UserContributions,
+    LockedBalanceView
   },
   async mounted() {},
 };

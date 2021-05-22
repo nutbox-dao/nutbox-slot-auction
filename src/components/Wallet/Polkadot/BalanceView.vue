@@ -22,34 +22,57 @@
         </div>
       </div>
       <div class="bottom">
-        <b-button variant="primary" @click="showTransfer=true">
-          {{ $t('wallet.transfer') }}
+         <b-button
+          variant="primary"
+          @click="showTransfer = true"
+          :disabled="parseFloat(balances) < 0.0001"
+        >
+          {{ $t("wallet.transfer") }}
+        </b-button>
+        <b-button
+          variant="primary"
+          @click="showBond = true"
+          :disabled="parseFloat(balances) < 0.0001"
+        >
+          {{ $t("wallet.bond") }}
         </b-button>
       </div>
     </Card>
-    <TipMessage
-      :showMessage="tipMessage"
-      :title="tipTitle"
-      :type="tipType"
-      v-if="showMessage"
-      @hideMask="showMessage = false"
-    />
+        <b-modal
+      v-model="showTransfer"
+      modal-class="custom-modal"
+      centered
+      hide-header
+      hide-footer
+      no-close-on-backdrop
+    >
+      <TipTransfer @hideTransfer="showTransfer = false" />
+    </b-modal>
+
+    <b-modal
+      v-model="showBond"
+      modal-class="custom-modal"
+      centered
+      hide-header
+      hide-footer
+      no-close-on-backdrop
+    >
+      <TipBond @hideBond="showBond = false" />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import Card from "@/components/ToolsComponents/Card";
-import TipMessage from "@/components/ToolsComponents/TipMessage";
+import TipTransfer from "./TipTransfer";
+import TipBond from "./TipBond";
 
 export default {
   name: "BalanceView",
   data() {
     return {
-      tipType: "error",
-      tipTitle: "",
-      tipMessage: "",
-      showMessage: false,
-      showTransfer: false
+      showTransfer: false,
+      showBond: false,
     };
   },
   props: {
@@ -76,7 +99,8 @@ export default {
   },
   components: {
     Card,
-    TipMessage,
+    TipTransfer,
+    TipBond
   },
   methods: {
   },
@@ -121,9 +145,12 @@ export default {
   }
   .bottom{
     padding: 14px 0 0 0 ;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
   }
   button {
-    width: 90% !important;
+    width: 48% !important;
   }
 }
 </style>

@@ -75,7 +75,11 @@ module.exports = {
     asset: "资产",
     nomination: "投票节点",
     contribution: "平行链投票",
-    balance: "余额"
+    balance: "余额",
+    bond: "绑定",
+    unBond: "解绑",
+    redeemable: "可取回"
+
   },
   admin: {
     admin: "管理员"

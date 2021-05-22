@@ -92,6 +92,7 @@ export const subNominators = async () => {
   })
   store.commit('polkadot/saveSubNominators', subNominators)
 }
+
 /**
  * 为社区投票, 适用已经有绑定的用户来操作
  * @param {Array} validators 要投票的节点列表（处理好的所有投票列表）
@@ -121,7 +122,7 @@ export const nominate = async (validators, communityId, projectId, toast, callba
         dispatchError
       }) => {
         try {
-          handelBlockState(status, dispatchError, toast, callback, unsub)
+          handelBlockState(api, mstatus, dispatchError, toast, callback, unsub)
         } catch (e) {
           toast(e.message, {
             title: $t('tip.error'),
@@ -170,7 +171,7 @@ export const bondAndNominate = async (amount, validators, communityId, projectId
       dispatchError
     }) => {
       try {
-        handelBlockState(status, dispatchError, toast, callback, unsub)
+        handelBlockState(api, status, dispatchError, toast, callback, unsub)
       } catch (e) {
         toast(e.message, {
           title: $t('tip.error'),
@@ -189,7 +190,7 @@ export const bondAndNominate = async (amount, validators, communityId, projectId
  * @param {*} unsub unsub
  * @returns 
  */
-function handelBlockState(status, dispatchError, toast, callback, unsub) {
+function handelBlockState(api, status, dispatchError, toast, callback, unsub) {
   if (status.isInBlock || status.isFinalized) {
     if (dispatchError) {
       let errMsg = ''

@@ -27,6 +27,8 @@ export default {
     crowdstakings: [],
     loadingStaking: true,
     locked: 0,
+    unLocking: 0,
+    redeemable: 0,
 
     //  crowdloan
     subFund: {},
@@ -56,6 +58,12 @@ export default {
     },
     saveSubLocked: (state, subLocked) => {
       state.subLocked = subLocked
+    },
+    saveUnlocking: (state, unLocking) => {
+      state.unLocking = unLocking
+    },
+    saveRedeemable: (state, redeemable) => {
+      state.redeemable = redeemable
     },
     saveSubNominators: (state, subNominators) => {
       state.subNominators = subNominators

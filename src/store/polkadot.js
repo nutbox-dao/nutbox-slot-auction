@@ -27,6 +27,8 @@ export default {
       allAccounts: [],
       balance: 0,
       locked: 0,
+      unLocking: 0,
+      redeemable: 0,
       currentBlockNum: {},
     },
     mutations: {
@@ -85,6 +87,12 @@ export default {
       },
       saveLocked: (state, locked) => {
         state.locked = locked
+      },
+      saveUnlocking: (state, unLocking) => {
+        state.unLocking = unLocking
+      },
+      saveRedeemable: (state, redeemable) => {
+        state.redeemable = redeemable
       },
       saveCurrentBlockNum: (state, blockNum) => {
         state.currentBlockNum = blockNum

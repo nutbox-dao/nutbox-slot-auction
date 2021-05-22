@@ -6,25 +6,23 @@
       alt=""
       @click="hide"
     />
-    <div class="tip-transfer">
+    <div class="tip-contribute">
       <div class="text-center mb-4 font20">
-        {{ $t("wallet.transfer") }}
+        {{ $t("wallet.bond") }}
       </div>
       <div class="input-group-box">
-        <div class="label">To：</div>
-        <div class="flex-between-center">
-          <input type="string" v-model="inputAddress" />
-        </div>
-      </div>
-      <div class="input-group-box">
-        <div class="label">{{ $t("wallet.balance") }}: {{ available / 1e12  | amountForm(6)}} KSM</div>
+        <div class="label">{{ $t("wallet.balance") }}: {{ available / 1e10 | amountForm(4) }} DOT</div>
         <div class="flex-between-center">
           <input type="number" v-model="inputAmount" />
         </div>
       </div>
-
-      <button class="primary-btn" @click="confirm" :disabled="isTransfering">
-        <b-spinner small type="grow" v-show="isTransfering"></b-spinner
+      <div class="text-center mb-4 font16">
+        <p class="bondInfo">{{ $t("cs.bondInfo1") }}</p>
+        <p class="bondInfo">{{ $t("cs.bondInfo2") }}</p>
+        <p class="bondInfo">{{ $t("cs.bondInfo3") }}</p>
+      </div>
+      <button class="primary-btn" @click="confirm" :disabled="isBonding">
+        <b-spinner small type="grow" v-show="isBonding"></b-spinner
         >{{ $t("cs.confirm") }}
       </button>
     </div>
@@ -34,31 +32,36 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import BN from "bn.js";
-import { transfer } from "@/utils/kusama/account";
-import { validAddress } from "@/utils/kusama/kusama"
+import { bond } from "@/utils/polkadot/account";
 
 export default {
   data() {
     return {
       inputAmount: "",
-      inputAddress: '',
+      inputNonimator: "",
       paraTokenSymbol: "",
-      isTransfering: false,
+      isBonding: false,
     };
   },
+  props: {
+    crowdstaking: {
+      type: Object,
+    }
+  },
   computed: {
-    ...mapGetters('kusama',["available"]),
+    ...mapState(['lang']),
+    ...mapGetters('polkadot',["available"]),
   },
   methods: {
     hide() {
-      if (this.isTransfering) return;
-      this.$emit("hideTransfer");
+      if (this.isBonding) return;
+      this.$emit("hideBond");
     },
     checkInput() {
       const reg = /^\d+(\.\d+)?$/;
       const res = reg.test(this.inputAmount);
       if (!res) {
-        this.$bvToast.toast("Input amount error!", {
+        this.$bvToast.toast("Input error!", {
           title: this.$t("tip.tips"),
           autoHideDelay: 5000,
           variant: "warning", // info success danger
@@ -67,16 +70,16 @@ export default {
       }
       const amount = parseFloat(this.inputAmount);
 
-      if (!validAddress(this.inputAddress)) {
-        this.$bvToast.toast('Input invalid address', {
-          title: this.$t('tip.tips'),
+      if (amount < 0.1) {
+        this.$bvToast.toast(this.$t("tip.belowMinBond"), {
+          title: this.$t("tip.tips"),
           autoHideDelay: 5000,
-          variant: 'warning'
-        })
-        return false;
+          variant: "warning",
+        });
+        return;
       }
 
-      if (this.available.lte(new BN(amount).mul(new BN(1e12)))) {
+      if (this.available.lte(new BN(amount*1e4).mul(new BN(1e6)))) {
         this.$bvToast.toast(this.$t("tip.insufficientBalance"), {
           title: this.$t("tip.tips"),
           autoHideDelay: 5000,
@@ -91,15 +94,14 @@ export default {
         return;
       }
       try {
-        this.isTransfering = true
-        await transfer(
-          this.inputAddress,
-          parseFloat(this.inputAmount),
+        this.isBonding = true
+        await bond(
+          this.inputAmount,
           (info, param) => {
             this.$bvToast.toast(info, param);
           },
           () => {
-            this.$emit("hideTransfer");
+            this.$emit("hideBond");
           }
         );
       } catch (e) {
@@ -110,7 +112,7 @@ export default {
           variant: "danger",
         });
       } finally {
-        this.isTransfering = false
+        this.isBonding = false
       }
     },
   },

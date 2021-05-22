@@ -13,7 +13,7 @@
           :transfer='true'
           walletType="DOT"
         />
-        <BalanceView
+        <LockedBalanceView
           name="DOT"
           :balances="locked / 1e10"
           desc="Locked DOT"
@@ -32,6 +32,7 @@
 
 <script>
 import BalanceView from "@/components/Wallet/Polkadot/BalanceView";
+import LockedBalanceView from "@/components/Wallet/Polkadot/LockedBalanceView"
 import { mapState, mapGetters } from 'vuex'
 import UserNominations from '@/components/Wallet/Polkadot/UserNominations'
 
@@ -48,7 +49,8 @@ export default {
   },
   components: {
     BalanceView,
-    UserNominations
+    UserNominations,
+    LockedBalanceView
   },
   async mounted() {
   },

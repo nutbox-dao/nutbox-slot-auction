@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="input-group-box">
-        <div class="label">{{ $t("wallet.balance") }}: {{ available / 1e12  | amountForm(6)}} KSM</div>
+        <div class="label">{{ $t("wallet.balance") }}: {{ available / 1e10  | amountForm(6)}} DOT</div>
         <div class="flex-between-center">
           <input type="number" v-model="inputAmount" />
         </div>
@@ -34,8 +34,8 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import BN from "bn.js";
-import { transfer } from "@/utils/kusama/account";
-import { validAddress } from "@/utils/kusama/kusama"
+import { transfer } from "@/utils/polkadot/account";
+import { validAddress } from "@/utils/polkadot/polkadot"
 
 export default {
   data() {
@@ -46,8 +46,10 @@ export default {
       isTransfering: false,
     };
   },
+  props: {
+  },
   computed: {
-    ...mapGetters('kusama',["available"]),
+    ...mapGetters('polkadot',["available"]),
   },
   methods: {
     hide() {
@@ -76,7 +78,7 @@ export default {
         return false;
       }
 
-      if (this.available.lte(new BN(amount).mul(new BN(1e12)))) {
+      if (this.available.lte(new BN(amount * 1e4).mul(new BN(1e6)))) {
         this.$bvToast.toast(this.$t("tip.insufficientBalance"), {
           title: this.$t("tip.tips"),
           autoHideDelay: 5000,

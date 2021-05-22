@@ -9,10 +9,17 @@ import {
   cryptoWaitReady
 } from "@polkadot/util-crypto"
 import BN from "bn.js"
-import store from "../../store"
+import store from "@/store"
 
-import { getApi, stanfiAddress } from './kusama'
-import { $t } from '@/i18n'
+import {
+  getApi,
+  stanfiAddress,
+  token2Uni
+} from './kusama'
+import {
+  $t
+} from '@/i18n'
+
 
 export const injectAccount = async (account) => {
   const injected = await web3FromSource(account.meta.source)
@@ -41,13 +48,18 @@ export const getBalance = async () => {
     store.commit('kusama/saveBalance', new BN(currentFree))
   })
 
-  subLocked = await api.query.balances.locks(store.state.polkadot.account.address, (locked) => {
-    if (!locked.toJSON() || locked.toJSON().length === 0){
+  subLocked = await api.query.staking.ledger(store.state.polkadot.account.address, (locked) => {
+    if (!locked.toJSON() || locked.toJSON().length === 0) {
       store.commit('kusama/saveLocked', new BN(0))
       return
     }
-    store.commit('kusama/saveLocked', new BN(locked[0].amount))
-    // console.log('lock', locked[0].amount.toHuman());
+    locked = locked.toJSON()
+    const total = new BN(locked.total)
+    const active = new BN(locked.active)
+    const unlocking = new BN(locked.unlocking.reduce((t,u) => t.add(new BN(u.value)), new BN(0)))
+    store.commit('kusama/saveLocked',  active)
+    store.commit('kusama/saveUnlocking', unlocking)
+    store.commit('kusama/saveRedeemable', total.sub(active).sub(unlocking))
   })
 
   store.commit('kusama/saveSubLocked', subLocked)
@@ -60,21 +72,58 @@ export const getBalance = async () => {
  * @param {String} to 转账对象
  * @param {Number} amount 转账数目 单位为ksm
  */
- export const transfer = async (to, amount, toast, callback) => {
+export const transfer = async (to, amount, toast, callback) => {
   const api = await getApi()
   injectAccount(store.state.polkadot.account)
   const decimal = new BN(12)
   const from = store.state.polkadot.account.address
   amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))
   const nonce = (await api.query.system.account(from)).nonce.toNumber()
-  const unsub = await api.tx.balances.transfer(to, amount).signAndSend(from,{
+  const unsub = await api.tx.balances.transfer(to, amount).signAndSend(from, {
     nonce
-  },  ({
+  }, ({
     status,
     dispatchError
   }) => {
     try {
-      handelBlockState(status, dispatchError, toast, callback, unsub)
+      handelBlockState(api, status, dispatchError, toast, callback, unsub)
+    } catch (e) {
+      toast(e.message, {
+        title: $t('tip.error'),
+        variant: 'danger'
+      })
+    }
+  })
+}
+
+
+/**
+ *  绑定KSM
+ * @param {number} amount 要绑定的KSM数量， 以KSM为单位
+ * @param {function} toast toast
+ * @param {function} callback callback
+ */
+export const bond = async (amount, toast, callback) => {
+  const from = store.state.polkadot.account && store.state.polkadot.account.address
+  if (!from) {
+    reject('no account')
+  }
+  const api = await injectAccount(store.state.polkadot.account)
+  const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
+  const bonded = store.state.kusama.bonded
+  const bondTx = bonded ? api.tx.staking.bondExtra(uni) : api.tx.staking.bond(from, uni, {
+    Staked: null
+  })
+  const nonce = (await api.query.system.account(from)).nonce.toNumber()
+
+  const unsub = await bondTx.signAndSend(from, {
+    nonce
+  }, ({
+    status,
+    dispatchError
+  }) => {
+    try {
+      handelBlockState(api, status, dispatchError, toast, callback, unsub)
     } catch (e) {
       toast(e.message, {
         title: $t('tip.error'),
@@ -94,7 +143,7 @@ export const getBalance = async () => {
  * @param {*} unsub unsub
  * @returns 
  */
- function handelBlockState(status, dispatchError, toast, callback, unsub) {
+function handelBlockState(api, status, dispatchError, toast, callback, unsub) {
   if (status.isInBlock || status.isFinalized) {
     if (dispatchError) {
       let errMsg = ''

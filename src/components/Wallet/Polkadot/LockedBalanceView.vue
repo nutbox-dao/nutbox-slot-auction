@@ -12,21 +12,6 @@
               <span style="font-size: 12px; color: var(--secondary-text)">
                 {{ desc }}
               </span>
-              <img
-                style="width: 14px; height: 14px"
-                src="~@/static/images/copy.svg"
-                :id="address"
-                :data-clipboard-text="address"
-                v-if="address.length > 0"
-                @click="copyAddress"
-              />
-              <b-popover
-                :target="address"
-                triggers="hover focus"
-                placement="bottom"
-              >
-                copy address
-              </b-popover>
             </div>
           </div>
           <div class="balance">
@@ -37,36 +22,26 @@
         </div>
       </div>
       <div class="bottom">
-        <b-button v-if="walletType==='DOT'" variant="primary" @click="showTransfer=true">
-          {{ $t('wallet.transfer') }}
+        <b-button variant="primary" @click="showUnbond=true" :disabled='parseFloat(balances) < 0.0001'>
+          {{ $t('wallet.unBond') }}
         </b-button>
-        <b-button v-if="walletType==='DOT-BONDED'" variant="primary"> 
-          {{ $t('cs.bond') }}
+        <b-button variant="primary" @click="redeem" :disabled='parseFloat(balances) < 0.0001'>
+          {{ $t('wallet.redeemable') }}
+          {{ redeemable / 1e10 | amountForm(0) }}
         </b-button>
       </div>
     </Card>
-    <TipMessage
-      :showMessage="tipMessage"
-      :title="tipTitle"
-      :type="tipType"
-      v-if="showMessage"
-      @hideMask="showMessage = false"
-    />
   </div>
 </template>
 
 <script>
-import Card from "../ToolsComponents/Card";
-import TipMessage from "../ToolsComponents/TipMessage";
+import Card from "@/components/ToolsComponents/Card";
+import { mapState } from "vuex"
 
 export default {
   name: "BalanceView",
   data() {
     return {
-      tipType: "error",
-      tipTitle: "",
-      tipMessage: "",
-      showMessage: false,
       showTransfer: false
     };
   },
@@ -104,11 +79,16 @@ export default {
       default: "",
     },
   },
+  computed: {
+    ...mapState('polkadot', ['redeemable'])
+  },
   components: {
     Card,
-    TipMessage,
   },
   methods: {
+    redeem(){
+      
+    }
   },
 };
 </script>
@@ -151,9 +131,12 @@ export default {
   }
   .bottom{
     padding: 14px 0 0 0 ;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
   }
   button {
-    width: 90% !important;
+    width: 48% !important;
   }
 }
 </style>
