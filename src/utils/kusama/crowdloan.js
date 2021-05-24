@@ -47,7 +47,6 @@ export const subscribeFundInfo = async (crowdloanCard) => {
   let unsubFund = store.state.kusama.subFund
   if (unsubFund) {
     try{
-      console.log('have sub');
       unsubFund()
     }catch(e){}
   }else{

@@ -293,10 +293,10 @@ export default {
         : require("./static/images/dashboard.png");
     },
     isAdmin() {
-      return (
-        this.projects?.indexOf(this.account?.address) !== -1 ||
-        this.clCommunitys?.indexOf(this.account?.address) !== -1
-      );
+      const isCrowdloanAdmin = this.clCommunitys?.indexOf(this.account?.address) !== -1
+      const isCrowdstakingAdmin = this.projects?.indexOf(this.account?.address) !== -1
+      const res = isCrowdloanAdmin || isCrowdstakingAdmin;
+      return res;
     },
   },
   components: {
