@@ -35,7 +35,7 @@ export default {
     subFund: {},
     auctionEnd: {},
     showingCrowdloan: {},
-    clCommnunitys: [],
+    clCommunitys: [],
     loadingFunds: true,
     loadingContributions: true,
     clProjectFundInfos: [],
