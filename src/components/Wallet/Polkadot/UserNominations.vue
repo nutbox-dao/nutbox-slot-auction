@@ -90,9 +90,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.empty-bg img {
-  height: 7rem;
-}
 .table-card {
   border-radius: 1.4rem;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);

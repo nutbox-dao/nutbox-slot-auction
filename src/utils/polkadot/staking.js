@@ -17,6 +17,9 @@ import {
 import {
   injectAccount
 } from './account'
+import BN from 'bn.js'
+
+
 /**
  * 监听用户的绑定储蓄账户
  */
@@ -91,6 +94,28 @@ export const subNominators = async () => {
     store.commit('polkadot/saveNominators', infos)
   })
   store.commit('polkadot/saveSubNominators', subNominators)
+}
+
+/**
+ * 或者我们平台所有社区支持的验证者节点信息
+ * @param {Array} validators 验证者节点地址数组
+ */
+export const getValidatorsInfo = async (validators) => {
+  const api = await getApi()
+  const currentEra = await api.query.staking.currentEra()
+  let queryArray = []
+  let allValidatorInfosInOurDB = {}
+  for (const address of validators){
+    queryArray.push([api.query.staking.erasStakers, [currentEra.toString(), address]])
+  }
+  const unsub = await api.queryMulti(queryArray, (res) => {
+    for (let i=0; i<validators.length; i++){
+      allValidatorInfosInOurDB[validators[i]] = res[i]
+    }
+    console.log('validators info', allValidatorInfosInOurDB);
+    store.commit('polkadot/saveAllValidatorInfosInOurDB', allValidatorInfosInOurDB)
+
+  })
 }
 
 /**

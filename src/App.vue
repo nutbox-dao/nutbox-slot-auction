@@ -33,7 +33,7 @@
             <p id="blog-icon" class="my-icon" />
             <span>{{ $t("message.blog") }}</span>
           </b-nav-item>
-          <b-nav-item to="/admin" v-if="true">
+          <b-nav-item to="/admin" v-if="isAdmin">
             <p id="admin-icon" class="my-icon" />
             <span>{{ $t("message.admin") }}</span>
           </b-nav-item>
@@ -254,7 +254,11 @@ import {
 import { getBalance as getKusamaBalance } from "./utils/kusama/account";
 import { subBlock as subPolkadotBlock } from "./utils/polkadot/block";
 import { subBlock as subKusamaBlock } from "./utils/kusama/block";
-import { subBonded, subNominators } from "./utils/polkadot/staking";
+import {
+  subBonded,
+  subNominators,
+  getValidatorsInfo,
+} from "./utils/polkadot/staking";
 import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
 import { stanfiAddress } from "./utils/polkadot/polkadot";
 
@@ -326,6 +330,11 @@ export default {
       }
     },
     changeAccount(acc) {
+      console.log('path', this.$route.path);
+      if (this.$route.path === '/admin'){
+        //调到主页去
+        this.$router.push('/crowdloan')
+      }
       if (!this.isConnected) return;
       this.saveAccount(acc);
       getPolkadotBalance(acc);
@@ -354,28 +363,26 @@ export default {
     getCrowdstacking() {
       // 获取验证者节点投票卡片信息 --- polkadot
       getCrowdstacking().then((res) => {
-        const crowdstaking = 
-        res.map(({ community, project }) => ({
-            community: {
-              ...community,
-              communityId: stanfiAddress(community.communityId),
-            },
-            project: {
-              ...project,
-              projectId: stanfiAddress(project.projectId),
-              validators: project.validators.map((v) => stanfiAddress(v)),
-            },
-          }))
+        const crowdstaking = res.map(({ community, project }) => ({
+          community: {
+            ...community,
+            communityId: stanfiAddress(community.communityId),
+          },
+          project: {
+            ...project,
+            projectId: stanfiAddress(project.projectId),
+            validators: project.validators.map((v) => stanfiAddress(v)),
+          },
+        }));
         this.saveCrowdstakings(crowdstaking);
-        this.saveCommunitys(crowdstaking.map(({community}) => community.communityId));
+        this.saveCommunitys(
+          crowdstaking.map(({ community }) => community.communityId)
+        );
         this.saveProjects(crowdstaking.map(({ project }) => project.projectId));
-        let validators = crowdstaking.map(({project}) => project.validators)
-        validators = validators.reduce((t, v) => t.concat(...v), [])
-        validators = [...new Set(validators)]
-        console.log('all validators', validators);
-
-        // console.log("crowdstaking", this.crowdstakings);
-        // console.log('projects', this.projects);
+        let validators = crowdstaking.map(({ project }) => project.validators);
+        validators = validators.reduce((t, v) => t.concat(...v), []);
+        validators = [...new Set(validators)];
+        getValidatorsInfo(validators);
       });
     },
   },

@@ -2,15 +2,29 @@
   <div class="c-card">
     <div class="card-title-box flex-start-center">
       <div class="icons">
+        <img class="icon2" :src="crowdstaking.project.iconUrl" alt="" />
         <img class="icon1" :src="crowdstaking.community.iconUrl" alt="" />
       </div>
       <div class="title-text font20 font-bold">
         <span>{{
-          crowdstaking.community.communityName + " " + $t("cs.community")
+          crowdstaking.community.communityName
         }}</span>
+        <img src="~@/static/images/close.svg" alt="" />
+        <span>{{ crowdstaking.project.projectName }}</span>
       </div>
     </div>
     <div class="h-line"></div>
+
+    <div class="desc">
+      这里可以添加社区的一些描述性文字，一般不超过两行
+    </div>
+
+    <div class="validator-container">
+      <div class="validator" v-for="v in crowdstaking.project.validators" :key="v">
+        {{ v | formatValidatorAdd }}
+      </div>
+    </div>
+
     <template v-if="isConnected">
       <button
         class="primary-btn"
@@ -21,6 +35,16 @@
         >{{ nominated ? $t("cs.nominated") : $t("cs.nominate") }}
       </button>
     </template>
+    <div class="detail-info-box">
+      <div class="project-info-container">
+        <span class="name"> TVL </span>
+        <div class="info">{{ tvl | amountForm(4)}} ({{crowdstaking.project.validators.length}})</div>
+      </div>
+      <div class="project-info-container">
+        <span class="name"> APY </span>
+        <div class="info">13.0%</div>
+      </div>
+    </div>
 
     <b-modal
       v-model="showNominate"
@@ -57,6 +81,7 @@ import TipBondAndNominator from "./TipBoxes/TipBondAndNominator";
 import TipNominator from "./TipBoxes/TipNominator";
 import { mapState } from "vuex";
 import { stanfiAddress } from "@/utils/polkadot/polkadot";
+import BN from "bn.js";
 
 export default {
   data() {
@@ -73,6 +98,11 @@ export default {
       type: String,
       default: "Kusama",
     },
+  },
+  filters: {
+    formatValidatorAdd: function(add) {
+      return add.slice(0,3) + '...' + add.slice(-3);
+    }
   },
   components: {
     TipBondAndNominator,
@@ -94,6 +124,7 @@ export default {
       "bonded",
       "nominators",
       "loadingStaking",
+      "allValidatorInfosInOurDB",
     ]),
     ...mapState(["lang"]),
     // 用户已经投了该项目的节点
@@ -105,6 +136,17 @@ export default {
         this.nominators.filter(({ address }) => val.indexOf(address) !== -1)
           .length === val.length
       );
+    },
+    tvl() {
+      if (this.allValidatorInfosInOurDB.length === 0) {
+        return 0;
+      }
+      const total = this.crowdstaking.project.validators.reduce(
+        (t, v) =>
+          t.add(new BN(this.allValidatorInfosInOurDB[v].total.toString())),
+        new BN(0)
+      );
+      return total.toString() / 1e10;
     },
   },
   mounted() {},
@@ -170,24 +212,44 @@ export default {
     margin-bottom: 0.8rem;
     border-radius: 4px;
   }
-  .detail-info-box {
-    margin-bottom: 1.2rem;
+  .desc{
+    text-align: left;
+    color: var(--primary-text);
+    margin: 16px 0px;
   }
-  .project-info-container {
+  .validator-container{
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.6rem;
-    .name {
-      flex: 1;
-      text-align: left;
-      color: rgba(189, 191, 194, 1);
-      font-weight: bold;
+    align-content: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    .validator {
+      background-color: var(--background);
+      margin: 4px 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
     }
-    .info {
-      // flex: 0.8;
-      text-align: right;
-      font-weight: 500;
+  }
+  .detail-info-box {
+    margin-top: 1.2rem;
+    margin-bottom: 0 !important;
+    .project-info-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 0.6rem;
+      margin-bottom: 0;
+      .name {
+        flex: 1;
+        text-align: left;
+        color: rgba(189, 191, 194, 1);
+        font-weight: bold;
+      }
+      .info {
+        // flex: 0.8;
+        text-align: right;
+        font-weight: 500;
+      }
     }
   }
 }

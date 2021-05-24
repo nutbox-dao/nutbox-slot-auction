@@ -31,6 +31,7 @@ export default {
       unLocking: 0,
       redeemable: 0,
       currentBlockNum: {},
+      allValidatorInfosInOurDB: []
     },
     mutations: {
       // pokadot
@@ -101,6 +102,9 @@ export default {
       saveCurrentBlockNum: (state, blockNum) => {
         state.currentBlockNum = blockNum
       },
+      saveAllValidatorInfosInOurDB: (state, allValidatorInfosInOurDB) => {
+        state.allValidatorInfosInOurDB = allValidatorInfosInOurDB
+      }
     },
     getters: {
       // polkadot 

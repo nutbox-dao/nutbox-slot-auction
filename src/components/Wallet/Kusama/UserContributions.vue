@@ -147,12 +147,6 @@ export default {
   }
 }
 
-.empty-bg{
-  height: 7rem;
-  img{
-    height: 7rem;;
-  }
-}
 
 .Active {
   color: rgba(80, 191, 0, 1);

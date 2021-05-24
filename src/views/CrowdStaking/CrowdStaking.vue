@@ -1,7 +1,7 @@
 <template>
   <div class="crowdstaking">
     <h3>
-      {{ this.$t("cl.crowdloan") }}
+      {{ this.$t("cs.crowdstaking") }}
     </h3>
     <div class="nav">
       <router-link to="/crowdstaking/kusama">Kusama</router-link>
