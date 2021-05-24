@@ -344,7 +344,7 @@ export default {
       });
     },
     getCommnunitys() {
-      // 获取支持平行链项目的社区信息
+      // 获取支持平行链项目的社区信息  -   kusama
       getCommnunitys().then((res) => {
         console.log("commnituy", res);
         this.saveClCommunitys(res.map((r) => stanfiAddress(r.communityId)));
@@ -352,10 +352,10 @@ export default {
     },
 
     getCrowdstacking() {
-      // 获取验证者节点投票卡片信息
+      // 获取验证者节点投票卡片信息 --- polkadot
       getCrowdstacking().then((res) => {
-        this.saveCrowdstakings(
-          res.map(({ community, project }) => ({
+        const crowdstaking = 
+        res.map(({ community, project }) => ({
             community: {
               ...community,
               communityId: stanfiAddress(community.communityId),
@@ -366,9 +366,14 @@ export default {
               validators: project.validators.map((v) => stanfiAddress(v)),
             },
           }))
-        );
-        this.saveCommunitys(res.map(({ community }) => community.communityId));
-        this.saveProjects(res.map(({ project }) => project.projectId));
+        this.saveCrowdstakings(crowdstaking);
+        this.saveCommunitys(crowdstaking.map(({community}) => community.communityId));
+        this.saveProjects(crowdstaking.map(({ project }) => project.projectId));
+        let validators = crowdstaking.map(({project}) => project.validators)
+        validators = validators.reduce((t, v) => t.concat(...v), [])
+        validators = [...new Set(validators)]
+        console.log('all validators', validators);
+
         // console.log("crowdstaking", this.crowdstakings);
         // console.log('projects', this.projects);
       });

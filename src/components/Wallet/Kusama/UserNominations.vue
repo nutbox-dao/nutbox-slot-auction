@@ -62,7 +62,6 @@ export default {
   },
   methods: {},
   async mounted() {
-    console.log(123, "nominators", this.nominators);
     this.fields = [
       { key: "icon", label: "", class: "text-right" },
       {
