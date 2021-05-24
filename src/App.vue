@@ -358,8 +358,9 @@ export default {
       // 获取支持平行链项目的社区信息  -   kusama
       getCommnunitys().then((res) => {
         console.log('communitys', res);
-        this.saveClCommunitys(res.map((r) => stanfiAddress(r.communityId)));
-        console.log('store comm', this.clCommunitys);
+        const ccc = res.map((r) => stanfiAddress(r.communityId))
+        this.saveClCommunitys(ccc);
+        console.log('store comm', this.clCommunitys, ccc);
       });
     },
 

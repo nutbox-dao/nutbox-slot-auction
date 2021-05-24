@@ -118,6 +118,7 @@ export default {
       state.showingCrowdloan = crowdloans
     },
     saveClCommunitys: (state, clCommunitys) => {
+      console.log('clcom', clCommunitys);
       state.clCommunitys = clCommunitys
     },
     saveLoadingFunds: (state, loadingFunds) => {
