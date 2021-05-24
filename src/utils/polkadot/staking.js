@@ -112,7 +112,6 @@ export const getValidatorsInfo = async (validators) => {
     for (let i=0; i<validators.length; i++){
       allValidatorInfosInOurDB[validators[i]] = res[i]
     }
-    console.log('validators info', allValidatorInfosInOurDB);
     store.commit('polkadot/saveAllValidatorInfosInOurDB', allValidatorInfosInOurDB)
 
   })

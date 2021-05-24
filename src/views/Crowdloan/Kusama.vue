@@ -51,7 +51,6 @@ export default {
   },
   async created() {
     const res = await getOnshowingCrowdloanCard({relaychain:"rococo"})
-    console.log('kusama crowdloan card res', res);
     await subscribeKusamaFundInfo(res);
   },
 };

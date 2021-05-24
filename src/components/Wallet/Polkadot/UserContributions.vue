@@ -101,7 +101,6 @@ export default {
           limit,
         })
         .then((res) => {
-          console.log(14213412, res.data);
           this.totalRows = res && res.data && res.data.count;
           this.items =
             res &&

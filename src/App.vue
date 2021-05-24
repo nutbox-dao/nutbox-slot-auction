@@ -330,12 +330,11 @@ export default {
       }
     },
     changeAccount(acc) {
-      console.log('path', this.$route.path);
+      if (!this.isConnected) return;
       if (this.$route.path === '/admin'){
         //调到主页去
         this.$router.push('/crowdloan')
       }
-      if (!this.isConnected) return;
       this.saveAccount(acc);
       getPolkadotBalance(acc);
       getKusamaBalance(acc);
@@ -355,7 +354,6 @@ export default {
     getCommnunitys() {
       // 获取支持平行链项目的社区信息  -   kusama
       getCommnunitys().then((res) => {
-        console.log("commnituy", res);
         this.saveClCommunitys(res.map((r) => stanfiAddress(r.communityId)));
       });
     },
