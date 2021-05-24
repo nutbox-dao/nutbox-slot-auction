@@ -296,6 +296,7 @@ export default {
       const isCrowdloanAdmin = this.clCommunitys?.indexOf(this.account?.address) !== -1
       const isCrowdstakingAdmin = this.projects?.indexOf(this.account?.address) !== -1
       const res = isCrowdloanAdmin || isCrowdstakingAdmin;
+      console.log('isAdmin', isCrowdloanAdmin || isCrowdstakingAdmin);
       return res;
     },
   },
