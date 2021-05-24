@@ -293,6 +293,7 @@ export default {
         : require("./static/images/dashboard.png");
     },
     isAdmin() {
+      if (!this.clCommunitys || !this.projects) return false;
       const isCrowdloanAdmin = this.clCommunitys?.indexOf(this.account?.address) !== -1
       const isCrowdstakingAdmin = this.projects?.indexOf(this.account?.address) !== -1
       const res = isCrowdloanAdmin || isCrowdstakingAdmin;
