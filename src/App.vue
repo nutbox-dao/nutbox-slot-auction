@@ -359,6 +359,7 @@ export default {
       getCommnunitys().then((res) => {
         console.log('communitys', res);
         this.saveClCommunitys(res.map((r) => stanfiAddress(r.communityId)));
+        console.log('store comm', this.clCommunitys);
       });
     },
 
