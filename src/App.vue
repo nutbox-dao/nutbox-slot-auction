@@ -293,9 +293,9 @@ export default {
         : require("./static/images/dashboard.png");
     },
     isAdmin() {
-      return !(
-        this.projects?.indexOf(this.account && this.account.address) === -1 &&
-        this.clCommunitys?.indexOf(this.account && this.account.address) === -1
+      return (
+        this.projects?.indexOf(this.account?.address) !== -1 ||
+        this.clCommunitys?.indexOf(this.account?.address) !== -1
       );
     },
   },
