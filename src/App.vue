@@ -538,8 +538,11 @@ input::-webkit-input-placeholder {
   //flex-direction: column;
   //justify-content: space-between;
   .account-header {
-    display: flex;
-    justify-content: flex-end;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    // display: flex;
+    // justify-content: flex-end;
   }
   .container {
     padding: 56px 40px 46px;

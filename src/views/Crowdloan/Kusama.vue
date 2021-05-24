@@ -82,18 +82,6 @@ export default {
     border-radius: 34rem;
     background-position: center top;
   }
-  .empty-bg {
-    position: relative;
-    top: 200px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    img {
-      height: 7rem;
-    }
-    p{
-      line-height: 32px;
-    }
-  }
   .loading-bg {
     display: flex;
     align-content: center;

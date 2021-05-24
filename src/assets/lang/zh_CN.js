@@ -78,7 +78,7 @@ module.exports = {
     balance: "余额",
     bond: "绑定",
     unBond: "解绑",
-    redeemable: "可取回"
+    redeem: "领取奖励"
 
   },
   admin: {

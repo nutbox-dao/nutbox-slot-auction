@@ -91,8 +91,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.nominations {
-}
 .empty-bg img {
   height: 7rem;
 }

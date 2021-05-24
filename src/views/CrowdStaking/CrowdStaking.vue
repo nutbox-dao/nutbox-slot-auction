@@ -4,8 +4,8 @@
       {{ this.$t("cl.crowdloan") }}
     </h3>
     <div class="nav">
-      <router-link to="/crowdstaking/kusama" exact>Kusama</router-link>
-      <router-link to="/crowdstaking">Polkadot</router-link>
+      <router-link to="/crowdstaking/kusama">Kusama</router-link>
+      <router-link to="/crowdstaking" exact>Polkadot</router-link>
       <div class="center-blank"></div>
     </div>
     <router-view></router-view>

@@ -23,6 +23,9 @@ import {
   stanfiAddress,
   token2Uni
 } from './polkadot'
+import {
+  $t
+} from '@/i18n'
 
 export const loadAccounts = async () => {
   try {
@@ -168,6 +171,37 @@ export const bond = async (amount, toast, callback) => {
   })
 }
 
+/**
+ *  解绑绑DOT
+ * @param {number} amount 要解绑的DOT数量， 以DOT为单位
+ * @param {function} toast toast
+ * @param {function} callback callback
+ */
+ export const unBond = async (amount, toast, callback) => {
+  const from = store.state.polkadot.account && store.state.polkadot.account.address
+  if (!from) {
+    reject('no account')
+  }
+  const api = await injectAccount(store.state.polkadot.account)
+  const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
+  const nonce = (await api.query.system.account(from)).nonce.toNumber()
+  console.log('unbond');
+  const unsub = await api.tx.staking.unbond(uni).signAndSend(from, {
+    nonce
+  }, ({
+    status,
+    dispatchError
+  }) => {
+    try{
+      handelBlockState(api, status, dispatchError, toast, callback, unsub)
+    }catch (e){
+      toast(e.message, {
+        title: $t('tip.error'),
+        variant: 'danger'
+      })
+    }
+  })
+}
 
 /**
  * 内部方法， 处理交易的block状态

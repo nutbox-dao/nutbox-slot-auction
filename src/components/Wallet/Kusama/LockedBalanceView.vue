@@ -25,10 +25,9 @@
         <b-button variant="primary" @click="showUnbond=true" :disabled='parseFloat(balances) < 0.0001'>
           {{ $t('wallet.unBond') }}
         </b-button>
-        <b-button variant="primary" @click="redeem" :disabled='parseFloat(balances) < 0.0001'>
-          {{ $t('wallet.redeemable') }}
-              {{redeemable / 1e12 | amountForm(1)}}
-        </b-button>
+        <!-- <b-button variant="primary" @click="redeem" :disabled='parseFloat(balances) < 0.0001'>
+          {{ $t('wallet.redeem') }}
+        </b-button> -->
       </div>
     </Card>
       <b-modal
@@ -141,10 +140,10 @@ export default {
     padding: 14px 0 0 0 ;
     display: flex;
     align-content: center;
-    justify-content: space-between;
+    justify-content: center;
   }
   button {
-    width: 48% !important;
+    width: 90% !important;
   }
 }
 </style>

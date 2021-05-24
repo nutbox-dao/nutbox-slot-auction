@@ -26,13 +26,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.crowdloan-page{
-  height: 100%;
-  position: relative;
-  .empty-bg {
-    img {
-      width: 100%;
-    }
-  }
-}
 </style>

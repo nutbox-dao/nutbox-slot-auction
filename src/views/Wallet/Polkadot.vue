@@ -12,7 +12,7 @@
           :logo="dotLogo"
           :transfer="true"
         />
-        <BalanceView
+        <LockedBalanceView
           name="DOT"
           :balances="locked / 1e10"
           desc="Locked DOT"

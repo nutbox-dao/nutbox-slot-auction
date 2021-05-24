@@ -29,14 +29,5 @@ export default {
 .crowdloan-page{
     height: 100%;
   position: relative;
-  .empty-bg {
-    position: relative;
-    top: 200px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    img {
-      height: 7rem;
-    }
-  }
 }
 </style>
