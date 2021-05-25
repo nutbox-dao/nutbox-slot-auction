@@ -141,5 +141,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.primary-btn{
+  margin-top: 1rem;
+}
 </style>

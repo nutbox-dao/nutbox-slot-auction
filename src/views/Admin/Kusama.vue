@@ -30,6 +30,9 @@ export default {
   overflow: scroll;
   position: relative;
   padding-top: 0.6rem;
+  .container{
+    padding: 10px;
+  }
 }
 .table-card {
   border-radius: 1.4rem;

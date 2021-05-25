@@ -27,6 +27,7 @@
             </div>
           </div>
           <button class="primary-btn" @click="downloadCsv(index)">
+            <b-spinner small type="grow" v-show="isDownloading"></b-spinner>
             {{ $t("dashboard.export") }}
           </button>
         </div>
@@ -46,6 +47,7 @@ export default {
     return {
       items: [],
       isLoading: true,
+      isDownloading: false,
       csvHeader: ["communityName", "communityId", "nominator", "createAt"],
     };
   },
@@ -61,13 +63,18 @@ export default {
       const card = this.items[index];
       const projectId = card.projectId;
       const communityId = card.communityId;
+      this.isDownloading = true
       getNominationSummary({
         communityId,
         projectId,
       })
         .then(async (res) => {
+          this.isDownloading = false
           let result = [];
           console.log("csv1", res);
+          if (res.lenght === 0){
+            return
+          }
           result = res.map((n) => ({
             communityName: n.community.communityName,
             communityId: n.communityId,
@@ -82,6 +89,7 @@ export default {
           );
         })
         .catch((err) => {
+          this.isDownloading = false
           console.error("down load crowdloan info fail", err);
         });
     },
@@ -103,20 +111,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.loading-bg {
-  display: flex;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  img {
-    margin-top: 12rem;
-  }
-  p {
-    margin-top: 1rem;
-    font-weight: 400;
-    color: #bdbfc2;
-    line-height: 22px;
-  }
+.primary-btn{
+  margin-top: 1rem;
 }
 </style>

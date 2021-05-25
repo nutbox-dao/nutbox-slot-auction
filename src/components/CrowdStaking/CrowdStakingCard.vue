@@ -16,7 +16,7 @@
     <div class="h-line"></div>
 
     <div class="desc">
-      这里可以添加社区的一些描述性文字，一般不超过两行
+      {{ crowdstaking.community.description }}
     </div>
 
     <div class="validator-container">
