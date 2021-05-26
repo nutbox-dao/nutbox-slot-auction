@@ -68,6 +68,8 @@ export const subNominators = async () => {
           nick = acc.identity.displayParent + ' (' + acc.identity.display + ')'
         }else if(acc.identity?.display){
           nick = acc.identity.display
+        }else{
+          nick = acc.identity.displayParent
         }
       }else{
         nick = `${address.slice(0,16)}...${address.slice(-5)}`
