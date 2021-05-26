@@ -68,6 +68,7 @@ module.exports = {
     connectTron:"Connect to TronLink",
     swapSubTitle:"The fast and secure way to bring cross-chain assets to Tron chain.",
     install:"Install",
+    transfer:"Transfer",
   },
   stake: {
     stake: 'Staking Mining',

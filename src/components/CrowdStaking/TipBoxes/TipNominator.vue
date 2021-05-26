@@ -24,10 +24,10 @@
     </div>
     <div class="h-line"></div>
 
-    <div v-if="needToCancelValidators > 0" class="list-box">
-      <p class="text-center fon12 text-grey-light">
+      <p class="text-center fon14 text-grey" v-if="needToCancelValidators > 0">
         {{ $t("cs.cancelValidorsInfo", { n: needToCancelValidators }) }}
       </p>
+    <div v-if="needToCancelValidators > 0" class="list-box">
       <b-form-checkbox-group
         id="checkbox-group-2"
         v-model="selected"
@@ -203,6 +203,7 @@ export default {
     width: 100%;
     margin-top: 1rem;
     height: 48px;
+    min-height: 48px;
   }
   .big {
     background-image: linear-gradient(

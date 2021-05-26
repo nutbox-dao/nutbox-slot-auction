@@ -18,6 +18,7 @@ import {
   POLKADOT_WEB_SOCKET
 } from "../../config"
 import store from "../../store"
+import { POLKADOT_DECIMAL } from '@/constant'
 
 export async function getApi() {
   if (store.state.polkadot.api) {
@@ -42,11 +43,11 @@ export async function getApi() {
   return api
 }
 
-export function uni2Token(uni, decimal = 10) {
+export function uni2Token(uni, decimal = POLKADOT_DECIMAL) {
   return uni.div(new BN(10).pow(decimal))
 }
 
-export function token2Uni(amount, decimal = 10) {
+export function token2Uni(amount, decimal = POLKADOT_DECIMAL) {
   amount = parseFloat(amount)
   // need to convert amount to int first.Other wise the new BN method will cast the decimal part
   return new BN(amount * 1e6).mul(new BN(10).pow(new BN(decimal - 6)))
@@ -58,7 +59,7 @@ export const getDecimal = async () => {
   }
   const api = await getApi()
   const decimal = new BN(api.registry.chainDecimals[0]);
-  store.commit('saveDecimal', decimal)
+  store.commit('polkadot/saveDecimal', decimal)
   return decimal
 }
 
@@ -108,13 +109,13 @@ export const validAddress = (address) => {
 }
 
 // 将地址统一成substrate的格式
-export const stanfiAddress = (address) => {
+export const stanfiAddress = (address, type=0) => {
   try {
     return encodeAddress(
       isHex(address) ?
       hexToU8a(address) :
       decodeAddress(address),
-      0
+      type
     );
   } catch (e) {
     console.log(e);

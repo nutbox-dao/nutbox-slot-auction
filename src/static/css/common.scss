@@ -170,6 +170,15 @@ td {
   }
 }
 
+
+.empty-bg{
+  height: 7rem;
+  padding-top: 160px;
+  img{
+    height: 7rem;
+  }
+}
+
 input,
 button {
   outline: none;
@@ -181,6 +190,10 @@ button {
 
 .dropdown {
   outline: none;
+}
+
+.boder-bottom{
+  border-bottom: 1px solid var(--dividers);
 }
 
 @media (min-width: 960px) {

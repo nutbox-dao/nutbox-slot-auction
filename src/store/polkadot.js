@@ -10,7 +10,6 @@ export default {
       // polkadot
       api: null,
       apiState: null,
-      lang: Cookie.get(LOCALE_KEY),
       subBalance: {},
       subLocked: {},
       subNominators: {},
@@ -28,7 +27,11 @@ export default {
       allAccounts: [],
       balance: 0,
       locked: 0,
+      totalStaked: 0,
+      unLocking: 0,
+      redeemable: 0,
       currentBlockNum: {},
+      allValidatorInfosInOurDB: []
     },
     mutations: {
       // pokadot
@@ -52,10 +55,6 @@ export default {
       },
       saveSubBonded: (state, subBonded) => {
         state.subBonded = subBonded
-      },
-      saveLang: (state, lang) => {
-        state.lang = lang;
-        Cookie.set(LOCALE_KEY, lang, '30d')
       },
       saveBonded: (state, bonded) => {
         state.bonded = bonded
@@ -91,9 +90,21 @@ export default {
       saveLocked: (state, locked) => {
         state.locked = locked
       },
+      saveTotalStaked: (state, totalStaked) => {
+        state.totalStaked = totalStaked
+      },
+      saveUnlocking: (state, unLocking) => {
+        state.unLocking = unLocking
+      },
+      saveRedeemable: (state, redeemable) => {
+        state.redeemable = redeemable
+      },
       saveCurrentBlockNum: (state, blockNum) => {
         state.currentBlockNum = blockNum
       },
+      saveAllValidatorInfosInOurDB: (state, allValidatorInfosInOurDB) => {
+        state.allValidatorInfosInOurDB = allValidatorInfosInOurDB
+      }
     },
     getters: {
       // polkadot 

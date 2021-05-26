@@ -68,6 +68,7 @@ module.exports = {
     connectTron: "트론링크 연결",
     swapSubTitle: "크로스체인 자산을 옮기는 빠르고 안전한 방법",
     install: "설치",
+    transfer: "송금",
   },
   stake: {
     stake: '스테이킹 마이닝',
