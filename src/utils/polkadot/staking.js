@@ -63,11 +63,11 @@ export const subNominators = async () => {
     infos = infos.map(acc => {
       let nick = ''
       let address = stanfiAddress(acc.accountId)
-      if (acc.identity?.displayParent){
-        if (acc.identity?.display){
+      if (acc.identity?.displayParent || acc.identity?.display){
+        if (acc.identity?.display && acc.identity?.displayParent){
           nick = acc.identity.displayParent + ' (' + acc.identity.display + ')'
-        }else{
-          nick = acc.identity.displayParent
+        }else if(acc.identity?.display){
+          nick = acc.identity.display
         }
       }else{
         nick = `${address.slice(0,16)}...${address.slice(-5)}`
