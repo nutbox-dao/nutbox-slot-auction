@@ -25,7 +25,6 @@
             <span>{{ row.item.community }}</span>
           </template>
           <template #cell(chain)="row">
-            <!-- <b-avatar size="sm" class="mr-2">C</b-avatar> -->
             <span>{{ row.item.chain }}</span>
           </template>
         </b-table>

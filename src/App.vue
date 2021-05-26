@@ -556,7 +556,6 @@ input::-webkit-input-placeholder {
     box-sizing: border-box;
     flex: 1;
     overflow: hidden;
-    max-width: 100%!important;
     >div {
       height: 100%;
       display: flex;
