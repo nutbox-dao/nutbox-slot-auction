@@ -79,7 +79,6 @@ module.exports = {
     bond: "绑定",
     unBond: "解绑",
     redeem: "领取奖励"
-
   },
   admin: {
     admin: "管理员"
@@ -130,7 +129,6 @@ module.exports = {
     contributeOk: "投票成功",
     withdrawOk: "赎回成功",
     transactionOk:"交易成功",
-
   },
   stake: {
     stake: '质押挖矿',
@@ -252,5 +250,4 @@ module.exports = {
     hasVoted: "Nutbox已经点赞了您的帖子。",
     pleaseRetry: "请重试"
   }
-
 }

@@ -1,5 +1,5 @@
 th,
-td {
+ponsived {
   white-space: nowrap;
   word-break: keep-all;
 }
@@ -172,8 +172,7 @@ td {
 
 
 .empty-bg{
-  height: 7rem;
-  padding-top: 160px;
+  padding: 2rem 0;
   img{
     height: 7rem;
   }
@@ -183,7 +182,9 @@ input,
 button {
   outline: none;
 }
-
+.btn {
+  padding: .6rem 1.2rem!important;
+}
 [role="button"] {
   outline: none;
 }

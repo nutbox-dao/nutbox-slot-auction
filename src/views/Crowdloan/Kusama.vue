@@ -1,5 +1,5 @@
 <template>
-  <div class="k-page crowdloan-page">
+  <div class="k-page crowdloan-page scroll-content">
     <div class="loading-bg" v-if="loadingFunds">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t('tip.loading') }}</p>
@@ -11,15 +11,13 @@
         <p> {{ $t('tip.noAuction') }} </p>
       </div>
       <div class="cards-container">
-        <div class="container">
           <div class="row">
-            <div class="col-lg-4 col-md-6" v-for="card, idx of showingCard()" :key="idx">
+            <div class="col-xl-4 col-md-6" v-for="card, idx of showingCard()" :key="idx">
                 <CrowdloanCard
                   :paraId="parseInt(card.para.paraId)"
                   :communityId="card.community.communityId"
                 />
             </div>
-          </div>
         </div>
       </div>
     </template>
@@ -99,9 +97,7 @@ export default {
   }
   .cards-container {
     height: 100%;
-    overflow: auto;
     padding-top: 3.6rem;
-    padding-bottom: 3rem;
   }
 }
 </style>

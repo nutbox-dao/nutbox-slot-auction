@@ -6,7 +6,7 @@
     </div>
     <div class="row" v-else>
       <div
-        class="col-lg-4 col-md-6"
+        class="col-xl-4 col-md-6"
         v-for="(item, index) of items"
         :key="index"
       >

@@ -7,7 +7,7 @@
 
     <div class="empty-bg" v-if="!loadingContributions && items.length === 0">
       <img src="~@/static/images/empty-data.png" alt="" />
-      <p>{{ $t("tip.noNominations") }}</p>
+      <p>{{ $t("tip.noAuction") }}</p>
     </div>
     <div v-show="items.length > 0 && !loadingContributions">
       <b-card class="table-card">
@@ -25,7 +25,6 @@
             <span>{{ row.item.community }}</span>
           </template>
           <template #cell(chain)="row">
-            <!-- <b-avatar size="sm" class="mr-2">C</b-avatar> -->
             <span>{{ row.item.chain }}</span>
           </template>
         </b-table>
@@ -120,7 +119,6 @@ export default {
               ).toFixed(4),
               time: formatDate(c.createdAt),
             }));
-          console.log({ chain: this.chain, res: res.data });
           this.saveLoadingContributions(false);
         })
         .catch((err) => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-page crowdloan-page">
+  <div class="p-page crowdloan-page scroll-content">
       <div class="empty-bg">
         <img src="~@/static/images/empty-data.png" alt="" />
         <p> {{ $t('tip.comingSoon') }} </p>
