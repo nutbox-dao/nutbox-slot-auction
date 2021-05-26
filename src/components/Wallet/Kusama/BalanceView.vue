@@ -108,16 +108,14 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-  width: 30%;
-  min-width: 320px;
   .top {
     margin: 0;
     padding: 0;
     display: flex;
     .icon {
-      width: 56px;
-      height: 56px;
-      margin-right: 8px;
+      width: 2.8rem;
+      height: 2.8rem;
+      margin-right: .4rem;
     }
     .balance-right {
       display: flex;
@@ -129,7 +127,7 @@ export default {
         text-align: left;
       }
       .title {
-        font-size: 16px;
+        font-size: .8rem;
         font-weight: 600;
       }
       .balance-name {

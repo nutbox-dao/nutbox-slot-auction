@@ -2,42 +2,44 @@
   <div id="app">
     <div class="page-layout">
       <div class="left">
-        <div class="logo-container">
-          <img
-            src="./static/images/logo.png"
-            style="width: 180px; height: 70px"
-            alt="nutbox"
-            class="logo"
-          />
-          <img
-            src="./static/images/logo_small.png"
-            style="width: 42px; height: 42px; margin-bottom: 12px"
-            alt="nutbox"
-            class="logo_small"
-          />
+        <div class="top">
+          <div class="logo-container">
+            <img
+              src="./static/images/logo.png"
+              style="width: 180px; height: 70px; margin-left: -12px"
+              alt="nutbox"
+              class="logo"
+            />
+            <img
+              src="./static/images/logo_small.png"
+              style="width: 100%;max-width: 42px; margin: 1rem 0"
+              alt="nutbox"
+              class="logo_small"
+            />
+          </div>
+          <b-nav pills vertical align="center" class="menu">
+            <b-nav-item to="/wallet" router-tag="div">
+              <p id="wallet-icon" class="my-icon" />
+              <span>{{ $t("wallet.wallet") }}</span>
+            </b-nav-item>
+            <b-nav-item to="/crowdloan">
+              <p id="farming-icon" class="my-icon" />
+              <span>{{ $t("cl.crowdloan") }}</span>
+            </b-nav-item>
+            <b-nav-item to="/crowdstaking" router-tag="div">
+              <p id="stake-icon" class="my-icon" />
+              <span>{{ $t("cs.crowdstaking") }}</span>
+            </b-nav-item>
+            <b-nav-item to="/blog">
+              <p id="blog-icon" class="my-icon" />
+              <span>{{ $t("message.blog") }}</span>
+            </b-nav-item>
+            <b-nav-item to="/admin" v-if="isAdmin">
+              <p id="admin-icon" class="my-icon" />
+              <span>{{ $t("message.admin") }}</span>
+            </b-nav-item>
+          </b-nav>
         </div>
-        <b-nav pills vertical align="center" class="menu">
-          <b-nav-item to="/wallet" router-tag="div">
-            <p id="wallet-icon" class="my-icon" />
-            <span>{{ $t("wallet.wallet") }}</span>
-          </b-nav-item>
-          <b-nav-item to="/crowdloan">
-            <p id="farming-icon" class="my-icon" />
-            <span>{{ $t("cl.crowdloan") }}</span>
-          </b-nav-item>
-          <b-nav-item to="/crowdstaking" router-tag="div">
-            <p id="stake-icon" class="my-icon" />
-            <span>{{ $t("cs.crowdstaking") }}</span>
-          </b-nav-item>
-          <b-nav-item to="/blog">
-            <p id="blog-icon" class="my-icon" />
-            <span>{{ $t("message.blog") }}</span>
-          </b-nav-item>
-          <b-nav-item to="/admin" v-if="isAdmin">
-            <p id="admin-icon" class="my-icon" />
-            <span>{{ $t("message.admin") }}</span>
-          </b-nav-item>
-        </b-nav>
         <div class="bottom">
           <div class="links">
             <a
@@ -93,7 +95,7 @@
               Telegram
             </b-popover>
           </div>
-
+          <div class="h-line"></div>
           <div class="settings">
             <b-dd
               id="language"
@@ -162,7 +164,7 @@
         @hideMask="showMessage = false"
       />
       <div class="right">
-        <div class="account-header">
+        <div class="account-header" v-if="$route.path!=='/blog'">
           <div class="p-2">
             <b-dropdown
               toggle-class="accounts-toggle"
@@ -345,13 +347,6 @@ export default {
       this.getCommnunitys();
       this.getCrowdstacking();
     },
-    showError(err) {
-      this.$bvToast.toast(err, {
-        title: "MFund",
-        autoHideDelay: 5000,
-        variant: "danger",
-      });
-    },
     getCommnunitys() {
       // 获取支持平行链项目的社区信息  -   kusama
       getCommnunitys().then((res) => {
@@ -417,6 +412,8 @@ $blue: #ffdb1b;
   --warning: #ff9500;
   --backgroud-state: #b37012;
 }
+::-webkit-scrollbar{display:none;}
+@import "./static/css/responsive";
 @import "./static/css/common.scss";
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap-vue/src/index.scss";
@@ -440,28 +437,26 @@ body {
   bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  //display: flex;
   font-size: 14px;
   background-color: var(--background);
 }
 .page-layout {
   position: relative;
-  min-height: 600px;
+  min-height: 500px;
   overflow: hidden;
   height: 100%;
 }
 h3 {
   text-align: left;
-  display: block;
   width: 100%;
-  height: 36px;
-  font-size: 36px;
+  height: 1.8rem;
+  font-size: 1.8rem;
   font-weight: 500;
-  line-height: 36px;
+  line-height: 1.8rem;
 }
 .spinner-grow {
-  margin-bottom: 2px;
-  margin-right: 8px;
+  margin-bottom: .1rem;
+  margin-right: .4rem;
 }
 input {
   border: none;
@@ -518,8 +513,7 @@ input::-webkit-input-placeholder {
 .logo-container {
   display: flex;
   align-content: center;
-  justify-content: center;
-  margin-left: -12px;
+  justify-content: flex-start;
 }
 
 .logo {
@@ -531,11 +525,15 @@ input::-webkit-input-placeholder {
   padding-top: 55px;
   padding-left: 12px;
   width: 240px;
-  box-shadow: 4px 0px 48px 0px rgba(0, 0, 0, 0.06);
-  border-radius: 0px 4vh 4vh 0px;
+  box-shadow: 4px 0 48px 0 rgba(0, 0, 0, 0.06);
+  border-radius: 0 4vh 4vh 0;
   position: absolute;
   z-index: 1;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 .right {
   position: absolute;
@@ -547,24 +545,63 @@ input::-webkit-input-placeholder {
   min-height: 100vh;
   background-color: var(--background);
   padding-left: 240px;
-  overflow: auto;
-  //display: flex;
-  //flex-direction: column;
-  //justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .account-header {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    // display: flex;
-    // justify-content: flex-end;
+    text-align: right;
   }
   .container {
-    padding: 56px 40px 46px;
+    padding: 0 40px 46px;
+    box-sizing: border-box;
+    flex: 1;
+    overflow: hidden;
+    max-width: 100%!important;
+    >div {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+  .scroll-content {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .sub-page-nav {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--dividers);
+    a {
+      border: 0;
+      font-size: .8rem;
+      padding: .8rem 1.2rem;
+      color: #666;
+      box-sizing: border-box;
+      font-weight: 600;
+      line-height: 16px !important;
+    }
+    a:hover {
+      background: linear-gradient(
+          270deg,
+          rgba(227, 229, 232, 0) 0%,
+          rgba(227, 229, 232, 0.4) 100%
+      ) !important;
+      text-decoration: none;
+
+      font-weight: 300;
+      line-height: 16px;
+    }
+    .active {
+      color: var(--primary-text);
+      border-bottom: 3px solid var(--primary);
+    }
   }
 }
 
 .left .nav-item {
-  height: 48px;
+  height: 2.4rem;
   text-align: left;
   box-sizing: border-box;
 }
@@ -610,31 +647,31 @@ input::-webkit-input-placeholder {
 }
 
 .left .bottom {
-  position: absolute;
-  padding: 0 20px;
-  margin-left: -12px;
-  width: 240px;
-  bottom: 30px;
+  //position: absolute;
+  //padding: 0 20px;
+  //margin-left: -12px;
+  width: 100%;
+  margin-bottom: 30px;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0);
 
   .links {
-    width: 100%;
     display: flex;
     align-content: center;
-    justify-content: space-around;
-    margin-top: 19px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--dividers);
+    justify-content: space-between;
+    margin: 24px 12px 24px 0;
     a {
       width: 32px;
       height: 32px;
     }
   }
+  .h-line {
+    width: 100%;
+    height: 1px;
+    background-color: #E2E7EF;
+  }
   .settings {
-    margin-top: 18px;
-    margin-bottom: 12px;
-    width: 192;
+    margin: 24px 12px 24px 0;
     background: #f6f7f9;
     border-radius: 16px;
     padding: 14px 20px;
@@ -688,28 +725,6 @@ input::-webkit-input-placeholder {
   line-height: 32px;
   margin-top: 32px;
   border-bottom: 1px solid var(--dividers);
-}
-.pc-menu {
-  height: 60px;
-  width: 160px;
-  float: right;
-  .ident-icon svg {
-    margin-right: 0.5rem;
-  }
-  .user-address {
-    a {
-      opacity: 1 !important;
-    }
-    img {
-      width: 23px;
-      margin-right: 10px;
-    }
-  }
-  .account-info {
-    flex: 1;
-    font-size: 0.7rem;
-    margin-left: 6px;
-  }
 }
 .dropdown-menu {
   border-radius: 1.2rem;
@@ -846,13 +861,15 @@ input::-webkit-input-placeholder {
     display: none;
   }
   .left {
-    width: 75px;
-    min-width: 75px;
+    width: 4rem;
+    min-width: 4rem;
+    border-radius: 0 2rem 2rem 0;
+    padding: 1.5rem .5rem;
   }
   .right {
-    padding-left: 75px;
+    padding-left: 4rem;
     .container {
-      padding: 56px 12px 46px;
+      padding: 0 15px 0;
     }
   }
   .nav-link {
@@ -865,7 +882,6 @@ input::-webkit-input-placeholder {
     padding-left: 0px;
   }
   .left .bottom {
-    width: 100%;
   }
   .left .bottom .links {
     display: block;
@@ -882,6 +898,9 @@ input::-webkit-input-placeholder {
   }
   .left .bottom .settings {
     background: transparent;
+  }
+  .left .bottom .settings #language {
+    background-position: 8px center;
   }
   .left .bottom .settings .btn-secondary {
     color: transparent !important;
