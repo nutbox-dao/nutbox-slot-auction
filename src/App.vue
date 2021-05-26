@@ -121,7 +121,7 @@
                 ></b-icon>
                 <span style="font-size: 14px">{{ $t("message.zh") }}</span>
               </b-dropdown-item>
-              <b-dropdown-item @click="setLanguage('kr')">
+              <!-- <b-dropdown-item @click="setLanguage('kr')">
                 <b-icon
                   style="font-size: 20px"
                   :icon="lang == 'kr' ? 'check' : 'blank'"
@@ -152,7 +152,7 @@
                   aria-hidden="true"
                 ></b-icon>
                 <span style="font-size: 14px">{{ $t("message.jp") }}</span>
-              </b-dropdown-item>
+              </b-dropdown-item> -->
             </b-dd>
           </div>
         </div>
