@@ -4,7 +4,7 @@
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t("tip.loading") }}</p>
     </div>
-    <div class="col-lg-4 col-md-6" v-for="(item, index) of items" :key="index">
+    <div class="col-xl-4 col-md-6" v-for="(item, index) of items" :key="index">
       <div class="c-card">
         <div class="card-title-box flex-start-center">
           <div class="icons">
