@@ -101,47 +101,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card {
-  .top {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    .icon {
-      width: 56px;
-      height: 56px;
-      margin-right: 8px;
-    }
-    .balance-right {
-      display: flex;
-      flex: 1;
-      align-content: center;
-      justify-content: space-between;
-      margin-top: 6px;
-      span {
-        text-align: left;
-      }
-      .title {
-        font-size: .8rem;
-        font-weight: 600;
-      }
-      .balance-name {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        img:hover {
-          cursor: pointer;
-        }
-      }
-    }
-  }
-  .bottom{
-    padding: 14px 0 0 0 ;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-  }
-  button {
-    width: 90% !important;
-  }
+@import "src/static/css/walletBalanceCard";
+button {
+  flex: 1;
 }
 </style>
