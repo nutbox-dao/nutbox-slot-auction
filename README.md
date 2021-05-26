@@ -1,8 +1,8 @@
 # Nutbox Slot Auction On Polkadot
 
-The major functions contains crowdloan and crowdstaking.
-And you can also manage your asset.
-Provide community admin to manage the contribution and nomination.
+- The major functions contains crowdloan and crowdstaking.
+- And you can also manage your asset.
+- Provide community admin to manage the contribution and nomination.
 
 ## Project setup
 ```
