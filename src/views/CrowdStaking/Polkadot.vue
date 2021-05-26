@@ -12,7 +12,7 @@
       </div>
       <div class="cards-container">
         <div class="row">
-          <div class="col-lg-4 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
+          <div class="col-xl-5 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
             <CrowdStakingCard
               :crowdstaking="card"
             />

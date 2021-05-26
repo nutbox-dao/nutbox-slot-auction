@@ -61,7 +61,7 @@
         {{ $t('cl.withdraw') }}
       </button>
       <button
-        class="action-btn primary-btn"
+        class="primary-btn"
         disabled
         v-show="status === 'Completed'"
       >
@@ -325,6 +325,9 @@ export default {
       text-align: right;
       font-weight: 500;
     }
+  }
+  .primary-btn{
+    margin-top: 1rem;
   }
 }
 </style>
