@@ -1,0 +1,11 @@
+@media (min-width: 960px){
+  html {
+    font-size: 125% !important; // 1rem = 20px
+  }
+}
+@media (max-width: 350px) {
+  html {
+    font-size: 80% !important;
+  }
+}
+

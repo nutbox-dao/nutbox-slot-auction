@@ -216,6 +216,8 @@ export default {
     text-align: left;
     color: var(--primary-text);
     margin: 16px 0px;
+    height: 42px;
+    overflow: hidden;
   }
   .validator-container{
     display: flex;
