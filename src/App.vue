@@ -417,6 +417,7 @@ $blue: #ffdb1b;
   --warning: #ff9500;
   --backgroud-state: #b37012;
 }
+@import "./static/css/responsive";
 @import "./static/css/common.scss";
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap-vue/src/index.scss";

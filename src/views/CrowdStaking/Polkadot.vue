@@ -12,7 +12,7 @@
       </div>
       <div class="cards-container">
         <div class="row">
-          <div class="col-xl-5 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
+          <div class="col-xl-4 col-md-6" v-for="card, idx of crowdstakings" :key="idx">
             <CrowdStakingCard
               :crowdstaking="card"
             />
@@ -99,7 +99,7 @@ export default {
   }
   .cards-container {
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     padding-top: 3.6rem;
     padding-bottom: 3rem;
   }

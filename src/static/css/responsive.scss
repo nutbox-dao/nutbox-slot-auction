@@ -1,0 +1,29 @@
+@media (max-width: 750px) {
+  html {
+    font-size: 60% !important;
+  }
+}
+
+@media (max-width: 750px) {
+  html {
+    font-size: 80% !important;
+  }
+}
+
+@media (min-width: 960px) {
+  html {
+    font-size: 88% !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  html {
+    font-size: 105% !important;
+  }
+}
+// 以设计稿宽度标准1440px 其他等比缩放
+@media (min-width: 1440px) {
+  html {
+    font-size: 142% !important; // 1rem = 20px
+  }
+}
