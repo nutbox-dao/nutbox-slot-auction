@@ -1,5 +1,5 @@
 <template>
-  <div class="k-page crowdloan-page">
+  <div class="k-page crowdloan-page scroll-content">
     <div class="loading-bg" v-if="loadingFunds">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t('tip.loading') }}</p>
@@ -97,9 +97,7 @@ export default {
   }
   .cards-container {
     height: 100%;
-    overflow: hidden;
     padding-top: 3.6rem;
-    padding-bottom: 3rem;
   }
 }
 </style>
