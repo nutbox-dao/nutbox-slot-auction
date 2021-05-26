@@ -18,8 +18,8 @@
       </div>
       <div class="text-center mb-4 font16">
         <p class="bondInfo">{{ $t("cs.bondInfo1") }}</p>
-        <p class="bondInfo">{{ $t("cs.bondInfo2") }}</p>
-        <p class="bondInfo">{{ $t("cs.bondInfo3") }}</p>
+        <p class="bondInfo">{{ $t("cs.bondInfo2", {symbol: 'KSM', min: 0.1}) }}</p>
+        <p class="bondInfo">{{ $t("cs.bondInfo3", {days: 7}) }}</p>
       </div>
       <button class="primary-btn" @click="confirm" :disabled="isBonding">
         <b-spinner small type="grow" v-show="isBonding"></b-spinner

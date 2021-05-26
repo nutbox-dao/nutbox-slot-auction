@@ -94,8 +94,8 @@ module.exports = {
     bondAndNominate: " 绑定并投票",
     cancel: "取消",
     bondInfo1: "请保留少量资金用于后续操作手续费",
-    bondInfo2: "建议至少绑定 1 DOT",
-    bondInfo3: "解绑操作后需要等待28天",
+    bondInfo2: "建议至少绑定 {min} {symbol}",
+    bondInfo3: "解绑操作后需要等待 {days} 天",
     confirm: "确定",
     cancelValidorsInfo: "请取消至少 {n} 个您已经投票过的节点，再进行本次投票"
   },

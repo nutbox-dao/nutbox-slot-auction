@@ -94,8 +94,8 @@ module.exports = {
     bondAndNominate: " Bond & Nominate",
     cancel: "cancel",
     bondInfo1: "Please keep a small amount for the subsequent fee",
-    bondInfo2: "It is recommended to bind at least 1 DOT",
-    bondInfo3: "You need to wait 28 days after unbond",
+    bondInfo2: "It is recommended to bind at least {min} {symbol}",
+    bondInfo3: "You need to wait {days} days after unbond",
     confirm: "Confirm",
     cancelValidorsInfo:"Please cancel at least {n} validators before this nominate operation"
 },
