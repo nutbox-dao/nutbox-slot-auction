@@ -96,7 +96,7 @@ export default {
       axios
         .post(CROWD_LOAN_API_URL + "/contrib/find/contributor", {
           relaychain: "rococo",
-          contributor: stanfiAddress(this.account.address, 42),
+          contributor: stanfiAddress(this.account.address),
           offset,
           limit,
         })

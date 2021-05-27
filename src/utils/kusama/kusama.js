@@ -102,7 +102,7 @@ export const validAddress = (address) => {
   }
 }
 
-// 将地址统一成substrate的格式
+// 将地址统一成polkadot的格式
 export const stanfiAddress = (address, type=0) => {
   try {
     return encodeAddress(

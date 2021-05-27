@@ -119,8 +119,8 @@ export default {
   },
   created() {
     getDashboardSummary({
-      relaychain: "rococo",
-      communityId: "5ChZmLcNRWAbvM38BKgnFPjF6uUbWWr5FKFyBBjPtsb6F4jF",
+      relaychain: this.chain.toLowerCase(),
+      communityId: this.$store.state.polkadot.account.address,
     })
       .then(async (res) => {
         this.isLoading = false;

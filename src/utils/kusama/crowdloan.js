@@ -272,8 +272,8 @@ export const withdraw = async (paraId, toast, isInblockCallback) => {
 export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, inBlockCallback) => {
   return new Promise(async (resolve, reject) => {
     const from = store.state.polkadot.account && store.state.polkadot.account.address
-    communityId = stanfiAddress(communityId, 42)
-    childId = stanfiAddress(childId, 42)
+    communityId = stanfiAddress(communityId)
+    childId = stanfiAddress(childId)
     if (!from) {
       reject('no account')
     }
