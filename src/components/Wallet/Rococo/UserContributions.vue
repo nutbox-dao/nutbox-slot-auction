@@ -30,7 +30,7 @@
           </template>
         </b-table>
       </b-card>
-      <b-pagination
+      <b-pagination  v-if="items.length !== 0"
         v-model="currentPage"
         :total-rows="totalRows"
         :per-page="perPage"
