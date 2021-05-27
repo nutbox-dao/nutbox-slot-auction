@@ -833,6 +833,9 @@ body {
   .right {
     padding-left: 0;
   }
+  .container {
+    padding: 15px!important;
+  }
 }
 @media (min-width: 960px) {
   #sidebar-menu {
