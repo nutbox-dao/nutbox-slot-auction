@@ -107,7 +107,7 @@ export default {
       }
     },
     getters: {
-      // polkadot 
+      // polkadot
       available: (state) => {
         if (state.balance && state.locked){
           return state.balance.sub(state.locked)
