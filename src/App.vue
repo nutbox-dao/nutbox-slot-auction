@@ -12,7 +12,7 @@
             />
             <img
               src="./static/images/logo_small.png"
-              style="width: 100%;max-width: 42px; margin: 1rem 0"
+              style="width: 100%;max-width: 42px; max-height: 42px; margin: 1rem 0"
               alt="nutbox"
               class="logo_small"
             />
@@ -541,8 +541,6 @@ input::-webkit-input-placeholder {
   top: 0;
   bottom: 0;
   width: 100%;
-  max-height: 100vh;
-  min-height: 100vh;
   background-color: var(--background);
   padding-left: 240px;
   display: flex;
