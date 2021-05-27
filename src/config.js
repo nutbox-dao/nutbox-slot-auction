@@ -14,8 +14,8 @@ export const LOCALE_KEY = 'localeLanguage'
 
 // polkadot
 export const POLKADOT_WEB_SOCKET = "wss://rpc.polkadot.io"
-// export const KUSAMA_WEB_SOCKET = "wss://kusama-rpc.polkadot.io"
-export const KUSAMA_WEB_SOCKET = "wss://crowdloan-test.nutbox.io/relaychain/ws"
+export const KUSAMA_WEB_SOCKET = "wss://kusama-rpc.polkadot.io"
+export const ROCOCO_WEB_SOCKET = "wss://crowdloan-test.nutbox.io/relaychain/ws"
 
 export const CROWD_STAKING_API_URL = "https://api.crowdstaking.nutbox.io"
 export const CROWD_LOAN_API_URL = "https://api.crowdloan-test.nutbox.io"
