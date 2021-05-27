@@ -78,7 +78,12 @@ module.exports = {
     balance: "Balance",
     bond: "Bond",
     unBond: "Unbond",
-    redeem: "Redeem"
+    redeem: "Redeem",
+    bindAmount: "Bond amount",
+    inputAmount: 'Please input amount',
+    receiveAddress: 'Send to address',
+    transferAmount: 'Transfer amount',
+    unbindAmount: 'Unbond amount'
   },
   admin: {
     admin: "管理员"

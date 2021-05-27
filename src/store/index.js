@@ -7,6 +7,7 @@ import {
 
 import polkadot from './polkadot'
 import kusama from './kusama'
+import rococo from './rococo'
 
 Vue.use(Vuex)
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
   },
   modules: {
     polkadot,
-    kusama
+    kusama,
+    rococo
   }
 })

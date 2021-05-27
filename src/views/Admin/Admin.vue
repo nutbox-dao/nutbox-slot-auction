@@ -6,6 +6,7 @@
     <div class="nav sub-page-nav">
       <router-link to="/admin" exact>Pokadot</router-link>
       <router-link to="/admin/kusama">Kusama</router-link>
+      <router-link to="/admin/rococo">Rococo</router-link>
       <div class="center-blank"></div>
     </div>
     <router-view></router-view>

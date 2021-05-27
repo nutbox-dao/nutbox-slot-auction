@@ -223,8 +223,10 @@ import {
   loadAccounts as loadPolkadotAccounts,
 } from "./utils/polkadot/account";
 import { getBalance as getKusamaBalance } from "./utils/kusama/account";
+import { getBalance as getRococoBalance } from "./utils/rococo/account";
 import { subBlock as subPolkadotBlock } from "./utils/polkadot/block";
 import { subBlock as subKusamaBlock } from "./utils/kusama/block";
+import { subBlock as subRococoBlock } from "./utils/rococo/block"
 import {
   subBonded,
   subNominators,
@@ -314,6 +316,7 @@ export default {
       this.saveAccount(acc);
       getPolkadotBalance(acc);
       getKusamaBalance(acc);
+      getRococoBalance(acc);
       subKusamaBonded();
       subBonded();
       subNominators();
@@ -372,7 +375,7 @@ export default {
     }
   },
   async created() {
-    await Promise.all([subPolkadotBlock(), subKusamaBlock()]);
+    await Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
     await loadPolkadotAccounts();
   },
 };

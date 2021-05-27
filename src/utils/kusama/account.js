@@ -72,7 +72,7 @@ export const getBalance = async () => {
  * @param {Number} amount 转账数目 单位为ksm
  */
 export const transfer = async (to, amount, toast, callback) => {
-  const api = injectAccount(store.state.polkadot.account)
+  const api = await injectAccount(store.state.polkadot.account)
   const decimal = new BN(12)
   const from = store.state.polkadot.account.address
   amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))

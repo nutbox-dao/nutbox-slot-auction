@@ -6,6 +6,7 @@
     <div class="nav sub-page-nav">
       <router-link to="/wallet" exact>Pokadot</router-link>
       <router-link to="/wallet/kusama">Kusama</router-link>
+      <router-link to="/wallet/rococo">Rococo</router-link>
     </div>
     <router-view></router-view>
   </div>
@@ -29,6 +30,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.wallet {
-}
 </style>

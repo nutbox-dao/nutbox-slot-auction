@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     ...mapState("polkadot", ["account"]),
-    ...mapState("kusama", ["loadingContributions"]),
+    ...mapState("rococo", ["loadingContributions"]),
   },
   data() {
     return {
@@ -87,7 +87,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("kusama", ["saveLoadingContributions"]),
+    ...mapMutations("rococo", ["saveLoadingContributions"]),
     async requstData(offset, limit) {
       this.saveLoadingContributions(true);
       this.cancelToken &&
@@ -98,7 +98,7 @@ export default {
       const decimal = new BN(12);
       axios
         .post(CROWD_LOAN_API_URL + "/contrib/find/contributor", {
-          relaychain: "kusama",
+          relaychain: "rococo",
           contributor: stanfiAddress(this.account.address),
           offset,
           limit,

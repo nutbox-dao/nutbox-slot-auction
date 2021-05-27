@@ -9,11 +9,14 @@ import KusamaCrowdloan from '../views/Crowdloan/Kusama'
 import Wallet from '../views/Wallet/Wallet'
 import PolkadotWallet from '../views/Wallet/Polkadot'
 import KusamaWallet from '../views/Wallet/Kusama'
+import RococoWallet from '../views/Wallet/Rococo'
 import Admin from '../views/Admin/Admin'
 import PolkadotAdmin from '../views/Admin/Polkadot'
 import KusamaAdmin from '../views/Admin/Kusama'
 import PolkadotCrowdstaking from '../views/CrowdStaking/Polkadot'
 import KusamaCrowdstaking from '../views/CrowdStaking/Kusama'
+import RococoAdmin from '../views/Admin/Rococo'
+
 
 
 Vue.use(VueRouter)
@@ -35,6 +38,10 @@ const routes = [
       {
         path:'kusama',
         component: KusamaWallet
+      },
+      {
+        path: 'rococo',
+        component: RococoWallet
       }
     ]
   },
@@ -86,6 +93,10 @@ const routes = [
       {
         path: 'kusama',
         component: KusamaAdmin
+      },
+      {
+        path: 'rococo',
+        component: RococoAdmin
       }
     ]
   }

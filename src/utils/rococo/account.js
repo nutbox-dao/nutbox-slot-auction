@@ -27,12 +27,8 @@ export const getBalance = async () => {
   const api = await getApi()
   // cancel last
   let subBalance = store.state.rococo.subBalance
-  let subLocked = store.state.rococo.subLocked
   try {
     subBalance()
-  } catch (e) {}
-  try {
-    subLocked()
   } catch (e) {}
 
   subBalance = await api.query.system.account(store.state.polkadot.account.address, ({
@@ -43,25 +39,6 @@ export const getBalance = async () => {
     store.commit('rococo/saveBalance', new BN(currentFree))
   })
 
-  subLocked = await api.query.staking.ledger(store.state.polkadot.account.address, (locked) => {
-    if (!locked.toJSON() || locked.toJSON().length === 0) {
-      store.commit('rococo/saveLocked', new BN(0))
-      store.commit('rococo/saveTotalStaked', new BN(0))
-      store.commit('rococo/saveUnlocking', new BN(0))
-      store.commit('rococo/saveRedeemable', new BN(0))
-      return
-    }
-    locked = locked.toJSON()
-    const total = new BN(locked.total)
-    const active = new BN(locked.active)
-    const unlocking = new BN(locked.unlocking.reduce((t, u) => t.add(new BN(u.value)), new BN(0)))
-    store.commit('rococo/saveTotalStaked', total)
-    store.commit('rococo/saveLocked', active)
-    store.commit('rococo/saveUnlocking', unlocking)
-    store.commit('rococo/saveRedeemable', total.sub(active).sub(unlocking))
-  })
-
-  store.commit('rococo/saveSubLocked', subLocked)
   store.commit('rococo/saveSubBalance', subBalance)
 }
 
@@ -72,9 +49,10 @@ export const getBalance = async () => {
  * @param {Number} amount 转账数目 单位为ksm
  */
 export const transfer = async (to, amount, toast, callback) => {
-  const api = injectAccount(store.state.polkadot.account)
+  const api = await injectAccount(store.state.polkadot.account)
   const decimal = new BN(12)
   const from = store.state.polkadot.account.address
+  console.log('api', api);
   amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))
   const nonce = (await api.query.system.account(from)).nonce.toNumber()
   const unsub = await api.tx.balances.transfer(to, amount).signAndSend(from, {

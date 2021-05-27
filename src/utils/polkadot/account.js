@@ -17,6 +17,9 @@ import {
 import {
   getBalance as getKusamaBalance
 } from '../kusama/account'
+import {
+  getBalance as getRococoBalance
+} from '../rococo/account'
 
 import {
   getApi,
@@ -47,6 +50,7 @@ export const loadAccounts = async () => {
     store.commit('polkadot/saveAccount', account)
     getBalance(account)
     getKusamaBalance(account)
+    getRococoBalance(account)
     subNominators()
     subBonded()
     // inject
