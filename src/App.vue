@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="page-container">
-        <b-sidebar id="sidebar-menu" no-header>
+        <b-sidebar id="sidebar-menu" no-header :backdrop="screenWidth<960">
           <div class="left">
             <div class="top">
               <b-nav pills vertical align="center" class="menu">
@@ -437,8 +437,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .5rem 1.6rem;
+  padding: 0 1.6rem;
   background: white;
+  height: 3.8rem;
   .logo {
     width: 6.8rem;
     height: 2.8rem;
@@ -466,14 +467,12 @@ body {
   position: relative;
   overflow: hidden;
   flex: 1;
-  .b-sidebar-outer {
-    position: absolute;
-    height: 100%;
-    width: 240px;
-  }
   #sidebar-menu {
-    position: relative;
+    position: fixed;
+    top: 3.8rem;
+    bottom: 0;
     width: 240px;
+    height: auto;
   }
   .left {
     width: 100%;
@@ -820,6 +819,9 @@ body {
   display: none;
 }
 @media only screen and (max-width: 960px) {
+  .page-header {
+    padding: .5rem .8rem;
+  }
   .small-logo-container {
     display: block !important;
   }
@@ -829,58 +831,13 @@ body {
   .right {
     padding-left: 0;
   }
-  //.nav-link {
-  //  display: inherit;
-  //}
-  //.left .nav-item {
-  //  height: 40px;
-  //}
-  //.left .nav-link {
-  //  padding-left: 0px;
-  //}
-  //.left .bottom {
-  //}
-  //.left .bottom .links {
-  //  display: block;
-  //}
-  //.left .bottom .links a {
-  //  margin-bottom: 6px;
-  //  display: block;
-  //}
-  //.menu .nav-link {
-  //  flex-wrap: inherit;
-  //}
-  //.memu-wallet {
-  //  display: none;
-  //}
-  //.left .bottom .settings {
-  //  background: transparent;
-  //}
-  //.left .bottom .settings #language {
-  //  background-position: 8px center;
-  //}
-  //.left .bottom .settings .btn-secondary {
-  //  color: transparent !important;
-  //}
-  //.left .bottom .settings {
-  //  padding: 0;
-  //  display: block;
-  //}
-  //.dropdown-menu {
-  //  max-width: 200px;
-  //  .account-info {
-  //    overflow: hidden;
-  //    .address {
-  //      overflow: hidden;
-  //      text-overflow: ellipsis;
-  //      white-space: nowrap;
-  //    }
-  //  }
-  //}
 }
 @media (min-width: 960px) {
   #sidebar-menu {
     display: block!important;
   }
+}
+.bg-dark {
+  background-color: rgba(0,0,0,0) !important;
 }
 </style>

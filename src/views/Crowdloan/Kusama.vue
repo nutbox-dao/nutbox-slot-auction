@@ -58,8 +58,6 @@ export default {
 .crowdloan-page {
   height: 100%;
   background: rgba(246, 247, 249, 1);
-  //overflow: hidden;
-  //position: relative;
   .bg {
     position: absolute;
     left: 50%;

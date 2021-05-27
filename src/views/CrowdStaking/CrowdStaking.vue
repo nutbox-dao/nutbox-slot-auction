@@ -45,7 +45,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .sub-page-nav {
   margin-bottom: 2rem;
 }

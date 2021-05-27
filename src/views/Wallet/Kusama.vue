@@ -5,7 +5,7 @@
 <!--        {{ $t("wallet.asset") }}-->
 <!--      </p>-->
       <div class="balance-box row">
-        <div class="col-xl-4 col-md-6">
+        <div class="col-xl-4 col-md-6 mb-2">
           <BalanceView
             name="KSM"
             :balances="available / 1e12"
@@ -14,7 +14,7 @@
             :transfer="true"
           />
         </div>
-        <div class="col-xl-4 col-md-6">
+        <div class="col-xl-4 col-md-6 mb-2">
           <LockedBalanceView
             name="KSM"
             :balances="locked / 1e12"

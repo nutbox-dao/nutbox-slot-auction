@@ -233,45 +233,9 @@ input::-webkit-input-placeholder {
 .table thead th {
   border-top: 0;
 }
+.table th, .table td {
+  white-space: nowrap;
+}
 .pagination li {
   margin: 0 .2rem;
 }
-@media (min-width: 960px) {
-  .mobile-menu {
-    display: none !important;
-  }
-
-  .mobile-address {
-    display: none;
-  }
-}
-
-@media (max-width: 960px) {
-  .pc-menu {
-    display: none !important;
-  }
-
-  .mobile-address {
-    display: block !important;
-  }
-
-  .menu-btn {
-    display: block !important;
-  }
-
-  .mobile-menu {
-    .nav-item {
-      min-width: 0;
-    }
-
-    .user-address .nav-link {
-      padding: 1px 8px;
-      border-radius: 8px;
-
-      img {
-        margin: auto;
-      }
-    }
-  }
-}
-
