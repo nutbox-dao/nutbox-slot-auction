@@ -136,6 +136,7 @@ export const calStatus = async (end, firstSlot, raised, cap, pId, bestBlockNumbe
   const isCapped = (new BN(raised)).gte(new BN(cap))
   const isEnded = bestBlockNumber >= end || bestBlockNumber >= auctionEnd
   const retiring = (isEnded || currentPeriod > firstSlot) && bestBlockNumber < auctionEnd
+  console.log({auctionEnd,leasePeriod,currentPeriod,leases,isWinner,isCapped,isEnded,retiring})
   let status = ''
   let statusIndex = 0
   if (retiring) {
@@ -160,6 +161,7 @@ export const getAuctionEnd = async () => {
   const api = await getApi()
   const bestBlockHash = await api.rpc.chain.getBlockHash();
   const auctionInfo = (await api.query.auctions.auctionInfo.at(bestBlockHash)).toJSON();
+  console.log({auctionInfo});
   const auctionEnd = auctionInfo ? auctionInfo[1] : 0
   store.commit('kusama/saveAuctionEnd', auctionEnd)
   return auctionEnd
@@ -272,8 +274,8 @@ export const withdraw = async (paraId, toast, isInblockCallback) => {
 export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, inBlockCallback) => {
   return new Promise(async (resolve, reject) => {
     const from = store.state.polkadot.account && store.state.polkadot.account.address
-    communityId = stanfiAddress(communityId, 42)
-    childId = stanfiAddress(childId, 42)
+    communityId = stanfiAddress(communityId)
+    childId = stanfiAddress(childId)
     if (!from) {
       reject('no account')
     }
