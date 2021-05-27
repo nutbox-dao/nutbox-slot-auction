@@ -4,6 +4,10 @@
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t("tip.loading") }}</p>
     </div>
+    <div class="empty-bg" v-if="!isLoading && items.length === 0">
+      <img src="~@/static/images/empty-data.png" alt="" />
+      <p>{{ $t("tip.noStakingProject") }}</p>
+    </div>
     <div class="row" v-else>
       <div
         class="col-xl-4 col-md-6"

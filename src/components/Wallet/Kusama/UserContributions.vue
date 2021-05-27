@@ -10,7 +10,7 @@
         <slot name="title"></slot>
         <div class="empty-bg" v-if="items.length === 0">
           <img src="~@/static/images/empty-data.png" alt="" />
-          <p>{{ $t("tip.noAuction") }}</p>
+          <p>{{ $t("tip.noContribuitons") }}</p>
         </div>
         <b-table v-show="items.length > 0"
           :items="items"
