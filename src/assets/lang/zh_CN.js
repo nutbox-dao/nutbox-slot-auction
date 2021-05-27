@@ -189,6 +189,8 @@ module.exports = {
     noProject: "没有进行中的项目",
     noNominations: "没有投票验证者节点",
     noContribuitons: "没有投票记录",
+    noCrowdloan: "没有进行中的众贷",
+    noStakingProject: "没有验证者节点项目",
     tokenSafeTip: "您的资产将被锁定到 {symbol} 的官方众贷合约内，而不是Nutbox的账户内。",
     belowMinContribution: "投票数小于最小投票数1.0000个。",
     belowMinBond: "绑定数小于最小绑定数0.1个。",

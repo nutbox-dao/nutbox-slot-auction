@@ -95,7 +95,6 @@ export default {
         });
       this.cancelToken = axios.CancelToken;
       const decimal = new BN(12);
-      console.log('address', this.account.address, stanfiAddress(this.account.address));
       axios
         .post(CROWD_LOAN_API_URL + "/contrib/find/contributor", {
           relaychain: "rococo",
