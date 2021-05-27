@@ -1,242 +1,211 @@
 <template>
   <div id="app">
     <div class="page-layout">
-      <div class="left">
-        <div class="top">
-          <div class="logo-container">
-            <img
-              src="./static/images/logo.png"
-              style="width: 180px; height: 70px; margin-left: -12px"
-              alt="nutbox"
-              class="logo"
-            />
-            <img
-              src="./static/images/logo_small.png"
-              style="width: 100%;max-width: 42px; max-height: 42px; margin: 1rem 0"
-              alt="nutbox"
-              class="logo_small"
-            />
-          </div>
-          <b-nav pills vertical align="center" class="menu">
-            <b-nav-item to="/wallet" router-tag="div">
-              <p id="wallet-icon" class="my-icon" />
-              <span>{{ $t("wallet.wallet") }}</span>
-            </b-nav-item>
-            <b-nav-item to="/crowdloan">
-              <p id="farming-icon" class="my-icon" />
-              <span>{{ $t("cl.crowdloan") }}</span>
-            </b-nav-item>
-            <b-nav-item to="/crowdstaking" router-tag="div">
-              <p id="stake-icon" class="my-icon" />
-              <span>{{ $t("cs.crowdstaking") }}</span>
-            </b-nav-item>
-            <b-nav-item to="/blog">
-              <p id="blog-icon" class="my-icon" />
-              <span>{{ $t("message.blog") }}</span>
-            </b-nav-item>
-            <b-nav-item to="/admin" v-if="isAdmin">
-              <p id="admin-icon" class="my-icon" />
-              <span>{{ $t("message.admin") }}</span>
-            </b-nav-item>
-          </b-nav>
+      <div class="page-header">
+        <img src="./static/images/logo.png" alt="nutbox" class="logo"/>
+        <div class="small-logo-container">
+          <img src="./static/images/logo_small.png" alt="nutbox" class="logo-small"/>
+          <img src="./static/images/menu.png" alt="" class="menu" v-b-toggle.sidebar-menu/>
         </div>
-        <div class="bottom">
-          <div class="links">
-            <a
-              id="github-icon"
-              href="https://github.com/nutbox-dao"
-              target="_blank"
-            >
-              <b-popover
-                target="github-icon"
-                triggers="hover focus"
-                placement="top"
-              >
-                Github
-              </b-popover>
-            </a>
-            <a
-              id="docs-icon"
-              href="https://docs.nutbox.io/lite_paper_v1/"
-              target="_blank"
-            >
-            </a>
-            <b-popover
-              target="docs-icon"
-              triggers="hover focus"
-              placement="top"
-            >
-              {{ $t("message.docs") }}
-            </b-popover>
-            <a
-              id="discord-icon"
-              href="https://discord.com/invite/zPkMuGY"
-              target="_blank"
-            >
-            </a>
-            <b-popover
-              target="discord-icon"
-              triggers="hover focus"
-              placement="top"
-            >
-              Discord
-            </b-popover>
-            <a
-              id="telegram-icon"
-              href="https://t.me/nutbox_defi"
-              target="_blank"
-            >
-            </a>
-            <b-popover
-              target="telegram-icon"
-              triggers="hover focus"
-              placement="top"
-            >
-              Telegram
-            </b-popover>
-          </div>
-          <div class="h-line"></div>
-          <div class="settings">
-            <b-dd
-              id="language"
-              :text="lang.toUpperCase()"
-              size="sm"
-              block
-              dropup
-              no-caret
-            >
-              <b-dropdown-item @click="setLanguage('en')">
-                <b-icon
-                  style="font-size: 20px"
-                  :icon="lang == 'en' ? 'check' : 'blank'"
-                  aria-hidden="true"
-                ></b-icon>
-                <span style="font-size: 14px">{{ $t("message.en") }}</span>
-              </b-dropdown-item>
-              <b-dropdown-item @click="setLanguage('zh')">
-                <b-icon
-                  style="font-size: 20px"
-                  :icon="lang == 'zh' ? 'check' : 'blank'"
-                  aria-hidden="true"
-                ></b-icon>
-                <span style="font-size: 14px">{{ $t("message.zh") }}</span>
-              </b-dropdown-item>
-              <!-- <b-dropdown-item @click="setLanguage('kr')">
-                <b-icon
-                  style="font-size: 20px"
-                  :icon="lang == 'kr' ? 'check' : 'blank'"
-                  aria-hidden="true"
-                ></b-icon>
-                <span style="font-size: 14px">{{ $t("message.kr") }}</span>
-              </b-dropdown-item>
-              <b-dropdown-item @click="setLanguage('es')">
-                <b-icon
-                  style="font-size: 20px"
-                  :icon="lang == 'es' ? 'check' : 'blank'"
-                  aria-hidden="true"
-                ></b-icon>
-                <span style="font-size: 14px">{{ $t("message.es") }}</span>
-              </b-dropdown-item>
-              <b-dropdown-item @click="setLanguage('my')">
-                <b-icon
-                  style="font-size: 20px"
-                  :icon="lang == 'my' ? 'check' : 'blank'"
-                  aria-hidden="true"
-                ></b-icon>
-                <span style="font-size: 14px">{{ $t("message.my") }}</span>
-              </b-dropdown-item>
-              <b-dropdown-item @click="setLanguage('jp')">
-                <b-icon
-                  style="font-size: 20px"
-                  :icon="lang == 'jp' ? 'check' : 'blank'"
-                  aria-hidden="true"
-                ></b-icon>
-                <span style="font-size: 14px">{{ $t("message.jp") }}</span>
-              </b-dropdown-item> -->
-            </b-dd>
-          </div>
-        </div>
-      </div>
-      <TipMessage
-        :showMessage="tipMessage"
-        :title="tipTitle"
-        v-if="showMessage"
-        @hideMask="showMessage = false"
-      />
-      <div class="right">
         <div class="account-header" v-if="$route.path!=='/blog'">
-          <div class="p-2">
-            <b-dropdown
-              toggle-class="accounts-toggle"
-              variant="text"
-              right
-              no-caret
-            >
-              <template #button-content>
-                <div
-                  class="flex-between-center font18"
-                  @click="accountsPop = !accountsPop"
-                >
-                  <Identicon
-                    :size="30"
-                    theme="polkadot"
-                    v-if="account"
-                    :value="account.address"
-                  />
-                  <b-avatar v-else class="mr-2" size="sm" text=""></b-avatar>
-                  <span style="margin-left: 8px">{{
+          <b-dropdown toggle-class="accounts-toggle" variant="text" right no-caret>
+            <template #button-content>
+              <div class="flex-between-center font18" @click="accountsPop = !accountsPop">
+                <Identicon :size="30" theme="polkadot" v-if="account" :value="account.address"/>
+                <b-avatar v-else class="mr-2" size="sm" text=""></b-avatar>
+                <span style="margin-left: 8px">{{
                     formatUserAddress(
                       account && account.meta && account.meta.name
                     )
                   }}</span>
+              </div>
+            </template>
+            <b-dropdown-item v-for="(item, index) of allAccounts ? allAccounts : []" :key="index"
+                             @click="changeAccount(item)">
+              <template>
+                <div class="flex-between-center">
+                  <Identicon class="ident-icon" :size="30" theme="polkadot" :value="item.address"/>
+                  <div class="account-info">
+                    <div class="font-bold">
+                      {{ item.meta ? item.meta.name : "" }}
+                    </div>
+                    <div class="address">
+                      {{ formatUserAddress(item.address) }}
+                    </div>
+                  </div>
+                  <img class="ml-3" v-if="item.address === (account && account.address)"
+                       src="~@/static/images/selected.png" alt=""/>
                 </div>
               </template>
-              <b-dropdown-item
-                v-for="(item, index) of allAccounts ? allAccounts : []"
-                :key="index"
-                @click="changeAccount(item)"
+            </b-dropdown-item>
+            <!-- <b-dropdown-item>
+              <div
+                class="flex-start-center"
+                @click="selectMenu('dashboard', '/dashboard')"
+                v-if="isProjectAdmin"
               >
-                <template>
-                  <div class="flex-between-center">
-                    <Identicon
-                      class="ident-icon"
-                      :size="30"
-                      theme="polkadot"
-                      :value="item.address"
-                    />
-                    <div class="account-info">
-                      <div class="font-bold">
-                        {{ item.meta ? item.meta.name : "" }}
-                      </div>
-                      <div class="address">
-                        {{ formatUserAddress(item.address) }}
-                      </div>
-                    </div>
-                    <img
-                      class="ml-3"
-                      v-if="item.address === (account && account.address)"
-                      src="~@/static/images/selected.png"
-                      alt=""
-                    />
-                  </div>
-                </template>
-              </b-dropdown-item>
-              <!-- <b-dropdown-item>
-                <div
-                  class="flex-start-center"
-                  @click="selectMenu('dashboard', '/dashboard')"
-                  v-if="isProjectAdmin"
-                >
-                  <img class="menu-icon" :src="dashboardIcon" alt="" />
-                  <span class="menu-text">{{ $t("account.dashboard") }}</span>
-                </div>
-              </b-dropdown-item> -->
-            </b-dropdown>
-          </div>
-          <!-- <ConnectWallet v-else/> -->
+                <img class="menu-icon" :src="dashboardIcon" alt="" />
+                <span class="menu-text">{{ $t("account.dashboard") }}</span>
+              </div>
+            </b-dropdown-item> -->
+          </b-dropdown>
         </div>
-        <div class="container">
-          <router-view></router-view>
+      </div>
+      <div class="page-container">
+        <b-sidebar id="sidebar-menu" no-header :backdrop="screenWidth<960">
+          <div class="left">
+            <div class="top">
+              <b-nav pills vertical align="center" class="menu">
+                <b-nav-item to="/wallet" router-tag="div">
+                  <p id="wallet-icon" class="my-icon" />
+                  <span>{{ $t("wallet.wallet") }}</span>
+                </b-nav-item>
+                <b-nav-item to="/crowdloan">
+                  <p id="farming-icon" class="my-icon" />
+                  <span>{{ $t("cl.crowdloan") }}</span>
+                </b-nav-item>
+                <b-nav-item to="/crowdstaking" router-tag="div">
+                  <p id="stake-icon" class="my-icon" />
+                  <span>{{ $t("cs.crowdstaking") }}</span>
+                </b-nav-item>
+                <b-nav-item to="/blog">
+                  <p id="blog-icon" class="my-icon" />
+                  <span>{{ $t("message.blog") }}</span>
+                </b-nav-item>
+                <b-nav-item to="/admin" v-if="isAdmin">
+                  <p id="admin-icon" class="my-icon" />
+                  <span>{{ $t("message.admin") }}</span>
+                </b-nav-item>
+              </b-nav>
+            </div>
+            <div class="bottom">
+              <div class="links">
+                <a
+                  id="github-icon"
+                  href="https://github.com/nutbox-dao"
+                  target="_blank"
+                >
+                  <b-popover
+                    target="github-icon"
+                    triggers="hover focus"
+                    placement="top"
+                  >
+                    Github
+                  </b-popover>
+                </a>
+                <a
+                  id="docs-icon"
+                  href="https://docs.nutbox.io/lite_paper_v1/"
+                  target="_blank"
+                >
+                </a>
+                <b-popover
+                  target="docs-icon"
+                  triggers="hover focus"
+                  placement="top"
+                >
+                  {{ $t("message.docs") }}
+                </b-popover>
+                <a
+                  id="discord-icon"
+                  href="https://discord.com/invite/zPkMuGY"
+                  target="_blank"
+                >
+                </a>
+                <b-popover
+                  target="discord-icon"
+                  triggers="hover focus"
+                  placement="top"
+                >
+                  Discord
+                </b-popover>
+                <a
+                  id="telegram-icon"
+                  href="https://t.me/nutbox_defi"
+                  target="_blank"
+                >
+                </a>
+                <b-popover
+                  target="telegram-icon"
+                  triggers="hover focus"
+                  placement="top"
+                >
+                  Telegram
+                </b-popover>
+              </div>
+              <div class="h-line"></div>
+              <div class="settings">
+                <b-dd
+                  id="language"
+                  :text="lang.toUpperCase()"
+                  size="sm"
+                  block
+                  dropup
+                  no-caret
+                >
+                  <b-dropdown-item @click="setLanguage('en')">
+                    <b-icon
+                      style="font-size: 20px"
+                      :icon="lang == 'en' ? 'check' : 'blank'"
+                      aria-hidden="true"
+                    ></b-icon>
+                    <span style="font-size: 14px">{{ $t("message.en") }}</span>
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="setLanguage('zh')">
+                    <b-icon
+                      style="font-size: 20px"
+                      :icon="lang == 'zh' ? 'check' : 'blank'"
+                      aria-hidden="true"
+                    ></b-icon>
+                    <span style="font-size: 14px">{{ $t("message.zh") }}</span>
+                  </b-dropdown-item>
+                  <!-- <b-dropdown-item @click="setLanguage('kr')">
+                    <b-icon
+                      style="font-size: 20px"
+                      :icon="lang == 'kr' ? 'check' : 'blank'"
+                      aria-hidden="true"
+                    ></b-icon>
+                    <span style="font-size: 14px">{{ $t("message.kr") }}</span>
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="setLanguage('es')">
+                    <b-icon
+                      style="font-size: 20px"
+                      :icon="lang == 'es' ? 'check' : 'blank'"
+                      aria-hidden="true"
+                    ></b-icon>
+                    <span style="font-size: 14px">{{ $t("message.es") }}</span>
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="setLanguage('my')">
+                    <b-icon
+                      style="font-size: 20px"
+                      :icon="lang == 'my' ? 'check' : 'blank'"
+                      aria-hidden="true"
+                    ></b-icon>
+                    <span style="font-size: 14px">{{ $t("message.my") }}</span>
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="setLanguage('jp')">
+                    <b-icon
+                      style="font-size: 20px"
+                      :icon="lang == 'jp' ? 'check' : 'blank'"
+                      aria-hidden="true"
+                    ></b-icon>
+                    <span style="font-size: 14px">{{ $t("message.jp") }}</span>
+                  </b-dropdown-item> -->
+                </b-dd>
+              </div>
+            </div>
+          </div>
+        </b-sidebar>
+        <TipMessage
+          :showMessage="tipMessage"
+          :title="tipTitle"
+          v-if="showMessage"
+          @hideMask="showMessage = false"
+        />
+        <div class="right">
+          <div class="container">
+            <router-view></router-view>
+          </div>
         </div>
       </div>
     </div>
@@ -271,6 +240,7 @@ export default {
       tipTitle: "",
       showMessage: false,
       accountsPop: false,
+      screenWidth: document.body.clientWidth,
     };
   },
   computed: {
@@ -301,6 +271,9 @@ export default {
       const res = isCrowdloanAdmin || isCrowdstakingAdmin;
       return res;
     },
+    showMenu() {
+      return this.screenWidth > 960
+    }
   },
   components: {
     TipMessage,
@@ -382,9 +355,21 @@ export default {
     },
   },
   async mounted() {
+    let _this = this
+    window.onresize= () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth;
+        _this.screenWidth = window.screenWidth;
+      })();
+    }
     this.setLanguage(localStorage.getItem(LOCALE_KEY));
     this.getCommnunitys();
     this.getCrowdstacking();
+  },
+  watch: {
+    screenWidth(val) {
+      this.screenWidth = val;
+    }
   },
   async created() {
     await Promise.all([subPolkadotBlock(), subKusamaBlock()]);
@@ -415,6 +400,7 @@ $blue: #ffdb1b;
 @import "./static/css/common.scss";
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap-vue/src/index.scss";
+@import "static/css/modal";
 html,
 body {
   height: 100%;
@@ -439,59 +425,70 @@ body {
   background-color: var(--background);
 }
 .page-layout {
-  position: relative;
-  min-height: 500px;
-  overflow: hidden;
   height: 100%;
-}
-h3 {
-  text-align: left;
-  width: 100%;
-  height: 1.8rem;
-  font-size: 1.8rem;
-  font-weight: 500;
-  line-height: 1.8rem;
-}
-.spinner-grow {
-  margin-bottom: .1rem;
-  margin-right: .4rem;
-}
-input {
-  border: none;
-  outline: none;
-}
-input::-webkit-input-placeholder {
-  color: var(--disable);
-}
-.mask {
-  z-index: 2000;
-  overflow: hidden;
   display: flex;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  -webkit-box-align: center;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 600px;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0 1.6rem;
+  background: white;
+  height: 3.8rem;
+  .logo {
+    width: 6.8rem;
+    height: 2.8rem;
+  }
+  .logo-small {
+    height: 2.8rem;
+    width: 2.8rem;
+  }
+  .small-logo-container {
+    display: none;
+    .menu {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-left: .5rem;
+    }
+  }
+  .account-header {
+    height: 2.8rem;
+    button {
+      border: none;
+    }
+  }
+}
+.page-container {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  #sidebar-menu {
+    position: fixed;
+    top: 3.8rem;
+    bottom: 0;
+    width: 240px;
+    height: auto;
+  }
+  .left {
+    width: 100%;
+    background-color: #ffffff;
+    padding-top: 2rem;
+    padding-left: .6rem;
+    box-shadow: 4px 40px 48px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 0 0 4vh 0;
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
 }
 
-.btn-primary {
-  font-size: 16px;
-  border-radius: 16px !important;
-  box-shadow: 0px 8px 12px -4px #ffec88;
-  border: 0px !important;
-  padding: 12px 24px;
-  font-weight: 600;
-  color: var(--primary-text) !important;
-}
-
-.btn-primary:hover {
-  background: #ffeb75 !important;
-}
 
 .menu .nav-link {
   display: flex !important;
@@ -507,32 +504,6 @@ input::-webkit-input-placeholder {
     line-height: 22px;
   }
 }
-
-.logo-container {
-  display: flex;
-  align-content: center;
-  justify-content: flex-start;
-}
-
-.logo {
-  margin-bottom: 30px;
-}
-
-.left {
-  background-color: #ffffff;
-  padding-top: 55px;
-  padding-left: 12px;
-  width: 240px;
-  box-shadow: 4px 0 48px 0 rgba(0, 0, 0, 0.06);
-  border-radius: 0 4vh 4vh 0;
-  position: absolute;
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-}
 .right {
   position: absolute;
   left: 0;
@@ -544,14 +515,12 @@ input::-webkit-input-placeholder {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  .account-header {
-    text-align: right;
-  }
   .container {
-    padding: 0 40px 46px;
+    padding: 40px 40px 46px;
     box-sizing: border-box;
     flex: 1;
     overflow: hidden;
+    text-align: left;
     >div {
       height: 100%;
       display: flex;
@@ -567,30 +536,28 @@ input::-webkit-input-placeholder {
   .sub-page-nav {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid var(--dividers);
+    justify-content: center;
+    margin: 1.5rem auto 1.2rem auto;
+    height: 1.6rem;
+    border-radius: 1.6rem;
+    background-color: #E3E5E8;
     a {
       border: 0;
       font-size: .8rem;
-      padding: .8rem 1.2rem;
       color: #666;
       box-sizing: border-box;
       font-weight: 600;
-      line-height: 16px !important;
+      line-height: 1.6rem;
+      padding: 0 1rem;
+      border-radius: 1.6rem;
     }
     a:hover {
-      background: linear-gradient(
-          270deg,
-          rgba(227, 229, 232, 0) 0%,
-          rgba(227, 229, 232, 0.4) 100%
-      ) !important;
       text-decoration: none;
-
       font-weight: 300;
-      line-height: 16px;
     }
     .active {
       color: var(--primary-text);
-      border-bottom: 3px solid var(--primary);
+      background-color: var(--primary-custom);
     }
   }
 }
@@ -642,34 +609,33 @@ input::-webkit-input-placeholder {
 }
 
 .left .bottom {
-  //position: absolute;
-  //padding: 0 20px;
-  //margin-left: -12px;
   width: 100%;
   margin-bottom: 30px;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0);
-
   .links {
     display: flex;
     align-content: center;
-    justify-content: space-between;
-    margin: 24px 12px 24px 0;
+    justify-content: center;
+    margin-bottom: 1rem;
+    margin-right: .6rem;
     a {
-      width: 32px;
-      height: 32px;
+      width: 1.6rem;
+      height: 1.6rem;
+      margin: .2rem;
     }
   }
   .h-line {
     width: 100%;
     height: 1px;
     background-color: #E2E7EF;
+    margin: 0;
   }
   .settings {
-    margin: 24px 12px 24px 0;
+    margin: 1.2rem .6rem 1.2rem 0;
     background: #f6f7f9;
     border-radius: 16px;
-    padding: 14px 20px;
+    padding: .8rem 1.1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -684,15 +650,20 @@ input::-webkit-input-placeholder {
       width: 100%;
       background-image: url("./static/images/lang.svg");
       background-repeat: no-repeat;
-      background-position: center left;
+      background-position: .4rem center;
+      background-size: .8rem .8rem;
+      height: 1.6rem;
+      background-color: white;
+      border-radius: .6rem;
     }
-    .btn-secondary {
+    .btn {
       color: var(--primary-text) !important;
       background-color: rgba(0, 0, 0, 0);
       border: none;
-      font-size: 12px;
+      font-size: .6rem;
       text-align: left;
-      padding-left: 22px;
+      padding: 0 1.6rem !important;
+      height: 1.6rem;
     }
   }
 }
@@ -716,10 +687,10 @@ input::-webkit-input-placeholder {
 .item-title {
   text-align: left;
   color: var(--primary-text);
-  font-size: 16px;
-  line-height: 32px;
-  margin-top: 32px;
-  border-bottom: 1px solid var(--dividers);
+  font-size: 1rem;
+  line-height: 1rem;
+  font-weight: bold;
+  margin-bottom: 1.2rem;
 }
 .dropdown-menu {
   border-radius: 1.2rem;
@@ -845,75 +816,26 @@ input::-webkit-input-placeholder {
 .logo_small {
   display: none;
 }
-@media only screen and (max-width: 991px) {
-  .logo_small {
-    display: block;
+@media only screen and (max-width: 960px) {
+  .page-header {
+    padding: .5rem .8rem;
+  }
+  .small-logo-container {
+    display: block !important;
   }
   .logo {
     display: none;
   }
-  .nav-item span {
-    display: none;
-  }
-  .left {
-    width: 4rem;
-    min-width: 4rem;
-    border-radius: 0 2rem 2rem 0;
-    padding: 1.5rem .5rem;
-  }
   .right {
-    padding-left: 4rem;
-    .container {
-      padding: 0 15px 0;
-    }
+    padding-left: 0;
   }
-  .nav-link {
-    display: inherit;
+}
+@media (min-width: 960px) {
+  #sidebar-menu {
+    display: block!important;
   }
-  .left .nav-item {
-    height: 40px;
-  }
-  .left .nav-link {
-    padding-left: 0px;
-  }
-  .left .bottom {
-  }
-  .left .bottom .links {
-    display: block;
-  }
-  .left .bottom .links a {
-    margin-bottom: 6px;
-    display: block;
-  }
-  .menu .nav-link {
-    flex-wrap: inherit;
-  }
-  .memu-wallet {
-    display: none;
-  }
-  .left .bottom .settings {
-    background: transparent;
-  }
-  .left .bottom .settings #language {
-    background-position: 8px center;
-  }
-  .left .bottom .settings .btn-secondary {
-    color: transparent !important;
-  }
-  .left .bottom .settings {
-    padding: 0;
-    display: block;
-  }
-  .dropdown-menu {
-    max-width: 200px;
-    .account-info {
-      overflow: hidden;
-      .address {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-  }
+}
+.bg-dark {
+  background-color: rgba(0,0,0,0) !important;
 }
 </style>

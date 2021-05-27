@@ -29,6 +29,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.crowdloan {
+.sub-page-nav {
+  margin-bottom: 2rem;
 }
 </style>

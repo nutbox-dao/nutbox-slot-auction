@@ -9,11 +9,7 @@
     <div class="card-title-box flex-start-center">
       <div class="icons">
         <img class="icon2" :src="getCardInfo && getCardInfo.para.iconUrl" alt="" />
-        <img
-          class="icon1"
-          :src="getCardInfo && getCardInfo.community.iconUrl"
-          alt=""
-        />
+        <img class="icon1" :src="getCardInfo && getCardInfo.community.iconUrl" alt=""/>
       </div>
       <div class="title-text font20 font-bold">
         <span>{{ getCardInfo && getCardInfo.community.communityName }}</span>
@@ -45,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div v-if="isConnected">
+    <div class="text-center" v-if="isConnected">
       <button
         class="primary-btn"
         v-show="status === 'Active'"
@@ -249,7 +245,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .c-card {
   width: 100%;
   border-radius: 1.4rem;
@@ -258,7 +254,7 @@ export default {
   border: none;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
   position: relative;
-  padding: 2.2rem 1.2rem;
+  padding: 2.8rem 1.2rem 1.8rem;
   background-color: white;
   .status-container {
     position: absolute;
@@ -279,7 +275,7 @@ export default {
       }
       .icon2 {
         position: absolute;
-        left: 1.8rem;
+        left: 1.6rem;
         border: 1px solid #e3e5e8;
         border-radius: 1rem;
       }
@@ -307,13 +303,13 @@ export default {
     border-radius: 4px;
   }
   .detail-info-box {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.8rem;
   }
   .project-info-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.6rem;
+    margin-top: .8rem;
     .name {
       flex: 1;
       text-align: left;
@@ -326,8 +322,8 @@ export default {
       font-weight: 500;
     }
   }
-  .primary-btn{
-    margin-top: 1rem;
+  .primary-btn {
+    margin-bottom: 0;
   }
 }
 </style>

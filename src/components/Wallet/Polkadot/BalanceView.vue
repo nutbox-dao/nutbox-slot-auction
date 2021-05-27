@@ -38,14 +38,13 @@
         </b-button>
       </div>
     </Card>
-        <b-modal
+    <b-modal
       v-model="showTransfer"
       modal-class="custom-modal"
       centered
       hide-header
       hide-footer
-      no-close-on-backdrop
-    >
+      no-close-on-backdrop>
       <TipTransfer @hideTransfer="showTransfer = false" />
     </b-modal>
 

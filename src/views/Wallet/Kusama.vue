@@ -1,11 +1,11 @@
 <template>
-  <div class="ksm-wallet scroll-content">
+  <div class="scroll-content">
     <div class="ksm-wallet">
-      <p class="item-title">
-        {{ $t("wallet.asset") }}
-      </p>
+<!--      <p class="item-title">-->
+<!--        {{ $t("wallet.asset") }}-->
+<!--      </p>-->
       <div class="balance-box row">
-        <div class="col-xl-4 col-md-6">
+        <div class="col-xl-4 col-md-6 mb-2">
           <BalanceView
             name="KSM"
             :balances="available / 1e12"
@@ -14,7 +14,7 @@
             :transfer="true"
           />
         </div>
-        <div class="col-xl-4 col-md-6">
+        <div class="col-xl-4 col-md-6 mb-2">
           <LockedBalanceView
             name="KSM"
             :balances="locked / 1e12"
@@ -24,10 +24,13 @@
           />
         </div>
       </div>
-      <p class="item-title">
-        {{ $t("wallet.contribution") }}
-      </p>
-      <UserContributions />
+      <UserContributions>
+        <template #title>
+          <div class="item-title">
+            {{ $t("wallet.contribution") }}
+          </div>
+        </template>
+      </UserContributions>
     </div>
   </div>
 </template>
@@ -58,10 +61,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.ksm-wallet {
-  margin-top: 1rem;
-  .balance-box > div {
-    margin-bottom: 1rem;
-  }
-}
+
 </style>

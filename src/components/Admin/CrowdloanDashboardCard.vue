@@ -145,6 +145,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "src/static/css/customCard";
 .primary-btn{
   margin-top: 1rem;
 }

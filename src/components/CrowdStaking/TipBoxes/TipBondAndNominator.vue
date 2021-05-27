@@ -143,7 +143,6 @@ export default {
   }
   .primary-btn {
     width: 100%;
-    margin-top: 1rem;
   }
   .big {
     background-image: linear-gradient(
@@ -160,28 +159,5 @@ export default {
 .bondInfo {
   text-align: left;
   margin-bottom: 0px;
-}
-.input-group-box {
-  margin-bottom: 0.5rem;
-  font-size: 0.8rem;
-  input {
-    flex: 1;
-    border: none;
-    background: rgba(246, 247, 249, 1);
-    font-size: 0.8rem;
-    height: 2.4rem;
-    padding: 0.4rem 0.8rem;
-    box-sizing: border-box;
-    border-radius: 0.8rem;
-    margin-right: 1rem;
-  }
-  span {
-    display: inline-block;
-    min-width: 5rem;
-  }
-}
-.label {
-  text-align: left;
-  margin-bottom: 12px;
 }
 </style>

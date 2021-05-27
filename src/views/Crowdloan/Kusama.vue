@@ -58,8 +58,6 @@ export default {
 .crowdloan-page {
   height: 100%;
   background: rgba(246, 247, 249, 1);
-  //overflow: hidden;
-  //position: relative;
   .bg {
     position: absolute;
     left: 50%;
@@ -94,10 +92,6 @@ export default {
       color: #bdbfc2;
       line-height: 22px;
     }
-  }
-  .cards-container {
-    height: 100%;
-    padding-top: 3.6rem;
   }
 }
 </style>

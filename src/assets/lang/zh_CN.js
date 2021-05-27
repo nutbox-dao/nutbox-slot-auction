@@ -78,7 +78,12 @@ module.exports = {
     balance: "余额",
     bond: "绑定",
     unBond: "解绑",
-    redeem: "领取奖励"
+    redeem: "领取奖励",
+    bindAmount: "绑定金额",
+    inputAmount: '请输入数量',
+    receiveAddress: '收款地址',
+    transferAmount: '转账金额',
+    unbindAmount: '解绑金额'
   },
   admin: {
     admin: "管理员"

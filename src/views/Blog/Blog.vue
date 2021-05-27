@@ -12,15 +12,17 @@ export default {
 
 <style lang="scss" scoped>
 .blog-frame {
-  position: absolute;
+  background-color: white;
+  position: fixed;
   top: 0;
   left: 240px;
   bottom: 0;
   right: 0;
 }
-@media only screen and (max-width: 991px) {
+@media only screen and (max-width: 960px) {
   .blog-frame {
-    left: 4rem!important;
+    position: absolute;
+    left: 0!important;
   }
 }
 </style>
