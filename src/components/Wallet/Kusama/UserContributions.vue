@@ -7,7 +7,7 @@
 
     <div class="empty-bg" v-if="!loadingContributions && items.length === 0">
       <img src="~@/static/images/empty-data.png" alt="" />
-      <p>{{ $t("tip.noAuction") }}</p>
+      <p>{{ $t("tip.noContribuitons") }}</p>
     </div>
     <div v-show="items.length > 0 && !loadingContributions">
       <b-card class="table-card">
@@ -95,6 +95,7 @@ export default {
         });
       this.cancelToken = axios.CancelToken;
       const decimal = new BN(12);
+      console.log('address', this.account.address, stanfiAddress(this.account.address));
       axios
         .post(CROWD_LOAN_API_URL + "/contrib/find/contributor", {
           relaychain: "rococo",
