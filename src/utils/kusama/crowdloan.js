@@ -12,7 +12,9 @@ import {
 } from "@/config"
 import store from "../../store"
 
-import { $t } from '../../i18n'
+import {
+  $t
+} from '../../i18n'
 
 import {
   getApi,
@@ -46,14 +48,14 @@ function createChildKey(trieIndex) {
 export const subscribeFundInfo = async (crowdloanCard) => {
   let unsubFund = store.state.kusama.subFund
   if (unsubFund) {
-    try{
+    try {
       unsubFund()
-    }catch(e){}
-  }else{
+    } catch (e) {}
+  } else {
     store.commit('kusama/saveLoadingFunds', true)
   }
   let paraId = crowdloanCard.map(c => parseInt(c.para.paraId))
-  paraId = [...new Set(paraId)] 
+  paraId = [...new Set(paraId)]
   const api = await getApi()
   try {
     unsubFund = (await api.query.crowdloan.funds.multi(paraId, async (unwrapedFunds) => {
@@ -66,7 +68,6 @@ export const subscribeFundInfo = async (crowdloanCard) => {
         if (!fund.toJSON()) {
           continue
         }
-        console.log('fund',fund.toJSON());
         const unwrapedFund = fund.unwrap()
         const {
           deposit,
@@ -88,9 +89,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
           memo: api.createType('(Balance, Vec<u8>)', v.unwrap())[1].toHuman()
         }))
-        console.log('contri', contributions);
         const [status, statusIndex] = await calStatus(end, firstSlot, raised, cap, pId, bestBlockNumber)
-        console.log('contri');
         funds.push({
           paraId: pId,
           status,
@@ -109,8 +108,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
       funds = funds.sort((a, b) => a.statusIndex - b.statusIndex)
       const idsSort = funds.map(f => f.paraId)
       if (funds.length > 0) {
-        const  showingcrowdloanCard = crowdloanCard.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
-        console.log('fund info', funds);
+        const showingcrowdloanCard = crowdloanCard.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
         store.commit('kusama/saveClProjectFundInfos', funds)
         store.commit('kusama/saveShowingCrowdloan', showingcrowdloanCard)
       } else {
@@ -345,14 +343,14 @@ export const contribute = async (paraId, amount, communityId, childId, trieIndex
             nominatorId: childId
           });
           // upload to daemon
-          try{
+          try {
             postContribution({
               relaychain: 'rococo',
               blockHash: contriHash,
               communityId: communityId,
               nominatorId: childId
             })
-          }catch(e){
+          } catch (e) {
             console.error('Upload to daemon fail', e);
           }
           toast($t('transaction.inBlock'), {
