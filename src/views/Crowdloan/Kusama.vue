@@ -95,9 +95,5 @@ export default {
       line-height: 22px;
     }
   }
-  .cards-container {
-    height: 100%;
-    padding-top: 3.6rem;
-  }
 }
 </style>

@@ -46,6 +46,7 @@ export default {
 </script>
 
 <style lang="less">
-.crowdstaking {
+.sub-page-nav {
+  margin-bottom: 2rem;
 }
 </style>

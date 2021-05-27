@@ -153,7 +153,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .c-card {
   width: 100%;
   border-radius: 1.4rem;
