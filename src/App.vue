@@ -665,6 +665,10 @@ body {
       padding: 0 1.6rem !important;
       height: 1.6rem;
     }
+    .dropdown-menu {
+      transform: translate3d(0, -130px, 0px)!important;
+      box-shadow: 0 2px 20px 0 rgba(0, 0, 0, .2);
+    }
   }
 }
 .loading-bg {
