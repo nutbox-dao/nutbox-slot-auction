@@ -60,33 +60,33 @@ export const getDecimal = async () => {
 export const formatBalance = (b) => {
   let uni = new BN(b)
   let unit = ' '
-  if (uni >= 1e28) {
-    uni = uni.div(new BN(1e24));
+  if (uni >= 1e30) {
+    uni = uni.div(new BN(1e26));
     unit = " E";
-  } else if (uni >= 1e25) {
-    uni = uni.div(new BN(1e21));
+  } else if (uni >= 1e27) {
+    uni = uni.div(new BN(1e23));
     unit = " P";
-  } else if (uni >= 1e22) {
-    uni = uni.div(new BN(1e18));
+  } else if (uni >= 1e24) {
+    uni = uni.div(new BN(1e20));
     unit = " T";
-  } else if (uni >= 1e19) {
-    uni = uni.div(new BN(1e15));
+  } else if (uni >= 1e21) {
+    uni = uni.div(new BN(1e17));
     unit = " B";
-  } else if (uni >= 1e16) {
-    uni = uni.div(new BN(1e12))
+  } else if (uni >= 1e18) {
+    uni = uni.div(new BN(1e14))
     unit = " M";
-  } else if (uni >= 1e13) {
-    uni = uni.div(new BN(1e9))
+  } else if (uni >= 1e15) {
+    uni = uni.div(new BN(1e11))
     unit = " K"
-  } else if (uni >= 1e9) {
-    uni = uni.div(new BN(1e6))
-  } else if (uni >= 1e6) {
-    uni = uni.div(new BN(1e3))
+  } else if (uni >= 1e11) {
+    uni = uni.div(new BN(1e8))
+  } else if (uni >= 1e8) {
+    uni = uni.div(new BN(1e5))
     unit = " milli "
   }
   uni = parseFloat(uni)
-  uni = (uni / 1e6).toFixed(4)
-  return uni + unit + 'KSM';
+  uni = (uni / 1e4).toFixed(4)
+  return uni + unit + 'ROC';
 }
 
 export const validAddress = (address) => {

@@ -43,7 +43,7 @@
 <script>
 import CsvExportor from "csv-exportor";
 import { getDashboardSummary, getExportContributionInfo } from "@/apis/api";
-import { formatBalance } from "@/utils/kusama/kusama";
+import { formatBalance } from "@/utils/rococo/rococo";
 import { formatDate } from "@/utils/polkadot/utils";
 
 export default {
