@@ -7,7 +7,7 @@
             name="ROC"
             :balances="balance / 1e12"
             desc="ROC"
-            :logo="ksmLogo"
+            :logo="rocLogo"
             :transfer="true"
           />
         </div>
@@ -31,7 +31,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      ksmLogo: require("../../static/images/tokens/ksm.png"),
+      rocLogo: require("../../static/images/tokens/roc.png"),
     };
   },
   computed: {
