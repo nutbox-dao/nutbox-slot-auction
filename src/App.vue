@@ -353,8 +353,6 @@ export default {
       })();
     }
     this.setLanguage(localStorage.getItem(LOCALE_KEY));
-    this.getCommnunitys();
-    this.getCrowdstacking();
   },
   watch: {
     screenWidth(val) {
@@ -365,6 +363,8 @@ export default {
     await Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
     this.isConnectingPolkadot = false
     await loadPolkadotAccounts();
+    this.getCommnunitys();
+    this.getCrowdstacking();
   },
 };
 </script>
