@@ -169,7 +169,11 @@
           @hideMask="showMessage = false"
         />
         <div class="right">
-          <div class="container">
+            <div class="loading-bg" v-if="isConnectingPolkadot">
+              <img src="~@/static/images/loading.gif" alt="" />
+              <p class="font16">{{ $t("tip.connectingPolkadot") }}</p>
+            </div>
+          <div class="container" v-else>
             <router-view></router-view>
           </div>
         </div>
@@ -210,6 +214,7 @@ export default {
       showMessage: false,
       accountsPop: false,
       screenWidth: document.body.clientWidth,
+      isConnectingPolkadot: true
     };
   },
   computed: {
@@ -358,6 +363,7 @@ export default {
   },
   async created() {
     await Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
+    this.isConnectingPolkadot = false
     await loadPolkadotAccounts();
   },
 };

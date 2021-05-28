@@ -190,6 +190,7 @@ module.exports = {
   },
   tip: {
     loading: "加载中，请稍等",
+    connectingPolkadot: "正在连接到波卡网络",
     noAuction: "没有进行中的众贷",
     noProject: "没有进行中的项目",
     noNominations: "没有投票验证者节点",

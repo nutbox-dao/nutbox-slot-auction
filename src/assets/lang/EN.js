@@ -190,6 +190,7 @@ transaction: {
   },
   tip: {
     loading: "Loading, please wait",
+    connectingPolkadot: "Connectin to Polkadot network",
     noAuction : "No ongoing auction",
     noProject:"No ongoing project",
     noNominations: "No nominated validators",
