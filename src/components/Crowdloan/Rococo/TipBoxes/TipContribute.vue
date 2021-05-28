@@ -130,7 +130,7 @@ export default {
       const cap = fund.cap;
       const gap = cap.sub(raised);
       if (gap.lt(new BN(amount))) {
-        this.$bvToast.toast(this.$t(tip.outOfCap), {
+        this.$bvToast.toast(this.$t('tip.outOfCap'), {
           title: this.$t('tip.tips'),
           autoHideDelay: 5000,
           variant: "warning", // info success danger

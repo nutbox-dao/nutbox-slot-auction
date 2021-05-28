@@ -73,8 +73,8 @@ module.exports = {
     install:"Install",
     transfer:"Transfer",
     asset: "Asset",
-    nomination: "Nomination",
-    contribution: "Contribution",
+    nomination: "Validator Nomination",
+    contribution: "Crowdloan Contribution",
     balance: "Balance",
     bond: "Bond",
     unBond: "Unbond",
@@ -207,7 +207,9 @@ transaction: {
     success: "Success!",
     warning: "Warning!",
     noNeedWithdraw: 'No Need To Withdraw',
-    comingSoon: 'Coming Soon'
+    comingSoon: 'Coming Soon',
+    clipboard:"	Clipboard",
+    copyAddress:"Copied address:  {address}"
 },
   vote:{
     upvote:"Upvote",

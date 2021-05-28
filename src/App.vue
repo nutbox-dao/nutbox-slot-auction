@@ -8,11 +8,19 @@
           <img src="./static/images/menu.png" alt="" class="menu" v-b-toggle.sidebar-menu/>
         </div>
         <div class="account-header" v-if="$route.path!=='/blog'">
+          <div @click="copyAddress" >
+          <Identicon id='avatar' :data-clipboard-text='account.address' style="cursor: pointer" :size="32" theme="polkadot" v-if="account" :value="account.address"/>
+          <b-popover
+            target="avatar"
+            triggers="hover focus"
+            placement="bottom"
+          >
+            copy address
+          </b-popover>
+          </div>
           <b-dropdown toggle-class="accounts-toggle" variant="text" right no-caret>
             <template #button-content>
               <div class="flex-between-center font18" @click="accountsPop = !accountsPop">
-                <Identicon :size="30" theme="polkadot" v-if="account" :value="account.address"/>
-                <b-avatar v-else class="mr-2" size="sm" text=""></b-avatar>
                 <span style="margin-left: 8px">{{
                     formatUserAddress(
                       account && account.meta && account.meta.name
@@ -38,16 +46,6 @@
                 </div>
               </template>
             </b-dropdown-item>
-            <!-- <b-dropdown-item>
-              <div
-                class="flex-start-center"
-                @click="selectMenu('dashboard', '/dashboard')"
-                v-if="isProjectAdmin"
-              >
-                <img class="menu-icon" :src="dashboardIcon" alt="" />
-                <span class="menu-text">{{ $t("account.dashboard") }}</span>
-              </div>
-            </b-dropdown-item> -->
           </b-dropdown>
         </div>
       </div>
@@ -159,38 +157,6 @@
                     ></b-icon>
                     <span style="font-size: 14px">{{ $t("message.zh") }}</span>
                   </b-dropdown-item>
-                  <!-- <b-dropdown-item @click="setLanguage('kr')">
-                    <b-icon
-                      style="font-size: 20px"
-                      :icon="lang == 'kr' ? 'check' : 'blank'"
-                      aria-hidden="true"
-                    ></b-icon>
-                    <span style="font-size: 14px">{{ $t("message.kr") }}</span>
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="setLanguage('es')">
-                    <b-icon
-                      style="font-size: 20px"
-                      :icon="lang == 'es' ? 'check' : 'blank'"
-                      aria-hidden="true"
-                    ></b-icon>
-                    <span style="font-size: 14px">{{ $t("message.es") }}</span>
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="setLanguage('my')">
-                    <b-icon
-                      style="font-size: 20px"
-                      :icon="lang == 'my' ? 'check' : 'blank'"
-                      aria-hidden="true"
-                    ></b-icon>
-                    <span style="font-size: 14px">{{ $t("message.my") }}</span>
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="setLanguage('jp')">
-                    <b-icon
-                      style="font-size: 20px"
-                      :icon="lang == 'jp' ? 'check' : 'blank'"
-                      aria-hidden="true"
-                    ></b-icon>
-                    <span style="font-size: 14px">{{ $t("message.jp") }}</span>
-                  </b-dropdown-item> -->
                 </b-dd>
               </div>
             </div>
@@ -213,6 +179,7 @@
 </template>
 
 <script>
+import Clipboard from "clipboard";
 import { LOCALE_KEY } from "./config";
 import TipMessage from "./components/ToolsComponents/TipMessage";
 import { mapState, mapMutations } from "vuex";
@@ -254,7 +221,7 @@ export default {
       "communitys",
       "projects",
     ]),
-    ...mapState("kusama", ["clCommunitys"]),
+    ...mapState("rococo", ["clCommunitys"]),
     ...mapState(["lang"]),
     contributionsIcon() {
       return this.activeNav === "contributions"
@@ -288,7 +255,7 @@ export default {
       "saveProjects",
       "saveAccount",
     ]),
-    ...mapMutations("kusama", ["saveClCommunitys"]),
+    ...mapMutations("rococo", ["saveClCommunitys"]),
     setLanguage(lang) {
       localStorage.setItem(LOCALE_KEY, lang);
       this.$store.commit("saveLang", lang);
@@ -307,6 +274,21 @@ export default {
         return `${start}...${end}`;
       }
     },
+    copyAddress(a){
+      console.log(this.account.address);
+      var clipboard = new Clipboard('#avatar');
+      clipboard.on("success", (e) => {
+        clipboard.destroy();
+         this.$bvToast.toast(this.$t('tip.copyAddress', {address: this.formatUserAddress(this.account.address)}), {
+          title: this.$t('tip.clipboard'),
+          autoHideDelay: 5000,
+          variant: "info", // info success danger
+        });
+      });
+      clipboard.on("error", (e) => {
+        clipboard.destroy;
+      });
+    },
     changeAccount(acc) {
       if (!this.isConnected) return;
       if (this.$route.path === '/admin'){
@@ -324,7 +306,7 @@ export default {
       this.getCrowdstacking();
     },
     getCommnunitys() {
-      // 获取支持平行链项目的社区信息  -   kusama
+      // 获取支持平行链项目的社区信息  -   rococo
       getCommnunitys().then((res) => {
         const ccc = res.map((r) => stanfiAddress(r.communityId))
         this.saveClCommunitys(ccc);
@@ -458,9 +440,12 @@ body {
     }
   }
   .account-header {
+    display: flex;
+    align-items: center;
     height: 2.8rem;
     button {
       border: none;
+      padding: .1rem !important;
     }
   }
 }

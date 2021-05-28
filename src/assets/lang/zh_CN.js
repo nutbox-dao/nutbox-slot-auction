@@ -73,7 +73,7 @@ module.exports = {
     install: "立即安装",
     transfer: "转账",
     asset: "资产",
-    nomination: "投票节点",
+    nomination: "验证者提名",
     contribution: "平行链投票",
     balance: "余额",
     bond: "绑定",
@@ -207,7 +207,9 @@ module.exports = {
     success: "成功！",
     warning: "警告！",
     noNeedWithdraw: '没有可赎回投票',
-    comingSoon: '敬请期待'
+    comingSoon: '敬请期待',
+    clipboard:"剪贴板",
+    copyAddress:"已复制地址:  {address}"
   },
   vote: {
     upvote: "点赞",
