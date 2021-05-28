@@ -30,10 +30,11 @@ const routes = [
   },
   {
     path:'/wallet',
+    redirect: '/wallet/polkadot',
     component: Wallet,
     children: [
       {
-        path:'',
+        path:'polkadot',
         component: PolkadotWallet
       },
       {
@@ -50,6 +51,7 @@ const routes = [
     path: '/crowdloan',
     name: 'crowdloan',
     component: Crowdloan,
+    redirect: '/crowdloan/rococo',
     children: [
       {
         path: 'kusama',
@@ -62,7 +64,7 @@ const routes = [
         component: PolkadotCrowdloan
       },
       {
-        path: '',
+        path: 'rococo',
         name: 'rococo',
         component: RococoCrowdloan
       }
@@ -71,6 +73,7 @@ const routes = [
   {
     path: '/crowdstaking',
     component: CrowdStaking,
+    redirect: '/crowdstaking/polkadot',
     children: [
       {
         path: 'kusama',
@@ -78,7 +81,7 @@ const routes = [
         component: KusamaCrowdstaking
       },
       {
-        path: '',
+        path: 'polkadot',
         name: 'polkadot',
         component: PolkadotCrowdstaking
       }

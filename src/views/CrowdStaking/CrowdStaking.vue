@@ -5,7 +5,7 @@
     </h3>
     <div class="nav sub-page-nav">
       <router-link to="/crowdstaking/kusama">Kusama</router-link>
-      <router-link to="/crowdstaking" exact>Polkadot</router-link>
+      <router-link to="/crowdstaking/polkadot">Polkadot</router-link>
       <div class="center-blank"></div>
     </div>
     <router-view></router-view>

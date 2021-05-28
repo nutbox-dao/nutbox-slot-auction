@@ -4,7 +4,7 @@
       {{ this.$t("wallet.wallet") }}
     </h3>
     <div class="nav sub-page-nav">
-      <router-link to="/wallet" exact>Polkadot</router-link>
+      <router-link to="/wallet/polkadot" exact>Polkadot</router-link>
       <router-link to="/wallet/kusama">Kusama</router-link>
       <router-link to="/wallet/rococo">Rococo</router-link>
     </div>
