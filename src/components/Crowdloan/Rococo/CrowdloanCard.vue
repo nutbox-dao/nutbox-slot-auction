@@ -77,7 +77,6 @@
         :communityId="communityId"
         :paraId="paraId"
         :paraName="getCardInfo && getCardInfo.para.paraName"
-        :symbol='symbol'
         @hideContribute="showContribute = false"
       />
     </b-modal>
@@ -103,7 +102,7 @@ import ContributorsLabel from "./Label/ContributorsLabel";
 import RaisedLabel from "./Label/RaisedLabel";
 import { PARA_STATUS } from "@/config";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
-import { calStatus } from "@/utils/kusama/crowdloan";
+import { calStatus } from "@/utils/rococo/crowdloan";
 
 export default {
   data() {
@@ -120,10 +119,6 @@ export default {
     communityId: {
       type: String,
     },
-    symbol:{
-      type: String,
-      default:'kusama'
-    }
   },
   components: {
     TipContribute,
@@ -150,9 +145,9 @@ export default {
     },
   },
   computed: {
-    ...mapState('kusama', ["isConnected", "clProjectFundInfos"]),
+    ...mapState('rococo', ["isConnected", "clProjectFundInfos"]),
     ...mapState(['lang']),
-    ...mapGetters('kusama', [
+    ...mapGetters('rococo', [
       "fundInfo",
       "currentBlockNum",
       "cardInfo",
@@ -197,13 +192,13 @@ export default {
           );
           const sec = Math.floor(secs % timePeriod["MINUTES"]);
           if (secs >= timePeriod["MONTH"]) {
-            return month + "mons" + day + "days" + hour + "hrs";
+            return month + " mons " + day + " days " + hour + " hrs";
           } else if (secs >= timePeriod["DAY"]) {
-            return day + "days" + hour + "hrs" + min + "mins";
+            return day + " days " + hour + " hrs " + min + " mins";
           } else if (secs >= timePeriod["HOUR"]) {
-            return hour + "hrs" + min + "mins";
+            return hour + " hrs " + min + " mins ";
           } else {
-            return min + "mins" + sec + "sec";
+            return min + " mins " + sec + " sec";
           }
         }
         return "Completed";
@@ -231,11 +226,11 @@ export default {
     statusIcon() {
       switch (this.status) {
         case "Active":
-          return this.lang === 'en' ? require("../../static/images/card-active.svg") : require("../../static/images/card-active-cn.png");
+          return this.lang === 'en' ? require("../../../static/images/card-active.svg") : require("../../../static/images/card-active-cn.png");
         case "Retired":
-          return this.lang === 'en' ? require("../../static/images/card-retired.svg") : require('../../static/images/card-retired-cn.png');
+          return this.lang === 'en' ? require("../../../static/images/card-retired.svg") : require('../../../static/images/card-retired-cn.png');
         default:
-          return this.lang === 'en' ? require("../../static/images/card-completed.svg") : require('../../static/images/card-completed-cn.png');
+          return this.lang === 'en' ? require("../../../static/images/card-completed.svg") : require('../../../static/images/card-completed-cn.png');
       }
     },
   },
@@ -245,85 +240,6 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-.c-card {
-  width: 100%;
-  border-radius: 1.4rem;
-  margin-bottom: 12px;
-  overflow: hidden;
-  border: none;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
-  position: relative;
-  padding: 2.8rem 1.2rem 1.8rem;
-  background-color: white;
-  .status-container {
-    position: absolute;
-    right: 0;
-    top: 0;
-    img {
-      width: 3.4rem;
-      height: 3.4rem;
-    }
-  }
-  .card-title-box {
-    .icons {
-      position: relative;
-      margin-right: 2.4rem;
-      img {
-        width: 2rem;
-        height:2rem;
-      }
-      .icon2 {
-        position: absolute;
-        left: 1.6rem;
-        border: 1px solid #e3e5e8;
-        border-radius: 1rem;
-      }
-      .icon1 {
-        position: relative;
-        left: 0;
-        border: 1px solid #e3e5e8;
-        box-shadow: 0px 4px 12px 4px rgba(0, 0, 0, 0.05);
-        border-radius: 1rem;
-      }
-    }
-    .title-text{
-      display: flex;
-      justify-items: center;
-      align-items: center;
-    }
-
-  }
-  .h-line {
-    width: 1.6rem;
-    height: 0.2rem;
-    background: var(--primary-custom);
-    margin-top: 1.6rem;
-    margin-bottom: 0.8rem;
-    border-radius: 4px;
-  }
-  .detail-info-box {
-    margin-bottom: 1.8rem;
-  }
-  .project-info-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: .8rem;
-    .name {
-      flex: 1;
-      text-align: left;
-      color: rgba(189, 191, 194, 1);
-      font-weight: bold;
-    }
-    .info {
-      // flex: 0.8;
-      text-align: right;
-      font-weight: 500;
-    }
-  }
-  .primary-btn {
-    margin-bottom: 0;
-  }
-}
+<style lang="scss" scoped>
+@import "src/static/css/crowdloanCard";
 </style>

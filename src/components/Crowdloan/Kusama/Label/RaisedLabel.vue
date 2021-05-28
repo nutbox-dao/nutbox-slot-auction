@@ -35,8 +35,7 @@ export default {
   },
   computed: {
     ...mapState('polkadot', ["account"]),
-    ...mapState('kusama', ["balance"]),
-    ...mapGetters('kusama', ["fundInfo"]),
+    ...mapGetters('kusama', ["fundInfo", "available"]),
     fund() {
       return this.fundInfo(this.paraId);
     },
@@ -51,7 +50,7 @@ export default {
         }else{
           raised = myData[0].amount
         }
-        cap = this.balance
+        cap = this.available
         raised = this.convertUni(raised)
         cap = this.convertUni(cap)
       }else{

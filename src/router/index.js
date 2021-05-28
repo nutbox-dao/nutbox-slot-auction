@@ -6,6 +6,7 @@ import CrowdStaking from '../views/CrowdStaking/CrowdStaking'
 import Crowdloan from '../views/Crowdloan/Crowdloan'
 import PolkadotCrowdloan from '../views/Crowdloan/Polkadot'
 import KusamaCrowdloan from '../views/Crowdloan/Kusama'
+import RococoCrowdloan from '../views/Crowdloan/Rococo'
 import Wallet from '../views/Wallet/Wallet'
 import PolkadotWallet from '../views/Wallet/Polkadot'
 import KusamaWallet from '../views/Wallet/Kusama'
@@ -51,7 +52,7 @@ const routes = [
     component: Crowdloan,
     children: [
       {
-        path: '',
+        path: 'kusama',
         name: 'kusama',
         component: KusamaCrowdloan
       },
@@ -59,6 +60,11 @@ const routes = [
         path: 'polkadot',
         name: 'polkadot',
         component: PolkadotCrowdloan
+      },
+      {
+        path: '',
+        name: 'rococo',
+        component: RococoCrowdloan
       }
     ]
   },

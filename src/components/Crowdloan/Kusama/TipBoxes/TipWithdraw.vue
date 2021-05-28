@@ -9,7 +9,7 @@
     <div class="tip-contribute">
       <div class="text-center font20">{{ $t('cl.youWillWithdraw')}}</div>
       <div class="tip-withdraw mt-3 mb-1">
-        {{ contributed + " " + tokenSymbol }}
+        {{ contributed + " KSM" }}
       </div>
       <button
         class="primary-btn"
@@ -25,7 +25,6 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { POLKADOT_RELAYCHAIN_SYMBOL } from "@/constant";
 import { withdraw } from "@/utils/kusama/crowdloan";
 import BN from "bn.js";
 import { formatBalance } from "@/utils/helper"
@@ -35,10 +34,6 @@ export default {
     paraId: {
       type: Number,
     },
-    symbol: {
-      type: String,
-      default: 'kusama'
-    }
   },
   data() {
     return {
@@ -47,11 +42,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(["balance", "account"]),
-    ...mapGetters(["getFundInfo", "decimal"]),
-    tokenSymbol() {
-      return POLKADOT_RELAYCHAIN_SYMBOL[this.symbol];
-    },
+    ...mapState('kusama', ["account"]),
+    ...mapGetters('kusama', ["getFundInfo"]),
   },
   async mounted () {
     const fund = this.getFundInfo(this.paraId);

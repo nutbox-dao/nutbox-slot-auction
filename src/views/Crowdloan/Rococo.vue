@@ -25,30 +25,30 @@
 </template>
 
 <script>
-import CrowdloanCard from "@/components/Crowdloan/Kusama/CrowdloanCard";
+import CrowdloanCard from "../../components/Crowdloan/Rococo/CrowdloanCard";
 import {
   subscribeFundInfo as subscribeKusamaFundInfo
-} from "@/utils/kusama/crowdloan";
+} from "@/utils/rococo/crowdloan";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api"
 
 export default {
-  name: "Kusama",
+  name: "Rococo",
   components: {
     CrowdloanCard,
   },
   computed: {
-    ...mapState('kusama', ["clProjectFundInfos", "loadingFunds"]),
+    ...mapState('rococo', ["clProjectFundInfos", "loadingFunds"]),
     funds() {
       const fundInfos = this.clProjectFundInfos;
       return fundInfos || [];
     },
   },
   methods: {
-    ...mapGetters('kusama', ['showingCard']),
+    ...mapGetters('rococo', ['showingCard']),
   },
   async created() {
-    const res = await getOnshowingCrowdloanCard({relaychain:"kusama"})
+    const res = await getOnshowingCrowdloanCard({relaychain:"rococo"})
     await subscribeKusamaFundInfo(res);
   },
 };

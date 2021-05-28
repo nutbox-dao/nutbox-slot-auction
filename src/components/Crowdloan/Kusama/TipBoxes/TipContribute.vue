@@ -9,14 +9,14 @@
     <div class="tip-contribute">
       <div class="text-center mb-4 font20" v-if="lang==='en'">
         Contribute to<span class="big"> {{ paraName }} </span>crowdloan <br />
-        fund in<span class="big"> {{ getSymbol }} </span>network
+        fund in<span class="big"> {{ getChain }} </span>network
       </div>
       <div class="text-center mb-4 font20" v-else>
         为<span class="big"> {{ paraName }} </span>项目<br/>
-        在<span class="big"> {{ getSymbol }} </span>网络中的平行链竞拍投票
+        在<span class="big"> {{ getChain }} </span>网络中的平行链竞拍投票
       </div>
       <div class="text-center mb-4 font14" style="color: red;">
-        {{ $t('tip.tokenSafeTip', {symbol: getSymbol}) }}
+        {{ $t('tip.tokenSafeTip', {symbol: getChain}) }}
       </div>
       <div class="input-group-box">
         <div class="label">{{ $t('cl.amount')}}</div>
@@ -75,16 +75,12 @@ export default {
     paraName:{
       type: String,
     },
-    symbol:{
-      type: String,
-      default: 'kusama'
-    }
   },
   computed: {
     ...mapState('kusama',["balance", "lang"]),
     ...mapGetters('kusama', ["fundInfo"]),
-    getSymbol (){
-      return this.symbol.toUpperCase()
+    getChain (){
+      return 'KUSAMA'
     }
   },
   methods: {
@@ -187,7 +183,7 @@ export default {
     },
   },
   mounted() {
-    this.paraTokenSymbol = POLKADOT_RELAYCHAIN_SYMBOL[this.symbol]
+    this.paraTokenSymbol = 'KSM'
   },
 };
 </script>
