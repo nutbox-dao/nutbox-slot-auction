@@ -8,13 +8,10 @@
     </div>
     <div class="card-title-box flex-start-center">
       <div class="icons">
-        <img class="icon2" :src="getCardInfo && getCardInfo.para.iconUrl" alt="" />
-        <img class="icon1" :src="getCardInfo && getCardInfo.community.iconUrl" alt=""/>
+        <img class="icon2" :src="crowdloan.para.iconUrl" alt="" />
       </div>
       <div class="title-text font20 font-bold">
-        <span>{{ getCardInfo && getCardInfo.community.communityName }}</span>
-        <img src="~@/static/images/close.svg" alt="" />
-        <span>{{ getCardInfo && getCardInfo.para.paraName }}</span>
+        <span>{{ crowdloan.para.paraName }}</span>
       </div>
     </div>
     <div class="h-line"></div>
@@ -34,6 +31,13 @@
           <ContributorsLabel :paraId="paraId" />
         </div>
       </div>
+      <div class="project-info-container">
+        <span class="name"> Rewards </span>
+        <div class="info">
+          <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
+        </div>
+      </div>
+
     </div>
     <div class="text-center" v-if="isConnected">
       <button
@@ -70,7 +74,7 @@
       <TipContribute
         :communityId="communityId"
         :paraId="paraId"
-        :paraName="getCardInfo && getCardInfo.para.paraName"
+        :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
     </b-modal>
@@ -89,14 +93,14 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-// import ConnectWallet from "./Buttons/ConnectWallet";
 import TipContribute from "./TipBoxes/TipContribute";
 import TipWithdraw from "./TipBoxes/TipWithdraw";
 import ContributorsLabel from "./Label/ContributorsLabel";
 import RaisedLabel from "./Label/RaisedLabel";
 import { PARA_STATUS } from "@/config";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
-import { calStatus } from "@/utils/kusama/crowdloan";
+import { calStatus } from "@/utils/rococo/crowdloan";
+import RewardToken from "@/components/Commen/RewardToken"
 
 export default {
   data() {
@@ -107,15 +111,8 @@ export default {
     };
   },
   props: {
-    paraId: {
-      type: Number,
-    },
-    communityId: {
-      type: String,
-    },
-    chain: {
-      type: String,
-      default: 'rococo'
+    crowdloan: {
+      type: Object
     }
   },
   components: {
@@ -123,6 +120,7 @@ export default {
     TipWithdraw,
     ContributorsLabel,
     RaisedLabel,
+    RewardToken
   },
   watch: {
     async currentBlockNum(newValue, _) {
@@ -143,9 +141,9 @@ export default {
     },
   },
   computed: {
-    ...mapState('kusama', ["isConnected", "clProjectFundInfos"]),
+    ...mapState('rococo', ["isConnected", "clProjectFundInfos"]),
     ...mapState(['lang']),
-    ...mapGetters('kusama', [
+    ...mapGetters('rococo', [
       "fundInfo",
       "currentBlockNum",
       "cardInfo",
@@ -153,9 +151,17 @@ export default {
     getFundInfo() {
       return this.fundInfo(this.paraId);
     },
-    getCardInfo() {
-      const card = this.cardInfo(this.paraId, this.communityId);
-      return card;
+    paraId() {
+      return parseInt(this.crowdloan.para.paraId)
+    },
+    communityId() {
+      return this.crowdloan.community.communityId
+    },
+    rewardTokens(){
+      if (this.crowdloan){
+      return this.crowdloan.community.reward.concat(this.crowdloan.para.reward)
+    }
+    return []
     },
     leasePeriod() {
       try {
@@ -194,7 +200,7 @@ export default {
           } else if (secs >= timePeriod["DAY"]) {
             return day + " days " + hour + " hrs " + min + " mins";
           } else if (secs >= timePeriod["HOUR"]) {
-            return hour + " hrs " + min + " mins";
+            return hour + " hrs " + min + " mins ";
           } else {
             return min + " mins " + sec + " sec";
           }

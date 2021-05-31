@@ -122,7 +122,7 @@ export const nominate = async (validators, communityId, projectId, toast, callba
         dispatchError
       }) => {
         try {
-          handelBlockState(api, mstatus, dispatchError, toast, callback, unsub)
+          handelBlockState(api, status, dispatchError, toast, callback, unsub)
         } catch (e) {
           toast(e.message, {
             title: $t('tip.error'),

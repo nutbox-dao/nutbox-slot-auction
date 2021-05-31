@@ -12,7 +12,7 @@
         <img class="icon1" :src="getCardInfo && getCardInfo.community.iconUrl" alt=""/>
       </div>
       <div class="title-text font20 font-bold">
-        <span>{{ getCardInfo && getCardInfo.community.communityName }}</span>
+        <span @click="toCommunity">{{ getCardInfo && getCardInfo.community.communityName }}</span>
         <img src="~@/static/images/close.svg" alt="" />
         <span>{{ getCardInfo && getCardInfo.para.paraName }}</span>
       </div>
@@ -32,12 +32,6 @@
         <div class="info">
           <RaisedLabel :paraId="paraId" />
           <ContributorsLabel :paraId="paraId" />
-        </div>
-      </div>
-      <div class="project-info-container">
-        <span class="name"> My Data </span>
-        <div class="info">
-          <RaisedLabel :isBalance="true" :paraId="paraId" />
         </div>
       </div>
     </div>
@@ -233,6 +227,11 @@ export default {
           return this.lang === 'en' ? require("../../../static/images/card-completed.svg") : require('../../../static/images/card-completed-cn.png');
       }
     },
+  },
+  methods: {
+    toCommunity() {
+      this.$router.push('/crowdloan/rococo/community/'+ this.communityId)
+    }
   },
   mounted() {
     this.status = this.getFundInfo.status;

@@ -43,14 +43,13 @@ export default {
   },
   computed: {
     ...mapState('polkadot', ["account"]),
-    ...mapGetters('rococo', ["fundInfo"]),
+    ...mapGetters('rococo',["fundInfo"]),
   },
   async mounted () {
     const fund = this.fundInfo(this.paraId);
       const contributions = fund.funds
         .filter((c) => c.contributor === this.account.address)
         .reduce((total, c) => total.add(c.amount), new BN(0)) / 1e12;
-        
         this.contributed = await formatBalance(contributions)
   },
   methods: {

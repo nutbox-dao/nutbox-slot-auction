@@ -17,7 +17,8 @@ import KusamaAdmin from '../views/Admin/Kusama'
 import PolkadotCrowdstaking from '../views/CrowdStaking/Polkadot'
 import KusamaCrowdstaking from '../views/CrowdStaking/Kusama'
 import RococoAdmin from '../views/Admin/Rococo'
-
+import RococoCommunity from '../views/Crowdloan/Community/Rococo'
+import KusamaCommunity from '../views/Crowdloan/Community/Kusama'
 
 
 Vue.use(VueRouter)
@@ -67,8 +68,15 @@ const routes = [
         path: 'rococo',
         name: 'rococo',
         component: RococoCrowdloan
-      }
+      },
     ]
+  },
+  {
+    path: '/crowdloan/rococo/community/:communityid',
+    component: RococoCommunity
+  },{
+    path: '/crowdloan/kusama/community/:communityid',
+    component: KusamaCommunity
   },
   {
     path: '/crowdstaking',

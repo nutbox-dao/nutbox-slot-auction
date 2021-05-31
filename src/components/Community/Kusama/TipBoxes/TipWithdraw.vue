@@ -9,7 +9,7 @@
     <div class="tip-contribute">
       <div class="text-center font20">{{ $t('cl.youWillWithdraw')}}</div>
       <div class="tip-withdraw mt-3 mb-1">
-        {{ contributed + " ROC" }}
+        {{ contributed + " KSM" }}
       </div>
       <button
         class="primary-btn"
@@ -25,7 +25,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { withdraw } from "@/utils/rococo/crowdloan";
+import { withdraw } from "@/utils/kusama/crowdloan";
 import BN from "bn.js";
 import { formatBalance } from "@/utils/helper"
 
@@ -42,15 +42,14 @@ export default {
     };
   },
   computed: {
-    ...mapState('polkadot', ["account"]),
-    ...mapGetters('rococo', ["fundInfo"]),
+    ...mapState('kusama', ["account"]),
+    ...mapGetters('kusama', ["getFundInfo"]),
   },
   async mounted () {
-    const fund = this.fundInfo(this.paraId);
+    const fund = this.getFundInfo(this.paraId);
       const contributions = fund.funds
         .filter((c) => c.contributor === this.account.address)
-        .reduce((total, c) => total.add(c.amount), new BN(0)) / 1e12;
-        
+        .reduce((total, c) => total.add(c.amount), new BN(0));
         this.contributed = await formatBalance(contributions)
   },
   methods: {
