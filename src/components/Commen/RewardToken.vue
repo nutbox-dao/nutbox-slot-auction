@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="reward-token-box">
     <img :src="icon" alt="" />
     <span>{{ token }}</span>
   </div>
@@ -23,4 +23,14 @@
 </script>
 
 <style lang="scss" scoped>
+.reward-token-box {
+  display: inline-flex;
+  align-items: center;
+  margin-left: .5rem;
+  img {
+    width: .8rem;
+    height: .8rem;
+    margin-right: .2rem;
+  }
+}
 </style>

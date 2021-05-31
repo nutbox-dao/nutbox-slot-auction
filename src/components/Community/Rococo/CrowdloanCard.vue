@@ -1,14 +1,11 @@
 <template>
   <div class="c-card">
     <div class="status-container">
-      <img :src="statusIcon" alt="" />
-      <!--      <span>-->
-      <!--        {{ status }}-->
-      <!--      </span>-->
+      <span :class="status">{{ status }}</span>
     </div>
     <div class="card-title-box flex-start-center">
       <div class="icons">
-        <img class="icon2" :src="crowdloan.para.iconUrl" alt="" />
+        <img class="icon1" :src="crowdloan.para.iconUrl" alt="" />
       </div>
       <div class="title-text font20 font-bold">
         <span>{{ crowdloan.para.paraName }}</span>
@@ -246,4 +243,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/static/css/crowdloanCard";
+.c-card {
+  .status-container {
+    top: .8rem;
+    right: 1.2rem;
+  }
+  .card-title-box .icons {
+    margin-right: 1rem;
+  }
+}
 </style>
