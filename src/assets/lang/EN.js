@@ -126,7 +126,15 @@ cl:{
   nominator: "Nominator",
   inputNominator: "Your Nominator's address",
   optional: "(optional)",
-  completed: "Completed"
+  completed: "Completed",
+  auctionPlan: "Crowdloan Reward",
+  auctionInfo: "Crowdloan Detail",
+  joinAuction: "Join Crowdloan",
+  raised: "Raised",
+  fund: "Fund",
+  progress: 'Progress',
+  contributors:"Contributor Count",
+  myBalance: "Balance of {token}"
 },
 transaction: {
   broadcasting: "Transaction Is Broadcasting.",

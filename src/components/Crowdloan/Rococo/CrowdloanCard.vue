@@ -14,7 +14,7 @@
       <div class="title-text font20 font-bold">
         <span @click="toCommunity">{{ getCardInfo && getCardInfo.community.communityName }}</span>
         <img src="~@/static/images/close.svg" alt="" />
-        <span>{{ getCardInfo && getCardInfo.para.paraName }}</span>
+        <span @click="toParachain">{{ getCardInfo && getCardInfo.para.paraName }}</span>
       </div>
     </div>
     <div class="h-line"></div>
@@ -230,7 +230,10 @@ export default {
   },
   methods: {
     toCommunity() {
-      this.$router.push('/crowdloan/rococo/community/'+ this.communityId)
+      this.$router.push('/crowdloan/rococo/community/' + this.communityId)
+    },
+    toParachain() {
+      this.$router.push('/crowdloan/rococo/parachain/' + this.paraId)
     }
   },
   mounted() {

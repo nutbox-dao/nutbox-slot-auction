@@ -126,7 +126,15 @@ module.exports = {
     nominator: "推荐人",
     inputNominator: "请输入推荐人地址",
     optional: "(可选)",
-    completed: "已完成"
+    completed: "已完成",
+    auctionPlan: "竞拍方案奖励",
+    auctionInfo: "拍卖信息",
+    joinAuction: "参与拍卖",
+    raised: "已众筹",
+    fund: "总需求",
+    progress: '众筹进度',
+    contributors:"众筹人数",
+    myBalance: "我的 {token} 余额"
   },
   transaction: {
     broadcasting: "正在广播交易",

@@ -49,7 +49,6 @@ export default {
     ...mapState("rococo", ["showingCrowdloan"]),
     ...mapGetters('rococo', ['showingCard']),
     crowdloanInfo() {
-        console.log('showing1', this.showingCard, this.$route.params.communityid);
         console.log();
         const id = stanfiAddress(this.$route.params.communityid);
         if (this.showingCard && this.showingCard.length > 0){

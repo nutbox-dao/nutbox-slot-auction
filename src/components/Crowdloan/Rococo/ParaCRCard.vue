@@ -1,0 +1,128 @@
+<template>
+  <div class="c-card">
+    <div class="card-title-box flex-start-center">
+      <div class="icons">
+        <img
+          class="icon1"
+          :src="crowdloan.community.iconUrl"
+          alt=""
+        />
+      </div>
+      <div class="title-text font20 font-bold">
+        <span @click="toCommunity">{{
+          crowdloan.community.communityName
+        }}</span>
+      </div>
+    </div>
+    <div class="h-line"></div>
+    <div class="detail-info-box">
+        <p>
+            {{ crowdloan.community.description[this.$store.state.lang] }}
+        </p>
+    </div>
+    <div class="project-info-container">
+        <span class="name"> Rewards </span>
+        <div class="info">
+          <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
+        </div>
+      </div>
+    <div class="text-center" v-if="$store.state.rococo.isConnected">
+      <button
+        class="primary-btn"
+        v-show="status === 'Active'"
+        @click="showContribute = true"
+      >
+        {{ $t("cl.contribute") }}
+      </button>
+      <button
+        class="primary-btn"
+        v-show="status === 'Retired'"
+        @click="showWithdraw = true"
+      >
+        {{ $t("cl.withdraw") }}
+      </button>
+      <button class="primary-btn" disabled v-show="status === 'Completed'">
+        {{ $t("cl.completed") }}
+      </button>
+    </div>
+    <!-- <ConnectWallet v-else /> -->
+    <b-modal
+      v-model="showContribute"
+      modal-class="custom-modal"
+      centered
+      hide-header
+      hide-footer
+      no-close-on-backdrop
+    >
+      <TipContribute
+        :communityId="communityId"
+        :paraId="paraId"
+        :paraName="crowdloan.para.paraName"
+        @hideContribute="showContribute = false"
+      />
+    </b-modal>
+    <b-modal
+      v-model="showWithdraw"
+      modal-class="custom-modal"
+      centered
+      hide-header
+      hide-footer
+      no-close-on-backdrop
+    >
+      <TipWithdraw :paraId="paraId" @hideWithdraw="showWithdraw = false" />
+    </b-modal>
+  </div>
+</template>
+
+<script>
+// import ConnectWallet from "./Buttons/ConnectWallet";
+import TipContribute from "./TipBoxes/TipContribute";
+import TipWithdraw from "./TipBoxes/TipWithdraw";
+import RewardToken from "@/components/Commen/RewardToken"
+export default {
+  data() {
+    return {
+      showContribute: false,
+      showWithdraw: false,
+    };
+  },
+  components: {
+      TipContribute,
+      TipWithdraw,
+      RewardToken
+  },
+  props: {
+    crowdloan: {
+      type: Object,
+    },
+    status: {
+        type: String
+    }
+  },
+  methods: {
+      toCommunity() {
+        this.$router.push('/crowdloan/rococo/community/' + this.crowdloan.community.communityId)
+      }
+  },
+  mounted () {
+      console.log(123, this.crowdloan);;
+  },
+  computed: {
+    paraId() {
+        return parseInt(this.crowdloan.para.paraId)
+    },
+    communityId() {
+        return this.crowdloan.community.communityId
+    },
+    rewardTokens(){
+      if (this.crowdloan){
+        return this.crowdloan.community.reward.concat(this.crowdloan.para.reward)
+      }
+    }
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import "src/static/css/crowdloanCard";
+</style>
