@@ -8,13 +8,13 @@
           <a class="font20 font-bold community-title"
              :href="communityInfo.website"
              target="_blank">{{ communityInfo.communityName }}</a>
-          <div class="desc">{{ communityInfo.description }}</div>
+          <div class="desc">{{ communityInfo.description[lang] }}</div>
         </div>
       </div>
     </div>
     <div class="card-container">
       <div class="row">
-        <div class="col-xl-4 col-md-6" v-for="(crowdloan, idx) of showingCard" :key="idx">
+        <div class="col-xl-4 col-md-6" v-for="(crowdloan, idx) of crowdloanInfo" :key="idx">
           <CrowdloanCard :crowdloan="crowdloan"/>
         </div>
       </div>
@@ -43,11 +43,21 @@ export default {
   computed: {
     ...mapState("rococo", ["showingCrowdloan"]),
     ...mapGetters('rococo', ['showingCard']),
+    ...mapState(['lang']),
     crowdloanInfo() {
-        console.log();
         const id = stanfiAddress(this.$route.params.communityid);
         if (this.showingCard && this.showingCard.length > 0){
-            return this.showingCard.filter(f => stanfiAddress(f.community.communityId) === id)
+          let ids = []
+          let cards = []
+          for (let card of this.showingCard){
+            const communityId = stanfiAddress(card.community.communityId)
+            const paraId = parseInt(card.para.paraId)
+            if (id === communityId && ids.indexOf(paraId) === -1) {
+              cards.push(card)
+              ids.push(paraId)
+            }
+          }
+           return cards
         }
         return []
     },

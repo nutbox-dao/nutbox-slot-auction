@@ -2,7 +2,7 @@
   <div class="ro-card">
     <div class="card-top-box">
       <div class="status-container text-right">
-        <span>投票中</span>
+        <span :class="status">{{ status }}</span>
       </div>
       <div class="card-title-box flex-start-center">
         <div class="icons">
@@ -12,11 +12,11 @@
         <div class="title-text font20 font-bold">
           <div class="link-title">
             <span class=" font20" @click="toCommunity">{{ getCardInfo && getCardInfo.community.communityName }}</span>
-            <i class="link-icon"></i>
+            <i class="link-icon" @click="toCommunity"></i>
           </div>
           <div class="link-title">
-            <span class="font16">{{ getCardInfo && getCardInfo.para.paraName }}</span>
-            <i class="link-icon"></i>
+            <span class="font16" @click="toParachain">{{ getCardInfo && getCardInfo.para.paraName }}</span>
+            <i class="link-icon" @click="toParachain"></i>
           </div>
         </div>
       </div>
@@ -222,16 +222,6 @@ export default {
         return 0;
       }
     },
-    statusIcon() {
-      switch (this.status) {
-        case "Active":
-          return this.lang === 'en' ? require("../../../static/images/card-active.svg") : require("../../../static/images/card-active-cn.png");
-        case "Retired":
-          return this.lang === 'en' ? require("../../../static/images/card-retired.svg") : require('../../../static/images/card-retired-cn.png');
-        default:
-          return this.lang === 'en' ? require("../../../static/images/card-completed.svg") : require('../../../static/images/card-completed-cn.png');
-      }
-    },
   },
   methods: {
     toCommunity() {
@@ -249,65 +239,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/static/css/crowdloanCard";
-.card-top-box {
-  border-top-left-radius: 1.4rem;
-  border-top-right-radius: 1.4rem;
-  background-image: linear-gradient(to bottom, #ffffff, #F6F7F9);
-  padding: .8rem 1.2rem 2.2rem;
-  overflow: hidden;
-  .status-container span {
-    display: inline-block;
-    height: 1.2rem;
-    padding: 0 .4rem;
-    border: 1px solid rgba(80, 191, 0, 0.3);
-    color: #50BF00;
-    border-radius: 1.2rem;
-    line-height: 1.2rem;
-    background: rgba(80, 191, 0, 0.05);
-    font-size: .6rem;
-  }
-  .icons {
-    display: flex;
-    align-items: flex-end;
-    width: 3.5rem;
-    margin-right: .4rem;
-    .icon1 {
-      width: 2.8rem;
-      height: 2.8rem;
-    }
-    .icon2 {
-      margin-left: -.7rem;
-      width: 1.4rem;
-      height: 1.4rem;
-    }
-  }
-  .title-text {
-    flex: 1;
-    overflow: hidden;
-  }
-  .link-title {
-    display: flex;
-    align-items: center;
-    span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      cursor: pointer;
-      margin-right: .4rem;
-    }
-    .link-icon {
-      display: inline-block;
-      min-width: .8rem;
-      width: .8rem;
-      height: .8rem;
-      background-repeat: no-repeat;
-      background-image: url("~@/static/images/link-icon.png");
-      background-position: center center;
-      background-size: 100% 100%;
-    }
-  }
+.c-card{
+    margin-top: -1rem;
 }
-.c-card {
-  margin-top: -1rem;
-}
+
 </style>
