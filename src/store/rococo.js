@@ -25,7 +25,7 @@ export default {
     // projectIds
     projects: [],
     crowdstakings: [],
-    loadingStaking: true,
+    loadingStaking: false,
     totalStaked: 0,
     locked: 0,
     unLocking: 0,

@@ -31,6 +31,11 @@
           </div>
         </template>
       </UserContributions>
+      <UserNominations>
+        <template #title>
+          <div class="item-title">{{ $t("wallet.nomination") }}</div>
+        </template>
+      </UserNominations>
     </div>
   </div>
 </template>
@@ -39,6 +44,7 @@
 import BalanceView from "@/components/Wallet/Kusama/BalanceView";
 import LockedBalanceView from "@/components/Wallet/Kusama/LockedBalanceView";
 import UserContributions from "@/components/Wallet/Kusama/UserContributions";
+import UserNominations from "@/components/Wallet/Kusama/UserNominations"
 import { mapState, mapGetters } from "vuex";
 
 export default {
@@ -55,6 +61,7 @@ export default {
     BalanceView,
     UserContributions,
     LockedBalanceView,
+    UserNominations
   },
   async mounted() {},
 };

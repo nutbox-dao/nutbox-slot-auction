@@ -24,6 +24,13 @@
           />
         </div>
       </div>
+      <UserContributions>
+        <template #title>
+          <div class="item-title">
+            {{ $t("wallet.contribution") }}
+          </div>
+        </template>
+      </UserContributions>
       <UserNominations>
         <template #title>
           <div class="item-title">{{ $t("wallet.nomination") }}</div>
@@ -38,6 +45,7 @@ import BalanceView from "@/components/Wallet/Polkadot/BalanceView";
 import LockedBalanceView from "@/components/Wallet/Polkadot/LockedBalanceView";
 import { mapState, mapGetters } from "vuex";
 import UserNominations from "@/components/Wallet/Polkadot/UserNominations";
+import UserContributions from "@/components/Wallet/Polkadot/UserContributions"
 
 export default {
   data() {
@@ -53,6 +61,7 @@ export default {
     BalanceView,
     UserNominations,
     LockedBalanceView,
+    UserContributions
   },
   async mounted() {},
 };
