@@ -105,7 +105,6 @@ export default {
       }
   },
   mounted () {
-      console.log(123, this.crowdloan);;
   },
   computed: {
     paraId() {

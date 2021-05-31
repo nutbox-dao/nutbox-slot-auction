@@ -86,7 +86,6 @@ export default {
       }
 
       if (this.available.lte(new BN(amount).mul(new BN(1e10)))) {
-        console.log(123214,this.available, amount);
         this.$bvToast.toast(this.$t("tip.insufficientBalance"), {
           title: this.$t("tip.tips"),
           autoHideDelay: 5000,
