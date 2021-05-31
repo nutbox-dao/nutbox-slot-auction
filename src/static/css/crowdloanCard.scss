@@ -16,6 +16,13 @@
         width: 3.4rem;
         height: 3.4rem;
       }
+      span {
+        padding: 0 .4rem;
+        display: inline-block;
+        border-radius: 1.2rem;
+        font-size: .6rem;
+        line-height: 1.2rem;
+      }
     }
     .card-title-box {
       .icons {
@@ -44,7 +51,7 @@
         justify-items: center;
         align-items: center;
       }
-  
+
     }
     .h-line {
       width: 1.6rem;
@@ -78,3 +85,15 @@
       margin-bottom: 0;
     }
   }
+.Active {
+  color: rgba(80, 191, 0, 1);
+  border: 1px solid rgba(80, 191, 0, 1);
+}
+.Retired {
+  color: rgba(248, 182, 42, 1);
+  border: 1px solid rgba(248, 182, 42, 1);
+}
+.Completed {
+  color: rgba(255, 91, 77, 1);
+  border: 1px solid rgba(255, 91, 77, 1);
+}
