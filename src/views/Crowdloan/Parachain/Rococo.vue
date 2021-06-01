@@ -221,6 +221,7 @@ export default {
   async created() {
     const res = await getOnshowingCrowdloanCard({ relaychain: "rococo" });
     await subscribeKusamaFundInfo(res);
+    this.status = this.getFundInfo.status;
   },
 };
 </script>

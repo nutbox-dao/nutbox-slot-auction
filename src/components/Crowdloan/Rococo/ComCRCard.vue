@@ -7,8 +7,9 @@
       <div class="icons">
         <img class="icon1" :src="crowdloan.para.iconUrl" alt="" />
       </div>
-      <div class="title-text font20 font-bold">
-        <span>{{ crowdloan.para.paraName }}</span>
+      <div class="title-text font20 font-bold link-title">
+        <span @click="toParaChain">{{ crowdloan.para.paraName }}</span>
+        <i class="link-icon" @click="toParaChain"></i>
       </div>
     </div>
     <div class="h-line"></div>
@@ -124,6 +125,11 @@ export default {
     ContributorsLabel,
     RaisedLabel,
     RewardToken,
+  },
+  methods: {
+    toParaChain() {
+      this.$router.push('/crowdloan/rococo/parachain/' + this.crowdloan.para.paraId)
+    }
   },
   watch: {
     async currentBlockNum(newValue, _) {
