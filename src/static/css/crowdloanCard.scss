@@ -83,6 +83,7 @@
     }
     .primary-btn {
       margin-bottom: 0;
+      width: 90%;
     }
   }
 .Active {
@@ -139,17 +140,16 @@
   .link-title {
     display: flex;
     align-items: center;
+    cursor: pointer;
     span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      cursor: pointer;
       margin-right: .4rem;
     }
     .link-icon {
       display: inline-block;
       min-width: .8rem;
-      cursor: pointer;
       width: .8rem;
       height: .8rem;
       background-repeat: no-repeat;

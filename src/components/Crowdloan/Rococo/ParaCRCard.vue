@@ -15,11 +15,11 @@
       </div>
     </div>
     <div class="h-line"></div>
-    <div class="detail-info-box">
-        <p>
-            {{ crowdloan.community.description[this.$store.state.lang] }}
-        </p>
-    </div>
+<!--    <div class="detail-info-box">-->
+<!--        <p>-->
+<!--            {{ crowdloan.community.description[this.$store.state.lang] }}-->
+<!--        </p>-->
+<!--    </div>-->
     <div class="project-info-container">
         <span class="name"> Rewards </span>
         <div class="info">
@@ -124,4 +124,20 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/static/css/crowdloanCard";
+.c-card {
+  .card-title-box .icons {
+    margin-right: 1rem;
+    .icon1 {
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 2.8rem;
+    }
+  }
+  .h-line {
+    margin-top: 1rem;
+  }
+  .primary-btn {
+    margin-top: 1.8rem;
+  }
+}
 </style>

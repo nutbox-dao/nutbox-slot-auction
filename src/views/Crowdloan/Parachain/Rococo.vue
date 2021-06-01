@@ -1,65 +1,63 @@
 <template>
-  <div class="crowdloan-parachain">
-    <div class="parachain-info">
-      <!-- 返回按钮 -->
-      <img
-        src="~@/static/images/left-arrow.png"
-        alt=""
-        @click="$router.push('/crowdloan/rococo')"
-      />
-      <!-- 背景 -->
-      <img src="" alt="" />
-      <!-- logo -->
-      <img :src="paraInfo.iconUrl" alt="" />
-      <p>
-        {{ paraInfo.paraName }}
-      </p>
-      <p class="community-title"></p>
-      <!-- outlink -->
-      <a :href="paraInfo.website" target="__blank">
-        <img src="~@/static/images/official-link.png" alt="" />
-      </a>
-      <p class="community-desc">
-        {{ paraInfo.description[lang] }}
-      </p>
-    </div>
-
-    <div class="crowdloan-plan-container">
-      <div>
-        <p>
-          {{ $t("cl.auctionPlan") }}
-        </p>
-        <a :href="paraInfo.rewardLink" target="__blank">
-          <img src="~@/static/images/auctionPlanLink.png" alt="" />
-        </a>
+  <div class="crowdloan-parachain scroll-content">
+    <div class="parachain-info p-card">
+      <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.push('/crowdloan/rococo')"/>
+      <div class="p-detail-info">
+        <img class="logo" :src="paraInfo.iconUrl" alt="" />
+        <div class="text-info">
+          <a class="font20 font-bold title official-link" :href="paraInfo.website"
+             target="_blank">{{ paraInfo.paraName }}</a>
+          <div class="desc">{{ paraInfo.description[lang] }}</div>
+        </div>
       </div>
-      <p>
+    </div>
+    <div class="c-card">
+      <a class="font20 font-bold title link" :href="paraInfo.rewardLink"
+         target="_blank">{{ $t("cl.auctionPlan") }}</a>
+      <div class="desc" style="margin-top: .8rem">
         {{ paraInfo.rewardPlan[lang] }}
-      </p>
+        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      </div>
     </div>
 
-    <div class="crowdloan-detail">
-      <p>
-        {{ $t("cl.auctionInfo") }}
-      </p>
-      <p>Lease Period: {{ leasePeriod }}</p>
-      <p>Countdown: {{ countDown }}</p>
-      <p>Raised: {{ fb(getFundInfo.raised) }}</p>
-      <p>Fund: {{ fb(getFundInfo.cap) }}</p>
-      <p>Progress: {{ percent }}</p>
-      <p>Contributor Count: {{ getFundInfo.funds.length }}</p>
+    <div class="c-card crowdloan-detail">
+      <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
+      <b-table-simple :stacked="screenWidth<960">
+        <b-thead>
+          <b-tr>
+            <b-th>Lease Period</b-th>
+            <b-th>Countdown</b-th>
+            <b-th>Raised</b-th>
+            <b-th>Fund</b-th>
+            <b-th>Progress</b-th>
+            <b-th>Contributor Count</b-th>
+          </b-tr>
+        </b-thead>
+        <b-tbody>
+          <b-tr>
+            <b-td stacked-heading="Lease Period">{{ leasePeriod }}</b-td>
+            <b-td stacked-heading="Countdown">{{ countDown }}</b-td>
+            <b-td stacked-heading="Raised">{{ fb(getFundInfo.raised) }}</b-td>
+            <b-td stacked-heading="Fund">{{ fb(getFundInfo.cap) }}</b-td>
+            <b-td stacked-heading="Progress">{{ percent }}</b-td>
+            <b-td stacked-heading="Contributor Count">{{ getFundInfo.funds.length }}</b-td>
+          </b-tr>
+        </b-tbody>
+      </b-table-simple>
+
     </div>
 
     <div class="card-container">
-        <p>
-            {{ $t('cl.joinAuction') }}
-        </p>
-      <ParaCRCard
-        :crowdloan="crowdloan"
-        :status="status"
-        v-for="crowdloan in crowdloanInfo"
-        :key="crowdloan.community.communtiyId"
-      />
+      <div class="font20 font-bold title">{{ $t('cl.joinAuction') }}</div>
+      <div class="row">
+        <div class="col-xl-4 col-md-6" v-for="crowdloan in crowdloanInfo"
+             :key="crowdloan.community.communtiyId">
+          <ParaCRCard
+            :crowdloan="crowdloan"
+            :status="status"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -77,7 +75,8 @@ export default {
   name: "Rococo",
   data() {
       return {
-          status: ''
+          status: '',
+        screenWidth: document.body.clientWidth,
       }
   },
   components: {
@@ -183,22 +182,25 @@ export default {
     },
   },
     watch: {
-    async currentBlockNum(newValue, _) {
-      const fund = this.getFundInfo;
-      const end = fund.end;
-      const raised = fund.raised;
-      const cap = fund.cap;
-      const firstSlot = fund.firstSlot;
-      const [status] = await calStatus(
-        end,
-        firstSlot,
-        raised,
-        cap,
-        this.paraId,
-        newValue
-      );
-      this.status = status;
-    },
+      async currentBlockNum(newValue, _) {
+        const fund = this.getFundInfo;
+        const end = fund.end;
+        const raised = fund.raised;
+        const cap = fund.cap;
+        const firstSlot = fund.firstSlot;
+        const [status] = await calStatus(
+          end,
+          firstSlot,
+          raised,
+          cap,
+          this.paraId,
+          newValue
+        );
+        this.status = status;
+      },
+      screenWidth(val) {
+        this.screenWidth = val;
+      }
   },
   methods: {
       fb(a){
@@ -206,6 +208,13 @@ export default {
       }
   },
   async created() {
+    let _this = this
+    window.onresize= () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth;
+        _this.screenWidth = window.screenWidth;
+      })();
+    }
     const res = await getOnshowingCrowdloanCard({ relaychain: "rococo" });
     await subscribeKusamaFundInfo(res);
   },
@@ -213,4 +222,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "src/static/css/projectInfoCard";
+.c-card {
+  margin-bottom: 1.2rem;
+}
+.table th {
+  background-color: #F6F7F9;
+  text-align: right;
+  &:first-child {
+    text-align: left;
+  }
+}
+.table td {
+  word-break: break-all;
+  white-space: normal;
+  text-align: right;
+  font-size: .6rem;
+}
+.table.b-table.b-table-stacked > tbody > tr > [data-label]::before {
+  text-align: left;
+  white-space: nowrap;
+}
+.table.b-table.b-table-stacked > tbody > tr > :first-child {
+  border-top-width: 0;
+}
+
+@media (min-width: 960px) {
+  .table td:first-child {
+    text-align: left;
+  }
+}
 </style>

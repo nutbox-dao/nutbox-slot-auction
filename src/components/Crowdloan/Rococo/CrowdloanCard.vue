@@ -240,7 +240,8 @@ export default {
 <style lang="scss" scoped>
 @import "src/static/css/crowdloanCard";
 .c-card{
-    margin-top: -1rem;
+    margin-top: -1.2rem;
+  padding: 1.8rem 1.2rem;
 }
 
 </style>
