@@ -6,24 +6,8 @@
     border: none;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
     position: relative;
-    padding: 2.8rem 1.2rem 1.8rem;
+    padding: 1.8rem 1.2rem;
     background-color: white;
-    .status-container {
-      position: absolute;
-      right: 0;
-      top: 0;
-      img {
-        width: 3.4rem;
-        height: 3.4rem;
-      }
-      span {
-        padding: 0 .4rem;
-        display: inline-block;
-        border-radius: 1.2rem;
-        font-size: .6rem;
-        line-height: 1.2rem;
-      }
-    }
     .card-title-box {
       .icons {
         position: relative;
@@ -86,38 +70,12 @@
       width: 90%;
     }
   }
-.Active {
-  color: rgba(80, 191, 0, 1);
-  border: 1px solid rgba(80, 191, 0, 1);
-  background: rgba(80, 191, 0, 0.05);
-}
-.Retired {
-  color: rgba(248, 182, 42, 1);
-  border: 1px solid rgba(248, 182, 42, 1);
-  background: rgba(255, 219, 38, 0.05);
-}
-.Completed {
-  color: rgba(255, 91, 77, 1);
-  border: 1px solid rgba(255, 91, 77, 1);
-  background: rgba(255, 91, 77, 0.051);
-}
 .card-top-box {
   border-top-left-radius: 1.4rem;
   border-top-right-radius: 1.4rem;
   background-image: linear-gradient(to bottom, #ffffff, #F6F7F9);
   padding: .8rem 1.2rem 2.2rem;
   overflow: hidden;
-  .status-container span {
-    display: inline-block;
-    height: 1.2rem;
-    padding: 0 .4rem;
-    // border: 1px solid rgba(80, 191, 0, 0.3);
-    // color: #50BF00;
-    border-radius: 1.2rem;
-    line-height: 1.2rem;
-    // background: rgba(80, 191, 0, 0.05);
-    font-size: .6rem;
-  }
   .icons {
     display: flex;
     align-items: flex-end;
@@ -137,25 +95,25 @@
     flex: 1;
     overflow: hidden;
   }
-  .link-title {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      margin-right: .4rem;
-    }
-    .link-icon {
-      display: inline-block;
-      min-width: .8rem;
-      width: .8rem;
-      height: .8rem;
-      background-repeat: no-repeat;
-      background-image: url("~@/static/images/link-icon.png");
-      background-position: center center;
-      background-size: 100% 100%;
-    }
+}
+.link-title {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: .4rem;
+  }
+  .link-icon {
+    display: inline-block;
+    min-width: .8rem;
+    width: .8rem;
+    height: .8rem;
+    background-repeat: no-repeat;
+    background-image: url("~@/static/images/link-icon.png");
+    background-position: center center;
+    background-size: 100% 100%;
   }
 }

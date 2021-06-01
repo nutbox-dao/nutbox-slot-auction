@@ -8,10 +8,11 @@
           alt=""
         />
       </div>
-      <div class="title-text font20 font-bold">
-        <span @click="toCommunity">{{
-          crowdloan.community.communityName
-        }}</span>
+      <div class="font20 font-bold link-title">
+          <span @click="toCommunity">
+            {{crowdloan.community.communityName }}
+          </span>
+        <i class="link-icon" @click="toCommunity"></i>
       </div>
     </div>
     <div class="h-line"></div>

@@ -20,11 +20,13 @@
     </div>
 
     <div class="c-card crowdloan-detail">
-      <div class="status-container">
-        <span :class="status">{{ status }}</span>
+      <div class="flex-between-center mb-2">
+        <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
+        <div class="status-container">
+          <span :class="status">{{ status }}</span>
+        </div>
       </div>
-      <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
-      
+
       <b-table-simple responsive>
         <b-thead>
           <b-tr>
@@ -239,7 +241,7 @@ export default {
   }
 }
 .table td {
-  word-break: break-all;
+  word-break: break-word;
   white-space: normal;
   text-align: right;
   font-size: .6rem;

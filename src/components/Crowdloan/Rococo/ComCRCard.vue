@@ -1,6 +1,6 @@
 <template>
   <div class="c-card">
-    <div class="status-container">
+    <div class="status-container text-right">
       <span :class="status">{{ status }}</span>
     </div>
     <div class="card-title-box flex-start-center">
@@ -259,6 +259,7 @@ export default {
 <style lang="scss" scoped>
 @import "src/static/css/crowdloanCard";
 .c-card {
+  padding-top: .8rem;
   .status-container {
     top: 0.8rem;
     right: 1.2rem;
