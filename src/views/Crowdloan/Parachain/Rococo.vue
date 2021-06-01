@@ -74,7 +74,7 @@ import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
 import { subscribeFundInfo as subscribeKusamaFundInfo } from "@/utils/rococo/crowdloan";
 import { formatBalance } from "@/utils/rococo/rococo";
-import { TIME_PERIOD } from "@/constant"
+import { TIME_PERIOD, BLOCK_SECOND } from "@/constant"
 import { calStatus } from "@/utils/rococo/crowdloan";
 import { stanfiAddress } from "@/utils/polkadot/polkadot"
 
@@ -82,7 +82,7 @@ export default {
   name: "Rococo",
   data() {
       return {
-          status: 'Completed'
+          status: ''
       }
   },
   components: {
@@ -219,9 +219,12 @@ export default {
       }
   },
   async created() {
-    const res = await getOnshowingCrowdloanCard({ relaychain: "rococo" });
-    await subscribeKusamaFundInfo(res);
-    this.status = this.getFundInfo.status;
+    try{
+      const res = await getOnshowingCrowdloanCard({ relaychain: "rococo" });
+      await subscribeKusamaFundInfo(res);
+      this.status = this.getFundInfo.status;
+    }catch(e){}
+
   },
 };
 </script>

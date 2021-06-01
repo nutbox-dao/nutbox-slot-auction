@@ -42,7 +42,8 @@
       >
         {{ $t("cl.withdraw") }}
       </button>
-      <button class="primary-btn" disabled v-show="status === 'Completed'">
+      <button class="primary-btn" disabled v-show="status === 'Completed' || status === ''">
+        <b-spinner small type="grow" v-show="status.length === 0"></b-spinner>
         {{ $t("cl.completed") }}
       </button>
     </div>

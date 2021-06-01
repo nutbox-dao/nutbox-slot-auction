@@ -111,7 +111,7 @@ export default {
     return {
       showContribute: false,
       showWithdraw: false,
-      status: PARA_STATUS.COMPLETED,
+      status: '',
     };
   },
   props: {

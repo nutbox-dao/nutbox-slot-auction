@@ -17,7 +17,6 @@
             }
         },
         mounted () {
-            console.log(this.icon, this.token);;
         },
     }
 </script>
