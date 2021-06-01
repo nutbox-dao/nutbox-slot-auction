@@ -56,3 +56,14 @@
   background: white;
   border-radius: 1.4rem;
 }
+@media (max-width: 960px) {
+  .p-detail-info {
+    margin-top: 3.6rem;
+  }
+  .logo {
+    display: none;
+  }
+  .text-info {
+    margin-left: 0;
+  }
+}
