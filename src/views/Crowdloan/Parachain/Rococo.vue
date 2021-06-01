@@ -22,7 +22,7 @@
 
     <div class="c-card crowdloan-detail">
       <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
-      <b-table-simple :stacked="screenWidth<960">
+      <b-table-simple responsive>
         <b-thead>
           <b-tr>
             <b-th>Lease Period</b-th>
@@ -35,16 +35,15 @@
         </b-thead>
         <b-tbody>
           <b-tr>
-            <b-td stacked-heading="Lease Period">{{ leasePeriod }}</b-td>
-            <b-td stacked-heading="Countdown">{{ countDown }}</b-td>
-            <b-td stacked-heading="Raised">{{ fb(getFundInfo.raised) }}</b-td>
-            <b-td stacked-heading="Fund">{{ fb(getFundInfo.cap) }}</b-td>
-            <b-td stacked-heading="Progress">{{ percent }}</b-td>
-            <b-td stacked-heading="Contributor Count">{{ getFundInfo.funds.length }}</b-td>
+            <td data-label="Lease Period">{{ leasePeriod }}</td>
+            <td data-label="Countdown">{{ countDown }}</td>
+            <td data-label="Raised">{{ fb(getFundInfo.raised) }}xxxxxxxxxxxxxxxxxxxxxxxx</td>
+            <td data-label="Fund">{{ fb(getFundInfo.cap) }}</td>
+            <td data-label="Progress">{{ percent }}</td>
+            <td data-label="Contributor Count">{{ getFundInfo.funds.length }}</td>
           </b-tr>
         </b-tbody>
       </b-table-simple>
-
     </div>
 
     <div class="card-container">
@@ -75,8 +74,7 @@ export default {
   name: "Rococo",
   data() {
       return {
-          status: '',
-        screenWidth: document.body.clientWidth,
+          status: ''
       }
   },
   components: {
@@ -197,9 +195,6 @@ export default {
           newValue
         );
         this.status = status;
-      },
-      screenWidth(val) {
-        this.screenWidth = val;
       }
   },
   methods: {
@@ -208,13 +203,6 @@ export default {
       }
   },
   async created() {
-    let _this = this
-    window.onresize= () => {
-      return (() => {
-        window.screenWidth = document.body.clientWidth;
-        _this.screenWidth = window.screenWidth;
-      })();
-    }
     const res = await getOnshowingCrowdloanCard({ relaychain: "rococo" });
     await subscribeKusamaFundInfo(res);
   },
@@ -225,6 +213,9 @@ export default {
 @import "src/static/css/projectInfoCard";
 .c-card {
   margin-bottom: 1.2rem;
+}
+.table-responsive {
+  margin-bottom: 0;
 }
 .table th {
   background-color: #F6F7F9;
@@ -239,17 +230,30 @@ export default {
   text-align: right;
   font-size: .6rem;
 }
-.table.b-table.b-table-stacked > tbody > tr > [data-label]::before {
-  text-align: left;
-  white-space: nowrap;
-}
-.table.b-table.b-table-stacked > tbody > tr > :first-child {
-  border-top-width: 0;
-}
-
 @media (min-width: 960px) {
   .table td:first-child {
     text-align: left;
+  }
+}
+@media (max-width: 960px) {
+  .table {
+    thead {
+      display: none;
+    }
+    tbody > tr > [data-label]::before {
+      content: attr(data-label);
+      width: 40%;
+      float: left;
+      text-align: left;
+      overflow-wrap: break-word;
+      font-weight: bold;
+      font-style: normal;
+      padding: 0 calc(1rem / 2) 0 0;
+      margin: 0;
+    }
+    td {
+      display: block;
+    }
   }
 }
 </style>
