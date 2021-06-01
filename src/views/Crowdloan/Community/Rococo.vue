@@ -1,7 +1,7 @@
 <template>
   <div class="crowdloan-community scroll-content">
     <div class="community-info p-card">
-      <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.push('/crowdloan/rococo')"/>
+      <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.back()"/>
       <div class="p-detail-info">
         <img class="logo" :src="communityInfo.iconUrl" alt="" />
         <div class="text-info">
