@@ -808,21 +808,23 @@ body {
 #telegram-icon:hover {
   background-image: url("./static/images/telegram-hover.svg");
 }
-.logo {
-  display: block;
-}
-.logo_small {
-  display: none;
+.page-header {
+  .logo {
+    display: block;
+  }
+  .logo_small {
+    display: none;
+  }
 }
 @media only screen and (max-width: 960px) {
   .page-header {
     padding: .5rem .8rem;
+    .logo {
+      display: none;
+    }
   }
   .small-logo-container {
     display: block !important;
-  }
-  .logo {
-    display: none;
   }
   .right {
     padding-left: 0;
