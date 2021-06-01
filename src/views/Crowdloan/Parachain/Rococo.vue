@@ -45,7 +45,7 @@
             <td data-label="Fund">{{ getFundInfo && fb(getFundInfo.cap) }}</td>
             <td data-label="Progress">{{ percent }}</td>
             <td data-label="Contributors">{{ getFundInfo && getFundInfo.funds.length }}</td>
-            <td data-label="Contributed">{{ contributed && fb(contributed) }}</td>
+            <td data-label="Contributed">{{ fb(contributed) }}</td>
           </b-tr>
         </b-tbody>
       </b-table-simple>
@@ -180,12 +180,12 @@ export default {
       try{
         const c = this.getFundInfo.funds.filter(c=>stanfiAddress(c.contributor) == this.account.address)
         if (c.length === 0){
-          return new BN(0)
+          return 0
         }else{
           return c[0].amount
         }
       }catch(e){
-
+        return 0
       }
     }
   },
