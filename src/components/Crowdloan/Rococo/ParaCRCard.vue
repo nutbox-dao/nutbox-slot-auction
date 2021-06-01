@@ -139,6 +139,12 @@ export default {
       font-weight: 600;
       color: #BDBFC2;
       line-height: 18px;
+      word-break: break-word;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
     }
   }
   .h-line {
