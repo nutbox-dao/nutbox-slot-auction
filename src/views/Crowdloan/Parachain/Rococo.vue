@@ -7,7 +7,7 @@
         <div class="text-info">
           <a class="font20 font-bold title official-link" :href="paraInfo.website"
              target="_blank">{{ paraInfo.paraName }}</a>
-          <div class="desc">{{ paraInfo.description[lang] }}</div>
+          <div class="desc">{{ paraInfo && paraInfo.description[lang] }}</div>
         </div>
       </div>
     </div>
@@ -15,13 +15,16 @@
       <a class="font20 font-bold title link" :href="paraInfo.rewardLink"
          target="_blank">{{ $t("cl.auctionPlan") }}</a>
       <div class="desc" style="margin-top: .8rem">
-        {{ paraInfo.rewardPlan[lang] }}
-        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        {{ paraInfo && paraInfo.rewardPlan[lang] }}
       </div>
     </div>
 
     <div class="c-card crowdloan-detail">
+      <div class="status-container">
+        <span :class="status">{{ status }}</span>
+      </div>
       <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
+      
       <b-table-simple responsive>
         <b-thead>
           <b-tr>
@@ -30,17 +33,19 @@
             <b-th>Raised</b-th>
             <b-th>Fund</b-th>
             <b-th>Progress</b-th>
-            <b-th>Contributor Count</b-th>
+            <b-th>Contributors</b-th>
+            <b-th>Contributed</b-th>
           </b-tr>
         </b-thead>
         <b-tbody>
           <b-tr>
             <td data-label="Lease Period">{{ leasePeriod }}</td>
             <td data-label="Countdown">{{ countDown }}</td>
-            <td data-label="Raised">{{ fb(getFundInfo.raised) }}xxxxxxxxxxxxxxxxxxxxxxxx</td>
-            <td data-label="Fund">{{ fb(getFundInfo.cap) }}</td>
+            <td data-label="Raised">{{ getFundInfo && fb(getFundInfo.raised) }}</td>
+            <td data-label="Fund">{{ getFundInfo && fb(getFundInfo.cap) }}</td>
             <td data-label="Progress">{{ percent }}</td>
-            <td data-label="Contributor Count">{{ getFundInfo.funds.length }}</td>
+            <td data-label="Contributors">{{ getFundInfo && getFundInfo.funds.length }}</td>
+            <td data-label="Contributed">{{ contributed && fb(contributed) }}</td>
           </b-tr>
         </b-tbody>
       </b-table-simple>
@@ -69,12 +74,13 @@ import { subscribeFundInfo as subscribeKusamaFundInfo } from "@/utils/rococo/cro
 import { formatBalance } from "@/utils/rococo/rococo";
 import { TIME_PERIOD } from "@/constant"
 import { calStatus } from "@/utils/rococo/crowdloan";
+import { stanfiAddress } from "@/utils/polkadot/polkadot"
 
 export default {
   name: "Rococo",
   data() {
       return {
-          status: ''
+          status: 'Completed'
       }
   },
   components: {
@@ -82,6 +88,7 @@ export default {
   },
   computed: {
     ...mapState(["lang"]),
+    ...mapState('polkadot', ['account']),
     ...mapState("rococo", ["isConnected", "clProjectFundInfos"]),
     ...mapGetters("rococo", [
       "showingCard",
@@ -155,21 +162,12 @@ export default {
       }
     },
     percent() {
-      if (!this.getFundInfo) return;
+      if (!this.getFundInfo) return ;
       return (
         this.getFundInfo.cap.isZero()
         ? "100.00%"
         : (this.getFundInfo.raised.muln(10000).div(this.getFundInfo.cap).toNumber() / 100).toFixed(2) + "% "
       );
-    },
-    completion() {
-      try {
-        const raised = parseFloat(this.getFundInfo.raised);
-        const cap = parseFloat(this.getFundInfo.cap);
-        return parseFloat((raised * 100) / cap).toFixed(2) + "%";
-      } catch (e) {
-        return "0.0%";
-      }
     },
     contributions() {
       try {
@@ -178,23 +176,39 @@ export default {
         return 0;
       }
     },
+    contributed(){
+      try{
+        const c = this.getFundInfo.funds.filter(c=>stanfiAddress(c.contributor) == this.account.address)
+        if (c.length === 0){
+          return new BN(0)
+        }else{
+          return c[0].amount
+        }
+      }catch(e){
+
+      }
+    }
   },
     watch: {
       async currentBlockNum(newValue, _) {
-        const fund = this.getFundInfo;
-        const end = fund.end;
-        const raised = fund.raised;
-        const cap = fund.cap;
-        const firstSlot = fund.firstSlot;
-        const [status] = await calStatus(
-          end,
-          firstSlot,
-          raised,
-          cap,
-          this.paraId,
-          newValue
-        );
-        this.status = status;
+        try{
+          const fund = this.getFundInfo;
+          const end = fund.end;
+          const raised = fund.raised;
+          const cap = fund.cap;
+          const firstSlot = fund.firstSlot;
+          const [status] = await calStatus(
+            end,
+            firstSlot,
+            raised,
+            cap,
+            this.paraId,
+            newValue
+          );
+          this.status = status;
+        }catch(e) {
+
+        }
       }
   },
   methods: {

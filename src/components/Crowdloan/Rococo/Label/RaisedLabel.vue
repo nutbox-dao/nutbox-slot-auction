@@ -9,10 +9,10 @@
     <span>
       {{ items && items[2] }}
     </span>
-    <span class="text-grey-light">
+    <span v-show="!isBalance" class="text-grey-light">
       {{ items && items[3] }}
     </span>
-    <span>
+    <span v-show="!isBalance">
       {{ items && items[4] }}
     </span>
   </div>
@@ -62,7 +62,7 @@ export default {
       return [
         raisedStr[0],
         raisedStr[1],
-        raised[1] + "/" + capStr[0],
+        this.isBalance ? raised[1] + 'ROC' : raised[1] + "/" + capStr[0],
         capStr[1],
         cap[1] + 'ROC',
       ];

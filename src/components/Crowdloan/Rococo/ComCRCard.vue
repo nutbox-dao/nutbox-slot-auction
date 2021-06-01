@@ -1,20 +1,14 @@
 <template>
   <div class="c-card">
     <div class="status-container">
-      <img :src="statusIcon" alt="" />
-      <!--      <span>-->
-      <!--        {{ status }}-->
-      <!--      </span>-->
+      <span :class="status">{{ status }}</span>
     </div>
     <div class="card-title-box flex-start-center">
       <div class="icons">
-        <img class="icon2" :src="getCardInfo && getCardInfo.para.iconUrl" alt="" />
-        <img class="icon1" :src="getCardInfo && getCardInfo.community.iconUrl" alt=""/>
+        <img class="icon1" :src="crowdloan.para.iconUrl" alt="" />
       </div>
       <div class="title-text font20 font-bold">
-        <span>{{ getCardInfo && getCardInfo.community.communityName }}</span>
-        <img src="~@/static/images/close.svg" alt="" />
-        <span>{{ getCardInfo && getCardInfo.para.paraName }}</span>
+        <span>{{ crowdloan.para.paraName }}</span>
       </div>
     </div>
     <div class="h-line"></div>
@@ -34,6 +28,23 @@
           <ContributorsLabel :paraId="paraId" />
         </div>
       </div>
+      <div class="project-info-container">
+        <span class="name"> Contributed </span>
+        <div class="info">
+          <RaisedLabel :paraId="paraId" :isBalance="true" />
+        </div>
+      </div>
+      <div class="project-info-container">
+        <span class="name"> Rewards </span>
+        <div class="info">
+          <RewardToken
+            :icon="token.icon"
+            :token="token.name"
+            v-for="(token, idx) in rewardTokens"
+            :key="idx"
+          />
+        </div>
+      </div>
     </div>
     <div class="text-center" v-if="isConnected">
       <button
@@ -41,21 +52,17 @@
         v-show="status === 'Active'"
         @click="showContribute = true"
       >
-        {{ $t('cl.contribute') }}
+        {{ $t("cl.contribute") }}
       </button>
       <button
         class="primary-btn"
         v-show="status === 'Retired'"
         @click="showWithdraw = true"
       >
-        {{ $t('cl.withdraw') }}
+        {{ $t("cl.withdraw") }}
       </button>
-      <button
-        class="primary-btn"
-        disabled
-        v-show="status === 'Completed'"
-      >
-        {{ $t('cl.completed') }}
+      <button class="primary-btn" disabled v-show="status === 'Completed'">
+        {{ $t("cl.completed") }}
       </button>
     </div>
     <!-- <ConnectWallet v-else /> -->
@@ -70,7 +77,7 @@
       <TipContribute
         :communityId="communityId"
         :paraId="paraId"
-        :paraName="getCardInfo && getCardInfo.para.paraName"
+        :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
     </b-modal>
@@ -89,14 +96,14 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-// import ConnectWallet from "./Buttons/ConnectWallet";
 import TipContribute from "./TipBoxes/TipContribute";
 import TipWithdraw from "./TipBoxes/TipWithdraw";
 import ContributorsLabel from "./Label/ContributorsLabel";
 import RaisedLabel from "./Label/RaisedLabel";
 import { PARA_STATUS } from "@/config";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
-import { calStatus } from "@/utils/kusama/crowdloan";
+import { calStatus } from "@/utils/rococo/crowdloan";
+import RewardToken from "@/components/Commen/RewardToken";
 
 export default {
   data() {
@@ -107,22 +114,16 @@ export default {
     };
   },
   props: {
-    paraId: {
-      type: Number,
+    crowdloan: {
+      type: Object,
     },
-    communityId: {
-      type: String,
-    },
-    chain: {
-      type: String,
-      default: 'rococo'
-    }
   },
   components: {
     TipContribute,
     TipWithdraw,
     ContributorsLabel,
     RaisedLabel,
+    RewardToken,
   },
   watch: {
     async currentBlockNum(newValue, _) {
@@ -143,19 +144,25 @@ export default {
     },
   },
   computed: {
-    ...mapState('kusama', ["isConnected", "clProjectFundInfos"]),
-    ...mapState(['lang']),
-    ...mapGetters('kusama', [
-      "fundInfo",
-      "currentBlockNum",
-      "cardInfo",
-    ]),
+    ...mapState("rococo", ["isConnected", "clProjectFundInfos"]),
+    ...mapState(["lang"]),
+    ...mapGetters("rococo", ["fundInfo", "currentBlockNum", "cardInfo"]),
     getFundInfo() {
       return this.fundInfo(this.paraId);
     },
-    getCardInfo() {
-      const card = this.cardInfo(this.paraId, this.communityId);
-      return card;
+    paraId() {
+      return parseInt(this.crowdloan.para.paraId);
+    },
+    communityId() {
+      return this.crowdloan.community.communityId;
+    },
+    rewardTokens() {
+      if (this.crowdloan) {
+        return this.crowdloan.community.reward.concat(
+          this.crowdloan.para.reward
+        );
+      }
+      return [];
     },
     leasePeriod() {
       try {
@@ -194,7 +201,7 @@ export default {
           } else if (secs >= timePeriod["DAY"]) {
             return day + " days " + hour + " hrs " + min + " mins";
           } else if (secs >= timePeriod["HOUR"]) {
-            return hour + " hrs " + min + " mins";
+            return hour + " hrs " + min + " mins ";
           } else {
             return min + " mins " + sec + " sec";
           }
@@ -207,9 +214,14 @@ export default {
     },
     completion() {
       try {
-        const raised = parseFloat(this.getFundInfo.raised);
-        const cap = parseFloat(this.getFundInfo.cap);
-        return parseFloat((raised * 100) / cap).toFixed(2) + "%";
+        return this.getFundInfo.cap.isZero()
+          ? "100.00%"
+          : (
+              this.getFundInfo.raised
+                .muln(10000)
+                .div(this.getFundInfo.cap)
+                .toNumber() / 100
+            ).toFixed(2) + "% ";
       } catch (e) {
         return "0.0%";
       }
@@ -224,11 +236,17 @@ export default {
     statusIcon() {
       switch (this.status) {
         case "Active":
-          return this.lang === 'en' ? require("../../../static/images/card-active.svg") : require("../../../static/images/card-active-cn.png");
+          return this.lang === "en"
+            ? require("../../../static/images/card-active.svg")
+            : require("../../../static/images/card-active-cn.png");
         case "Retired":
-          return this.lang === 'en' ? require("../../../static/images/card-retired.svg") : require('../../../static/images/card-retired-cn.png');
+          return this.lang === "en"
+            ? require("../../../static/images/card-retired.svg")
+            : require("../../../static/images/card-retired-cn.png");
         default:
-          return this.lang === 'en' ? require("../../../static/images/card-completed.svg") : require('../../../static/images/card-completed-cn.png');
+          return this.lang === "en"
+            ? require("../../../static/images/card-completed.svg")
+            : require("../../../static/images/card-completed-cn.png");
       }
     },
   },
@@ -240,4 +258,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/static/css/crowdloanCard";
+.c-card {
+  .status-container {
+    top: 0.8rem;
+    right: 1.2rem;
+  }
+  .card-title-box .icons {
+    margin-right: 1rem;
+  }
+}
 </style>

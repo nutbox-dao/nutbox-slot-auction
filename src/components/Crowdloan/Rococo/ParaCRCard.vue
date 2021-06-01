@@ -15,11 +15,11 @@
       </div>
     </div>
     <div class="h-line"></div>
-<!--    <div class="detail-info-box">-->
-<!--        <p>-->
-<!--            {{ crowdloan.community.description[this.$store.state.lang] }}-->
-<!--        </p>-->
-<!--    </div>-->
+   <div class="detail-info-box">
+       <p class="description font14">
+           {{ crowdloan.community.description[this.$store.state.lang] }}
+       </p>
+   </div>
     <div class="project-info-container">
         <span class="name"> Rewards </span>
         <div class="info">
@@ -131,6 +131,13 @@ export default {
       width: 2.8rem;
       height: 2.8rem;
       border-radius: 2.8rem;
+    }
+  }
+  .detail-info-box{
+    .description{
+      font-weight: 600;
+      color: #BDBFC2;
+      line-height: 18px;
     }
   }
   .h-line {

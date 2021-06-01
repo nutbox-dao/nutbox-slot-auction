@@ -8,7 +8,7 @@
           <a class="font20 font-bold title official-link"
              :href="communityInfo.website"
              target="_blank">{{ communityInfo.communityName }}</a>
-          <div class="desc">{{ communityInfo.description[lang] }}</div>
+          <div class="desc">{{ communityInfo.description && communityInfo.description[lang] }}</div>
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import CrowdloanCard from '@/components/Community/Rococo/CrowdloanCard'
+import CrowdloanCard from '@/components/Crowdloan/Rococo/ComCRCard'
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from '@/apis/api'
 import { stanfiAddress } from '@/utils/polkadot/polkadot'
@@ -47,17 +47,7 @@ export default {
     crowdloanInfo() {
         const id = stanfiAddress(this.$route.params.communityid);
         if (this.showingCard && this.showingCard.length > 0){
-          let ids = []
-          let cards = []
-          for (let card of this.showingCard){
-            const communityId = stanfiAddress(card.community.communityId)
-            const paraId = parseInt(card.para.paraId)
-            if (id === communityId && ids.indexOf(paraId) === -1) {
-              cards.push(card)
-              ids.push(paraId)
-            }
-          }
-           return cards
+          return this.showingCard.filter(a => stanfiAddress(a.community.communityId) == id)
         }
         return []
     },

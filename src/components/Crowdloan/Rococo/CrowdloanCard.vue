@@ -6,16 +6,28 @@
       </div>
       <div class="card-title-box flex-start-center">
         <div class="icons">
-          <img class="icon1" :src="getCardInfo && getCardInfo.community.iconUrl" alt=""/>
-          <img class="icon2" :src="getCardInfo && getCardInfo.para.iconUrl" alt="" />
+          <img
+            class="icon1"
+            :src="getCardInfo && getCardInfo.community.iconUrl"
+            alt=""
+          />
+          <img
+            class="icon2"
+            :src="getCardInfo && getCardInfo.para.iconUrl"
+            alt=""
+          />
         </div>
         <div class="title-text font20 font-bold">
           <div class="link-title">
-            <span class=" font20" @click="toCommunity">{{ getCardInfo && getCardInfo.community.communityName }}</span>
+            <span class="font20" @click="toCommunity">{{
+              getCardInfo && getCardInfo.community.communityName
+            }}</span>
             <i class="link-icon" @click="toCommunity"></i>
           </div>
           <div class="link-title">
-            <span class="font16" @click="toParachain">{{ getCardInfo && getCardInfo.para.paraName }}</span>
+            <span class="font16" @click="toParachain">{{
+              getCardInfo && getCardInfo.para.paraName
+            }}</span>
             <i class="link-icon" @click="toParachain"></i>
           </div>
         </div>
@@ -38,6 +50,18 @@
             <ContributorsLabel :paraId="paraId" />
           </div>
         </div>
+      <div class="project-info-container">
+        <span class="name"> Contributed </span>
+        <div class="info">
+          <RaisedLabel :paraId="paraId" :isBalance="true" />
+        </div>
+      </div>
+        <div class="project-info-container">
+          <span class="name"> Rewards </span>
+          <div class="info">
+            <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
+          </div>
+        </div>
       </div>
       <div class="text-center" v-if="isConnected">
         <button
@@ -45,21 +69,17 @@
           v-show="status === 'Active'"
           @click="showContribute = true"
         >
-          {{ $t('cl.contribute') }}
+          {{ $t("cl.contribute") }}
         </button>
         <button
           class="primary-btn"
           v-show="status === 'Retired'"
           @click="showWithdraw = true"
         >
-          {{ $t('cl.withdraw') }}
+          {{ $t("cl.withdraw") }}
         </button>
-        <button
-          class="primary-btn"
-          disabled
-          v-show="status === 'Completed'"
-        >
-          {{ $t('cl.completed') }}
+        <button class="primary-btn" disabled v-show="status === 'Completed'">
+          {{ $t("cl.completed") }}
         </button>
       </div>
     </div>
@@ -102,6 +122,7 @@ import RaisedLabel from "./Label/RaisedLabel";
 import { PARA_STATUS } from "@/config";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
 import { calStatus } from "@/utils/rococo/crowdloan";
+import RewardToken from "@/components/Commen/RewardToken"
 
 export default {
   data() {
@@ -124,6 +145,7 @@ export default {
     TipWithdraw,
     ContributorsLabel,
     RaisedLabel,
+    RewardToken
   },
   watch: {
     async currentBlockNum(newValue, _) {
@@ -144,13 +166,9 @@ export default {
     },
   },
   computed: {
-    ...mapState('rococo', ["isConnected", "clProjectFundInfos"]),
-    ...mapState(['lang']),
-    ...mapGetters('rococo', [
-      "fundInfo",
-      "currentBlockNum",
-      "cardInfo",
-    ]),
+    ...mapState("rococo", ["isConnected", "clProjectFundInfos"]),
+    ...mapState(["lang"]),
+    ...mapGetters("rococo", ["fundInfo", "currentBlockNum", "cardInfo"]),
     getFundInfo() {
       return this.fundInfo(this.paraId);
     },
@@ -208,11 +226,21 @@ export default {
     },
     completion() {
       try {
-        const raised = parseFloat(this.getFundInfo.raised);
-        const cap = parseFloat(this.getFundInfo.cap);
-        return parseFloat((raised * 100) / cap).toFixed(2) + "%";
+        return this.getFundInfo.cap.isZero()
+          ? "100.00%"
+          : (
+              this.getFundInfo.raised
+                .muln(10000)
+                .div(this.getFundInfo.cap)
+                .toNumber() / 100
+            ).toFixed(2) + "% ";
       } catch (e) {
         return "0.0%";
+      }
+    },
+    rewardTokens(){
+      if (this.getCardInfo){
+        return this.getCardInfo.community.reward.concat(this.getCardInfo.para.reward)
       }
     },
     contributions() {
@@ -225,11 +253,11 @@ export default {
   },
   methods: {
     toCommunity() {
-      this.$router.push('/crowdloan/rococo/community/' + this.communityId)
+      this.$router.push("/crowdloan/rococo/community/" + this.communityId);
     },
     toParachain() {
-      this.$router.push('/crowdloan/rococo/parachain/' + this.paraId)
-    }
+      this.$router.push("/crowdloan/rococo/parachain/" + this.paraId);
+    },
   },
   mounted() {
     this.status = this.getFundInfo.status;
@@ -239,9 +267,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/static/css/crowdloanCard";
-.c-card{
-    margin-top: -1.2rem;
+.c-card {
+  margin-top: -1.2rem;
   padding: 1.8rem 1.2rem;
 }
-
 </style>
