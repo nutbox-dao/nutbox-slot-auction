@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import CrowdStakingCard from "../../components/CrowdStaking/CrowdStakingCard";
-import { mapMutations, mapState, mapGetters } from "vuex";
+import CrowdStakingCard from "../../components/CrowdStaking/Polkadot/CrowdStakingCard";
+import { mapState } from "vuex";
 
 export default {
   name: "Home",
@@ -33,25 +33,7 @@ export default {
     CrowdStakingCard,
   },
   computed: {
-    ...mapState('polkadot',["projectFundInfos", "symbol", "isConnected", 'balance', 'crowdstakings']),
-    funds() {
-      const fundInfos = this.getFundInfos();
-      return fundInfos || [];
-    },
-  },
-  methods: {
-    ...mapGetters('polkadot',["getFundInfos", "paraIds"]),
-    ...mapMutations('polkadot',[
-      "saveProjectStatus",
-      "saveProjectName",
-      "saveCommunityName",
-      'saveCrowdstakings',
-      'saveCommunitys',
-      'saveProjects'
-    ]),
-  },
-  created () {
-
+    ...mapState('polkadot',["isConnected", 'crowdstakings']),
   },
 };
 </script>
