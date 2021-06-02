@@ -100,7 +100,7 @@ export default {
   },
   created() {
     getDarshboardCard({
-      projectId: this.$store.state.polkadot.account.address
+      projectId: '1drufsSHHS5Mt3e8xjnPYZPxXUFCpQDKozTLUikSxccRdZY'// this.$store.state.polkadot.account.address
     })
       .then((res) => {
         this.isLoading = false;
