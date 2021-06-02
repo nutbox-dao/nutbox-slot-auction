@@ -1,17 +1,21 @@
 <template>
   <div class="contribution-page scroll-content">
     <div class="font20 font-bold mt-3 mb-3 text-left">{{ $t('cl.crowdloan') }}</div>
-    <DashboardCard chain='KUSAMA'/>
+    <Crowdloan chain='KUSAMA'/>
+    <div class="font20 font-bold mt-3 mb-3 text-left">{{ $t('cs.crowdstaking') }}</div>
+    <Crowdstaking chain='KUSAMA'/>
   </div>
 </template>
 
 <script>
-import DashboardCard from "@/components/Admin/CrowdloanDashboardCard.vue";
+import Crowdloan from "@/components/Admin/CrowdloanDashboardCard.vue";
+import Crowdstaking from "@/components/Admin/CrowdstakingDashboardCard.vue"
 
 export default {
   name: "Dashboard",
   components: {
-    DashboardCard,
+    Crowdloan,
+    Crowdstaking
   },
   data() {
     return {

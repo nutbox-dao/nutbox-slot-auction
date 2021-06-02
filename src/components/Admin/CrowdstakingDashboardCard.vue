@@ -43,7 +43,8 @@
 <script>
 import CsvExportor from "csv-exportor";
 import { getDarshboardCard, getNominationSummary } from "@/apis/api";
-import { formatBalance } from "@/utils/polkadot/polkadot";
+import { formatBalance as fbPolkadot } from "@/utils/polkadot/polkadot";
+import { formatBalance as fbKusama } from "@/utils/kusama/kusama";
 import { mapState } from 'vuex'
 
 export default {
@@ -55,13 +56,21 @@ export default {
       csvHeader: ["communityName", "communityId", "nominator", "createAt"],
     };
   },
+  props: {
+    chain: {
+      type: String,
+    },
+  },
   computed: {
     ...mapState('polkadot', ['account'])
   },
   methods: {
     async getRaised(raise) {
-      const raised = await formatBalance(raise);
-      return raised;
+      if (this.chain.toLowerCase() === 'polkadot'){
+        return await fbPolkadot(raise)
+      }else{
+        return await fbKusama(raise)
+      }
     },
     downloadCsv(index) {
       const card = this.items[index];

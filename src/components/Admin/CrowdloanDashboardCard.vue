@@ -18,14 +18,14 @@
             <div class="flex-start-center">
               <div class="card-link-icons">
                 <img class="icon1" :src="item.community.iconUrl" alt="" />
-                <img class="icon2" :src="item.community.iconUrl" alt="" />
+                <img class="icon2" :src="item.para.iconUrl" alt="" />
               </div>
               <div class="card-link-title-text font20 font-bold">
-                <div class="link-title">
+                <div class="link-title" @click="$router.push('/crowdloan/'+ chain.toLowerCase() +'/community/' + item.community.communityId)">
                   <span class="font20">{{ item.community.communityName }}</span>
                   <i class="link-icon"></i>
                 </div>
-                <div class="link-title">
+                <div class="link-title" @click="$router.push('/crowdloan/'+ chain.toLowerCase() +'/parachain/' + item.para.paraId)">
                   <span class="font16">{{ item.para.paraName }}</span>
                   <i class="link-icon"></i>
                 </div>
