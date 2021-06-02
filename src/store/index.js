@@ -13,7 +13,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    lang: Cookie.get(LOCALE_KEY) || 'zh',
+    lang: Cookie.get(LOCALE_KEY) || 'en',
   },
   mutations: {
     saveLang: (state, lang) => {
