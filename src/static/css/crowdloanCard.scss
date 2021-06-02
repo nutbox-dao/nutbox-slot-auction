@@ -96,24 +96,3 @@
     overflow: hidden;
   }
 }
-.link-title {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    margin-right: .4rem;
-  }
-  .link-icon {
-    display: inline-block;
-    min-width: .8rem;
-    width: .8rem;
-    height: .8rem;
-    background-repeat: no-repeat;
-    background-image: url("~@/static/images/link-icon.png");
-    background-position: center center;
-    background-size: 100% 100%;
-  }
-}

@@ -1,12 +1,12 @@
 <template>
   <div class="c-card staking-card">
     <div class="card-top">
-      <div class="card-title-box flex-start-center">
-        <div class="icons">
+      <div class="flex-start-center">
+        <div class="card-icons">
           <img class="icon2" :src="crowdstaking.project.iconUrl" alt="" />
           <img class="icon1" :src="crowdstaking.community.iconUrl" alt="" />
         </div>
-        <div class="title-text font20 font-bold">
+        <div class="card-title-text font20 font-bold">
           <span>{{crowdstaking.community.communityName }}</span>
           <img src="~@/static/images/close.svg" alt="" />
           <span>{{ crowdstaking.project.projectName }}</span>
@@ -16,7 +16,6 @@
       <div class="desc">
         {{ crowdstaking.community.description }}
       </div>
-
       <div class="validator-container">
         <div class="validator" v-for="v in crowdstaking.project.validators" :key="v">
           {{ v | formatValidatorAdd }}

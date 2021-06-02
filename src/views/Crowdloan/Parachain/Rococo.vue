@@ -56,7 +56,7 @@
     <div class="card-container">
       <div class="font20 font-bold title">{{ $t('cl.joinAuction') }}</div>
       <div class="row">
-        <div class="col-xl-4 col-md-6" v-for="crowdloan in crowdloanInfo"
+        <div class="col-xl-4 col-md-6 mb-4" v-for="crowdloan in crowdloanInfo"
              :key="crowdloan.community.communtiyId">
           <ParaCRCard
             :crowdloan="crowdloan"
@@ -231,9 +231,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/static/css/projectInfoCard";
-.c-card {
-  margin-bottom: 1.2rem;
-}
 .table-responsive {
   margin-bottom: 0;
 }

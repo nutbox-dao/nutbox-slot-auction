@@ -1,11 +1,11 @@
 <template>
-  <div class="ro-card">
-    <div class="card-top-box">
+  <div class="ro-card mb-4">
+    <div class="card-link-top-box">
       <div class="status-container text-right">
         <span :class="status">{{ status }}</span>
       </div>
-      <div class="card-title-box flex-start-center">
-        <div class="icons">
+      <div class="flex-start-center">
+        <div class="card-link-icons">
           <img
             class="icon1"
             :src="getCardInfo && getCardInfo.community.iconUrl"
@@ -17,7 +17,7 @@
             alt=""
           />
         </div>
-        <div class="title-text font20 font-bold">
+        <div class="card-link-title-text font20 font-bold">
           <div class="link-title">
             <span class="font20" @click="toCommunity">{{
               getCardInfo && getCardInfo.community.communityName
@@ -266,9 +266,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "src/static/css/crowdloanCard";
+@import "src/static/css/customCard";
 .c-card {
   margin-top: -1.2rem;
   padding: 1.8rem 1.2rem;
+}
+.detail-info-box {
+  margin-top: 0;
 }
 </style>

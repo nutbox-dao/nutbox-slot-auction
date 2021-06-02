@@ -1,9 +1,7 @@
 <template>
   <div class="contribution-page">
-    <div class="container">
-      <div class="font20 font-bold mt-3 mb-3 text-left">{{ $t('cl.crowdloan') }}</div>
-      <DashboardCard chain='ROCOCO'/>
-    </div>
+    <div class="font20 font-bold mt-3 mb-3 text-left">{{ $t('cl.crowdloan') }}</div>
+    <DashboardCard chain='ROCOCO'/>
   </div>
 </template>
 
@@ -25,14 +23,7 @@ export default {
 
 <style scoped lang="less">
 .contribution-page {
-  height: 100%;
-  background: rgba(246, 247, 249, 1);
   overflow: scroll;
-  position: relative;
-  padding-top: 0.6rem;
-  .container{
-    padding: 10px;
-  }
 }
 .table-card {
   border-radius: 1.4rem;

@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div>
     <div class="loading-bg" v-if="isLoading">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t("tip.loading") }}</p>
@@ -8,33 +8,45 @@
       <img src="~@/static/images/empty-data.png" alt="" />
       <p>{{ $t("tip.noCrowdloan") }}</p>
     </div>
-    <div class="col-xl-4 col-md-6" v-for="(item, index) of items" :key="index">
-      <div class="c-card">
-        <div class="card-title-box flex-start-center">
-          <div class="icons">
-            <img class="icon2" :src="item.para.iconUrl" alt="" />
-            <img class="icon1" :src="item.community.iconUrl" alt="" />
+    <div class="row">
+      <div class="col-xl-4 col-md-6 mb-4" v-for="(item, index) of items" :key="index">
+        <div class="c-card">
+          <div class="card-top-box">
+            <!--          <div class="status-container text-right">-->
+            <!--            <span :class="status">{{ status }}</span>-->
+            <!--          </div>-->
+            <div class="flex-start-center">
+              <div class="card-link-icons">
+                <img class="icon1" :src="item.community.iconUrl" alt="" />
+                <img class="icon2" :src="item.community.iconUrl" alt="" />
+              </div>
+              <div class="card-link-title-text font20 font-bold">
+                <div class="link-title">
+                  <span class="font20">{{ item.community.communityName }}</span>
+                  <i class="link-icon"></i>
+                </div>
+                <div class="link-title">
+                  <span class="font16">{{ item.para.paraName }}</span>
+                  <i class="link-icon"></i>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="title-text font20 font-bold">
-            <span>{{ item.community.communityName }}</span>
-            <img src="~@/static/images/close.svg" alt="" />
-            <span>{{ item.para.paraName }}</span>
+          <div class="h-line"></div>
+          <div class="detail-info-box">
+            <div class="project-info-container">
+              <span class="name"> Contributors </span>
+              <div class="info">{{ item.contributorCount }}</div>
+            </div>
+            <div class="project-info-container">
+              <span class="name"> Fund </span>
+              <div class="info">{{ item.raised }}</div>
+            </div>
           </div>
+          <button class="primary-btn" @click="downloadCsv(index)">
+            {{ $t("dashboard.export") }}
+          </button>
         </div>
-        <div class="h-line"></div>
-        <div class="detail-info-box">
-          <div class="project-info-container">
-            <span class="name"> Contributors </span>
-            <div class="info">{{ item.contributorCount }}</div>
-          </div>
-          <div class="project-info-container">
-            <span class="name"> Fund </span>
-            <div class="info">{{ item.raised }}</div>
-          </div>
-        </div>
-        <button class="primary-btn" @click="downloadCsv(index)">
-          {{ $t("dashboard.export") }}
-        </button>
       </div>
     </div>
   </div>
@@ -146,6 +158,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/static/css/customCard";
+.c-card {
+  padding: 1.2rem;
+}
+.card-top-box {
+  background-image: none;
+  padding: 0;
+}
 .primary-btn{
   margin-top: 1rem;
 }

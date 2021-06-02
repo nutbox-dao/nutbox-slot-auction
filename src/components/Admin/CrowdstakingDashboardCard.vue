@@ -10,13 +10,13 @@
     </div>
     <div class="row" v-else>
       <div
-        class="col-xl-4 col-md-6"
+        class="col-xl-4 col-md-6 mb-4"
         v-for="(item, index) of items"
         :key="index"
       >
         <div class="c-card">
           <div class="card-title-box flex-start-center">
-            <div class="icons">
+            <div class="card-link-icons">
               <img class="icon1" :src="item.community.iconUrl" alt="" />
             </div>
             <div class="title-text font20 font-bold">
@@ -114,7 +114,18 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
+@import "src/static/css/customCard";
+.c-card {
+  padding: 1.2rem;
+  .card-title-box .icons {
+    margin-right: 1rem;
+    .icon1 {
+      width: 2.8rem;
+      height: 2.8rem;
+    }
+  }
+}
 .primary-btn{
   margin-top: 1rem;
 }
