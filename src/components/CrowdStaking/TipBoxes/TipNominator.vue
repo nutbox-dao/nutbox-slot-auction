@@ -109,7 +109,6 @@ export default {
       );
     },
     needToCancelValidators() {
-      console.log(333,this.availableNominators.length, this.crowdstaking.project.validators.length);
       return (
         this.availableNominators.length +
         this.crowdstaking.project.validators.length -
@@ -162,7 +161,6 @@ export default {
           }
         );
       } catch (e) {
-        console.log("eee", e);
         this.$bvToast.toast(e.message, {
           title: this.$t("tip.error"),
           autoHideDelay: 5000,
