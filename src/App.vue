@@ -205,6 +205,7 @@ import {
 } from "./utils/polkadot/staking";
 import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
 import { stanfiAddress } from "./utils/polkadot/polkadot";
+import { hexToString } from "@polkadot/util"
 
 export default {
   data() {
@@ -345,6 +346,10 @@ export default {
     },
   },
   async mounted() {
+    '0x 6443842d 5b84585b 7ba082bf 15aa7ce9 6a32e60f 5f9c6d24 cc6e61d9 19194142'
+    const hex = '0x6443842d5b84585b7ba082bf15aa7ce96a32e60f5f9c6d24cc6e61d919194142'
+    console.log('aaa', hexToString(hex));
+
     let _this = this
     window.onresize= () => {
       return (() => {

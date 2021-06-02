@@ -26,3 +26,12 @@ export const PARA_STATUS = {
   COMPLETED: "Completed",
   OTHER: "Other"
 }
+
+// 添加到交易batch的remark结构
+export const NUTBOX_REMARK_TYPE = {
+  magic: 'Text',      // 默认为nutbox
+  op: 'u8',           // 0为crowdloan， 1为crowdsta
+  trieIndex: 'Option<u8>', // crowdloan 才有该字段
+  communityId: 'Text',      // 通过哪个社区操作的
+  nominatorId: 'Option<Text>' // 推荐人id
+}

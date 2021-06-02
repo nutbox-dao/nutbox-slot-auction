@@ -1,6 +1,7 @@
 import {
   u8aConcat,
   u8aToHex,
+  hexToString
 } from "@polkadot/util"
 import {
   blake2AsU8a,
@@ -17,10 +18,13 @@ import {
 } from '../../i18n'
 
 import {
+  createCrowdloanRemark
+} from '@/utils/commen/remark'
+
+import {
   getApi,
   uni2Token,
   getDecimal,
-  getNodeId,
   stanfiAddress
 } from './rococo'
 import {
@@ -174,26 +178,6 @@ export const getLeasePeriod = async () => {
   return leasePeriod
 }
 
-/** memo {
- *     chain: u8,           // 1 bytes chain id
- *     parent: vec<u8, 8>,  // 8 bytes parent node id
- *     child: vec<u8, 8>,   // 8 bytes child node id
- *     height: u32,         // 4 bytes block height of contribute Tx
- *     paraId: u32,         // 4 bytes parachain id
- *     trieIndex: u32,      // 4 bytes of crowdloan fund trie index
- *  }
- */
-export function encodeMemo(memo) {
-  let buf = new Uint8Array(29);
-  buf[0] = memo.chain;
-  buf.set(memo.parent, 1);
-  buf.set(memo.child, 9);
-  buf.set(NumberTo4BytesU8A(memo.height), 17);
-  buf.set(NumberTo4BytesU8A(memo.paraId), 21);
-  buf.set(NumberTo4BytesU8A(memo.trieIndex), 25);
-  return '0x' + Buffer.from(buf).toString('hex');
-}
-
 export const withdraw = async (paraId, toast, isInblockCallback) => {
   return new Promise(async (resolve, reject) => {
     const api = await injectAccount(store.state.polkadot.account)
@@ -281,18 +265,10 @@ export const contribute = async (paraId, amount, communityId, childId, trieIndex
     amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))
     const nonce = (await api.query.system.account(from)).nonce.toNumber()
     const contributeTx = api.tx.crowdloan.contribute(paraId, amount, null)
-    const memo = {
-      chain: 1,
-      parent: getNodeId(communityId),
-      child: getNodeId(childId),
-      height: 0,
-      paraId: parseInt(paraId),
-      trieIndex: parseInt(trieIndex)
-    }
-    const encodememo = encodeMemo(memo)
-    const memoTx = api.tx.crowdloan.addMemo(paraId, encodememo)
+    const remark = createCrowdloanRemark(api, trieIndex, communityId, childId)
+    const remarkTx = api.tx.system.remarkWithEvent(remark)
     const unsubContribution = await api.tx.utility
-      .batch([contributeTx, memoTx]).signAndSend(from, {
+      .batch([contributeTx, remarkTx]).signAndSend(from, {
         nonce
       }, ({
         status,
@@ -342,17 +318,6 @@ export const contribute = async (paraId, amount, communityId, childId, trieIndex
             communityId: communityId,
             nominatorId: childId
           });
-          // upload to daemon
-          try {
-            postContribution({
-              relaychain: 'rococo',
-              blockHash: contriHash,
-              communityId: communityId,
-              nominatorId: childId
-            })
-          } catch (e) {
-            console.error('Upload to daemon fail', e);
-          }
           toast($t('transaction.inBlock'), {
             title: $t('tip.tips'),
             autoHideDelay: 6000,

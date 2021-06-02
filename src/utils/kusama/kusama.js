@@ -15,7 +15,8 @@ import {
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import BN from "bn.js"
 import {
-  KUSAMA_WEB_SOCKET
+  KUSAMA_WEB_SOCKET,
+  NUTBOX_REMARK_TYPE
 } from "@/config"
 import { KUSAMA_DECIMAL } from '@/constant'
 import store from "@/store"
@@ -32,7 +33,8 @@ export async function getApi() {
     provider: wsProvider,
     rpc: jsonrpc,
     types: {
-      PalletId: 'Raw'
+      PalletId: 'Raw',
+      NutboxRemark: NUTBOX_REMARK_TYPE
     }
   })
   console.log('connected');
