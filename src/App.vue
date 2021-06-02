@@ -420,7 +420,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 600px;
 }
 .page-header {
   display: flex;
@@ -465,8 +464,10 @@ body {
     bottom: 0;
     width: 240px;
     height: auto;
+    overflow: auto;
   }
   .left {
+    min-height: 500px;
     width: 100%;
     background-color: #ffffff;
     padding-top: 2rem;
@@ -617,6 +618,7 @@ body {
       width: 1.6rem;
       height: 1.6rem;
       margin: .2rem;
+      background-position: center;
     }
   }
   .h-line {
