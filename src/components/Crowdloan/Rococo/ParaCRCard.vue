@@ -20,13 +20,14 @@
        <p class="description font14">
            {{ crowdloan.community.description[this.$store.state.lang] }}
        </p>
+     <div class="project-info-container">
+       <span class="name"> Rewards </span>
+       <div class="info">
+         <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
+       </div>
+     </div>
    </div>
-    <div class="project-info-container">
-        <span class="name"> Rewards </span>
-        <div class="info">
-          <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
-        </div>
-      </div>
+
     <div class="text-center" v-if="$store.state.rococo.isConnected">
       <button
         class="primary-btn"
@@ -125,7 +126,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "src/static/css/crowdloanCard";
+@import "src/static/css/customCard";
 .c-card {
   .card-title-box .icons {
     margin-right: 1rem;
