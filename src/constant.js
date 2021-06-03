@@ -1,4 +1,4 @@
-
+import BN from 'bn.js'
 export const BLOCK_SECOND = 6
 
 export const POLKADOT_DECIMAL = 10
@@ -24,6 +24,12 @@ export const API_CONNECT_STATE = {
     CONNECT: 'CONNECT',
     CONNECT_SUCCESS: 'CONNECT_SUCCESS',
     CONNECT_ERROR:'CONNECT_ERROR'
+}
+
+export const DECIMAL = {
+    polkadot: new BN(10).pow(new BN(10)),
+    kusama: new BN(10).pow(new BN(12)),
+    rococo: new BN(10).pow(new BN(12))
 }
 
 // 最大投票数
