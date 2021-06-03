@@ -13,14 +13,10 @@
 </template>
 
 <script>
-import CrowdStakingCard from "../../components/CrowdStaking/CrowdStakingCard";
 import { mapMutations, mapState, mapGetters } from "vuex";
 
 export default {
   name: "Home",
-  components: {
-    CrowdStakingCard,
-  },
   computed: {
     ...mapState('polkadot',["projectFundInfos", "symbol", "isConnected", 'balance', 'crowdstakings']),
     funds() {
