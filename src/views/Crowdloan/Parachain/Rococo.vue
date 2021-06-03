@@ -1,7 +1,7 @@
 <template>
   <div class="crowdloan-parachain scroll-content">
     <div class="parachain-info p-card">
-      <img class="poster" :src="paraInfo.posterUrl" v-show="paraInfo.posterUrl && paraInfo.posterUrl.length>4" alt="">
+      <!-- <img class="poster" :src="paraInfo.posterUrl" v-show="paraInfo.posterUrl && paraInfo.posterUrl.length>4" alt=""> -->
       <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.back()"/>
       <div class="p-detail-info">
         <img class="logo" :src="paraInfo.iconUrl" alt="" />
