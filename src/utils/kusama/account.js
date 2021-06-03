@@ -1,15 +1,9 @@
-import {
-  web3Accounts,
-  web3Enable,
-  web3FromSource
-} from '@polkadot/extension-dapp'
 
 import BN from "bn.js"
 import store from "@/store"
 
 import {
   getApi,
-  stanfiAddress,
   token2Uni
 } from './kusama'
 import {

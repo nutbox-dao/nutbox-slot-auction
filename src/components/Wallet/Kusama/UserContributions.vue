@@ -45,7 +45,7 @@ import { mapState, mapMutations } from "vuex";
 import { CROWD_LOAN_API_URL } from "@/config";
 import axios from "axios";
 import BN from "bn.js";
-import { formatDate } from "@/utils/polkadot/utils";
+import { formatDate } from "@/utils/commen/util";
 import { stanfiAddress } from "@/utils/commen/account";
 
 export default {

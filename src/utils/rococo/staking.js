@@ -11,9 +11,9 @@ import {
 import {
   getApi,
   token2Uni,
-  stanfiAddress,
   getTxPaymentInfo
 } from './rococo'
+import { stanfiAddress } from '@/utils/commen/account'
 /**
  * 监听用户的绑定储蓄账户
  */

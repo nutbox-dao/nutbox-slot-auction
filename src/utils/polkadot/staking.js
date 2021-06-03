@@ -11,9 +11,9 @@ import {
 import {
   getApi,
   token2Uni,
-  stanfiAddress,
   getTxPaymentInfo
 } from './polkadot'
+import { stanfiAddress } from '@/utils/commen/account'
 import { createCrowdstakingRemark } from '../commen/remark'
 
 
@@ -45,11 +45,11 @@ export const subNominators = async () => {
     subNominators()
   } catch (e) {}
   const api = await getApi()
-  const {validators} = await api.derive.staking.overview()
+  // const {validators} = await api.derive.staking.overview()
 
   store.commit('polkadot/saveLoadingStaking', true)
 // 获取用户投票的情况
-  const nominators = await api.query.staking.nominators(store.state.polkadot.account.address, async (nominators) => {
+  const unsub = await api.query.staking.nominators(store.state.polkadot.account.address, async (nominators) => {
     if (!nominators.toJSON()) {
       store.commit('polkadot/saveNominators', [])
       store.commit('polkadot/saveLoadingStaking', false)
@@ -92,7 +92,7 @@ export const subNominators = async () => {
     store.commit('polkadot/saveLoadingStaking', false)
     store.commit('polkadot/saveNominators', infos)
   })
-  store.commit('polkadot/saveSubNominators', subNominators)
+  store.commit('polkadot/saveSubNominators', unsub)
 }
 
 /**

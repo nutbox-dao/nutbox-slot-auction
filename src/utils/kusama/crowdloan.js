@@ -13,23 +13,10 @@ import {
 import store from "../../store"
 
 import {
-  $t
-} from '../../i18n'
-
-import {
-  getApi,
-  uni2Token,
-  getDecimal,
-  getNodeId,
-  stanfiAddress
+  getApi
 } from './kusama'
-import {
-  NumberTo4BytesU8A
-} from '../polkadot/utils'
-
-import {
-  postContribution
-} from '../../apis/api'
+import { DECIMAL } from '@/constant'
+import { withdraw as w , contribuite as c } from '@/utils/commen/crowdloan'
 
 function createChildKey(trieIndex) {
   return u8aToHex(
@@ -43,7 +30,6 @@ function createChildKey(trieIndex) {
 }
 
 export const subscribeFundInfo = async (crowdloanCard) => {
-  return;
   let unsubFund = store.state.kusama.subFund
   if (unsubFund) {
     try {
@@ -58,7 +44,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
   try {
     unsubFund = (await api.query.crowdloan.funds.multi(paraId, async (unwrapedFunds) => {
       const bestBlockNumber = (await api.derive.chain.bestNumber()).toNumber()
-      const decimal = await getDecimal()
+      const decimal = DECIMAL['kusama']
       let funds = []
       for (let i = 0; i < unwrapedFunds.length; i++) {
         const fund = unwrapedFunds[i]
@@ -92,7 +78,6 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           paraId: pId,
           status,
           statusIndex,
-          deposit: uni2Token(new BN(deposit), decimal),
           cap: new BN(cap),
           depositor,
           end: new BN(end),
@@ -172,203 +157,11 @@ export const getLeasePeriod = async () => {
   return leasePeriod
 }
 
-/** memo {
- *     chain: u8,           // 1 bytes chain id
- *     parent: vec<u8, 8>,  // 8 bytes parent node id
- *     child: vec<u8, 8>,   // 8 bytes child node id
- *     height: u32,         // 4 bytes block height of contribute Tx
- *     paraId: u32,         // 4 bytes parachain id
- *     trieIndex: u32,      // 4 bytes of crowdloan fund trie index
- *  }
- */
-export function encodeMemo(memo) {
-  let buf = new Uint8Array(29);
-  buf[0] = memo.chain;
-  buf.set(memo.parent, 1);
-  buf.set(memo.child, 9);
-  buf.set(NumberTo4BytesU8A(memo.height), 17);
-  buf.set(NumberTo4BytesU8A(memo.paraId), 21);
-  buf.set(NumberTo4BytesU8A(memo.trieIndex), 25);
-  return '0x' + Buffer.from(buf).toString('hex');
-}
-
-export const withdraw = async (paraId, toast, isInblockCallback) => {
-  return new Promise(async (resolve, reject) => {
-    const api = await getApi()
-    const from = store.state.polkadot.account?.address
-    if (!from) {
-      reject('no account')
-    }
-    const nonce = (await api.query.system.account(from)).nonce.toNumber()
-    const unsub = await api.tx.crowdloan.withdraw(from, paraId).signAndSend(from, {
-      nonce
-    }, ({
-      status,
-      dispatchError
-    }) => {
-      if (status.isInBlock || status.isFinalized) {
-        if (dispatchError) {
-          let errMsg = ''
-          if (dispatchError.isModule) {
-            // for module errors, we have the section indexed, lookup
-            const decoded = api.registry.findMetaError(dispatchError.asModule);
-            const {
-              documentation,
-              name,
-              section
-            } = decoded;
-            errMsg = `${section}.${name}: ${documentation.join(' ')}`
-            console.log(`${section}.${name}: ${documentation.join(' ')}`);
-          } else {
-            // Other, CannotLookup, BadOrigin, no extra info
-            console.log(dispatchError.toString());
-            errMsg = dispatchError.toString()
-          }
-          toast(errMsg, {
-            title: $t('tip.error'),
-            variant: 'danger'
-          })
-          unsub()
-          resolve(false)
-        }
-      }
-      if (status.isBroadcast) {
-        if (isInblockCallback) isInblockCallback()
-        setTimeout(() => {
-          toast($t('transaction.broadcasting'), {
-            title: $t('tip.tips'),
-            autoHideDelay: 5000,
-            variant: 'warning'
-          })
-        }, 700);
-      } else if (status.isInBlock) {
-        console.log("Transaction included at blockHash.", status.asInBlock.toJSON());
-        toast($t('transaction.inBlock'), {
-          title: $t('tip.tips'),
-          autoHideDelay: 6000,
-          variant: 'warning'
-        })
-      } else if (status.isFinalized) {
-        unsub()
-        toast($t('transaction.withdrawOk'), {
-          title: $t('tip.success'),
-          autoHideDelay: 5000,
-          variant: "success",
-        });
-        // 上传daemon
-        resolve(status.asFinalized)
-      }
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+export const withdraw = async (paraId, toast, callback) => {
+  w('kusama', paraId, toast, callback)
 }
 
 
-export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, inBlockCallback) => {
-  return new Promise(async (resolve, reject) => {
-    const from = store.state.polkadot.account && store.state.polkadot.account.address
-    communityId = stanfiAddress(communityId)
-    childId = stanfiAddress(childId)
-    if (!from) {
-      reject('no account')
-    }
-    const api = await getApi()
-    const decimal = await getDecimal()
-    paraId = api.createType('Compact<u32>', paraId)
-    amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))
-    const nonce = (await api.query.system.account(from)).nonce.toNumber()
-    const contributeTx = api.tx.crowdloan.contribute(paraId, amount, null)
-    const memo = {
-      chain: 1,
-      parent: getNodeId(communityId),
-      child: getNodeId(childId),
-      height: 0,
-      paraId: parseInt(paraId),
-      trieIndex: parseInt(trieIndex)
-    }
-    const encodememo = encodeMemo(memo)
-    const memoTx = api.tx.crowdloan.addMemo(paraId, encodememo)
-    const unsubContribution = await api.tx.utility
-      .batch([contributeTx, memoTx]).signAndSend(from, {
-        nonce
-      }, ({
-        status,
-        dispatchError
-      }) => {
-        if (status.isInBlock || status.isFinalized) {
-          if (dispatchError) {
-            let errMsg = ''
-            if (dispatchError.isModule) {
-              // for module errors, we have the section indexed, lookup
-              const decoded = api.registry.findMetaError(dispatchError.asModule);
-              const {
-                documentation,
-                name,
-                section
-              } = decoded;
-              errMsg = `${section}.${name}: ${documentation.join(' ')}`
-              console.log(`${section}.${name}: ${documentation.join(' ')}`);
-            } else {
-              // Other, CannotLookup, BadOrigin, no extra info
-              console.log(dispatchError.toString());
-              errMsg = dispatchError.toString()
-            }
-            toast(errMsg, {
-              title: $t('tip.error'),
-              variant: 'danger'
-            })
-            unsubContribution()
-            resolve(false)
-          }
-        }
-        if (status.isBroadcast) {
-          if (inBlockCallback) inBlockCallback()
-          setTimeout(() => {
-            toast($t('transaction.broadcasting'), {
-              title: $t('tip.tips'),
-              autoHideDelay: 5000,
-              variant: 'warning'
-            })
-          }, 700);
-        } else if (status.isInBlock) {
-          console.log("Transaction included at blockHash ", status.asInBlock.toJSON());
-          const contriHash = status.asInBlock.toJSON()
-          console.log({
-            relaychain: 'rococo',
-            blockHash: contriHash,
-            communityId: communityId,
-            nominatorId: childId
-          });
-          // upload to daemon
-          try {
-            postContribution({
-              relaychain: 'rococo',
-              blockHash: contriHash,
-              communityId: communityId,
-              nominatorId: childId
-            })
-          } catch (e) {
-            console.error('Upload to daemon fail', e);
-          }
-          toast($t('transaction.inBlock'), {
-            title: $t('tip.tips'),
-            autoHideDelay: 6000,
-            variant: 'warning'
-          })
-        } else if (status.isFinalized) {
-          unsubContribution()
-          toast($t('transaction.contributeOk'), {
-            title: $t('tip.tips'),
-            autoHideDelay: 5000,
-            variant: "success",
-          });
-          // 添加memo
-          // addMemo(communityId, childId, paraId, trieIndex, contriHash)
-          resolve(status.isFinalized)
-        }
-      }).catch(err => {
-        reject(err)
-      })
-  })
+export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, callback) => {
+  c('kusama', paraId, amount, communityId, childId, trieIndex, toast, callback)
 }

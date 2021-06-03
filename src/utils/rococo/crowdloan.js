@@ -14,10 +14,9 @@ import store from "../../store"
 
 import {
   getApi,
-  uni2Token,
-  getDecimal,
 } from './rococo'
 import { withdraw as w, contribute as c } from '@/utils/commen/crowdloan'
+import { DECIMAL } from '@/constant'
 
 function createChildKey(trieIndex) {
   return u8aToHex(
@@ -31,7 +30,6 @@ function createChildKey(trieIndex) {
 }
 
 export const subscribeFundInfo = async (crowdloanCard) => {
-  return;
   let unsubFund = store.state.rococo.subFund
   if (unsubFund) {
     try {
@@ -46,7 +44,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
   try {
     unsubFund = (await api.query.crowdloan.funds.multi(paraId, async (unwrapedFunds) => {
       const bestBlockNumber = (await api.derive.chain.bestNumber()).toNumber()
-      const decimal = await getDecimal()
+      const decimal = DECIMAL['rococo']
       let funds = []
       for (let i = 0; i < unwrapedFunds.length; i++) {
         const fund = unwrapedFunds[i]
@@ -80,7 +78,6 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           paraId: pId,
           status,
           statusIndex,
-          deposit: uni2Token(new BN(deposit), decimal),
           cap: new BN(cap),
           depositor,
           end: new BN(end),

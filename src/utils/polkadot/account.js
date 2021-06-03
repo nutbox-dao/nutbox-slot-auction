@@ -1,7 +1,7 @@
 import {
   web3Accounts,
   web3Enable,
-  web3FromSource
+  web3FromSourc
 } from '@polkadot/extension-dapp'
 import keyring from '@polkadot/ui-keyring';
 
@@ -23,9 +23,9 @@ import {
 
 import {
   getApi,
-  stanfiAddress,
   token2Uni
 } from './polkadot'
+import { stanfiAddress } from '@/utils/commen/account'
 import {
   $t
 } from '@/i18n'

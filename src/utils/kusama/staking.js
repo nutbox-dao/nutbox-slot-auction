@@ -1,7 +1,4 @@
-import {
-  encodeAddress,
-  decodeAddress
-} from "@polkadot/util-crypto"
+
 import store from "@/store"
 
 import {
@@ -11,9 +8,9 @@ import {
 import {
   getApi,
   token2Uni,
-  stanfiAddress,
   getTxPaymentInfo
 } from './kusama'
+import { stanfiAddress } from '@/utils/commen/account'
 /**
  * 监听用户的绑定储蓄账户
  */
@@ -240,13 +237,4 @@ function handelBlockState(api, status, dispatchError, toast, callback, unsub) {
     // 上传daemon
     return true
   }
-}
-
-export function encodeRemark(communityId, projectId) {
-  // 01 表示使用dot投票
-  let buf = new Uint8Array(65)
-  buf[0] = 1;
-  buf.set(decodeAddress(communityId), 1);
-  buf.set(decodeAddress(projectId), 33)
-  return '0x' + Buffer.from(buf).toString('hex')
 }
