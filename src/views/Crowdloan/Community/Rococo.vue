@@ -6,7 +6,7 @@
       <div class="p-detail-info">
         <img class="logo" :src="communityInfo.iconUrl" alt="" />
         <div class="text-info">
-          <span class="font20 font-bold title" v-if="communityInfo.website && communityInfo.website.length === 0">
+          <span class="font20 font-bold title" v-if="communityInfo && (communityInfo.website.length < 6)">
             {{ communityInfo.communityName }}
           </span>
           <a class="font20 font-bold title official-link"
