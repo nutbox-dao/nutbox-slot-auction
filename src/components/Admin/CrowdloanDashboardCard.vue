@@ -140,7 +140,6 @@ export default {
     })
       .then(async (res) => {
         this.isLoading = false;
-        console.log("dashboard", res);
         let cards = [];
         for (let card of res) {
           const raised = await this.getRaised(card.raisedAmount);

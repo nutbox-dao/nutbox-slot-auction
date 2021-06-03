@@ -17,7 +17,7 @@ import {
 import {
   injectAccount
 } from './account'
-import BN from 'bn.js'
+import { createCrowdstakingRemark } from '../commen/remark'
 
 
 /**
@@ -99,7 +99,7 @@ export const subNominators = async () => {
 }
 
 /**
- * 或者我们平台所有社区支持的验证者节点信息
+ * 或取我们平台所有社区支持的验证者节点信息
  * @param {Array} validators 验证者节点地址数组
  */
 export const getValidatorsInfo = async (validators) => {
@@ -115,7 +115,6 @@ export const getValidatorsInfo = async (validators) => {
       allValidatorInfosInOurDB[validators[i]] = res[i]
     }
     store.commit('polkadot/saveAllValidatorInfosInOurDB', allValidatorInfosInOurDB)
-
   })
 }
 
@@ -136,7 +135,7 @@ export const nominate = async (validators, communityId, projectId, toast, callba
     }
     const api = await injectAccount(store.state.polkadot.account)
     const nominatorTx = api.tx.staking.nominate(validators)
-    const remark = encodeRemark(communityId, projectId)
+    const remark = createCrowdstakingRemark(api, communityId, projectId, null)
     const remarkTx = api.tx.system.remarkWithEvent(remark)
     const nonce = (await api.query.system.account(from)).nonce.toNumber()
   

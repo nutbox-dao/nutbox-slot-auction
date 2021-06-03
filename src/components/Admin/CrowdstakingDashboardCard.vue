@@ -20,7 +20,10 @@
               <img class="icon1" :src="item.community.iconUrl" alt="" />
             </div>
             <div class="title-text font20 font-bold">
-              <span>{{ item.community.communityName }} {{$t('cs.community')}}</span>
+              <span
+                >{{ item.community.communityName }}
+                {{ $t("cs.community") }}</span
+              >
             </div>
           </div>
           <div class="h-line"></div>
@@ -42,15 +45,14 @@
 
 <script>
 import CsvExportor from "csv-exportor";
-import { getDarshboardCard, getNominationSummary } from "@/apis/api";
+import { getNominationSummary } from "@/apis/api";
 import { formatBalance as fbPolkadot } from "@/utils/polkadot/polkadot";
 import { formatBalance as fbKusama } from "@/utils/kusama/kusama";
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
-      items: [],
       isLoading: true,
       isDownloading: false,
       csvHeader: ["communityName", "communityId", "nominator", "createAt"],
@@ -62,31 +64,43 @@ export default {
     },
   },
   computed: {
-    ...mapState('polkadot', ['account'])
+    ...mapState("polkadot", ["account"]),
+    items() {
+      if (this.chain === "polkadot") {
+        return this.$store.state.polkadot.crowdstakings.filter(
+          (c) => c.projectId === this.account.address
+        );
+      } else {
+        return this.$store.state.kusama.crowdstakings.filter(
+          (c) => c.projectId === this.account.address
+        );
+      }
+    },
   },
   methods: {
     async getRaised(raise) {
-      if (this.chain.toLowerCase() === 'polkadot'){
-        return await fbPolkadot(raise)
-      }else{
-        return await fbKusama(raise)
+      if (this.chain.toLowerCase() === "polkadot") {
+        return await fbPolkadot(raise);
+      } else {
+        return await fbKusama(raise);
       }
     },
     downloadCsv(index) {
       const card = this.items[index];
       const projectId = card.projectId;
       const communityId = card.communityId;
-      this.isDownloading = true
+      this.isDownloading = true;
       getNominationSummary({
+        relaychain: this.chain.toLowerCase(),
         communityId,
         projectId,
       })
         .then(async (res) => {
-          this.isDownloading = false
+          this.isDownloading = false;
           let result = [];
           console.log("csv1", res);
-          if (res.lenght === 0){
-            return
+          if (res.lenght === 0) {
+            return;
           }
           result = res.map((n) => ({
             communityName: n.community.communityName,
@@ -102,23 +116,13 @@ export default {
           );
         })
         .catch((err) => {
-          this.isDownloading = false
+          this.isDownloading = false;
           console.error("down load crowdloan info fail", err);
         });
     },
   },
   created() {
-    getDarshboardCard({
-      projectId: '1drufsSHHS5Mt3e8xjnPYZPxXUFCpQDKozTLUikSxccRdZY'// this.$store.state.polkadot.account.address
-    })
-      .then((res) => {
-        this.isLoading = false;
-        this.items = res;
-        console.log("summary", res);
-      })
-      .catch((e) => {
-        console.log("summary error", e);
-      });
+    this.isLoading = false;
   },
 };
 </script>
@@ -135,7 +139,7 @@ export default {
     }
   }
 }
-.primary-btn{
+.primary-btn {
   margin-top: 1rem;
 }
 </style>

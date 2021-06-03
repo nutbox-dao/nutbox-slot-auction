@@ -18,6 +18,7 @@ export const KUSAMA_WEB_SOCKET = "wss://kusama-rpc.polkadot.io"
 export const ROCOCO_WEB_SOCKET = "wss://crowdloan-test.nutbox.io/relaychain/ws"
 
 export const CROWD_STAKING_API_URL = "https://api.crowdstaking.nutbox.io"
+// export const CROWD_STAKING_API_URL = "http://localhost:3200"
 export const CROWD_LOAN_API_URL = "https://api.crowdloan-test.nutbox.io"
 
 export const PARA_STATUS = {
@@ -33,5 +34,6 @@ export const NUTBOX_REMARK_TYPE = {
   op: 'u8',           // 0为crowdloan， 1为crowdsta
   trieIndex: 'Option<u8>', // crowdloan 才有该字段
   communityId: 'Text',      // 通过哪个社区操作的
+  projectId: 'Option<Text>', // 平行链项目方管理id，crowdloan时该字段为空
   nominatorId: 'Option<Text>' // 推荐人id
 }

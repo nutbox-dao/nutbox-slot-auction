@@ -297,7 +297,7 @@ export default {
     changeAccount(acc) {
       if (!this.isConnected) return;
       if (this.$route.path === '/admin'){
-        //调到主页去
+        //跳到主页去
         this.$router.push('/crowdloan')
       }
       this.saveAccount(acc);
@@ -307,6 +307,7 @@ export default {
       subKusamaBonded();
       subBonded();
       subNominators();
+      // 更新所有卡片数据
       this.getCommnunitys();
       this.getCrowdstacking();
     },
@@ -321,7 +322,7 @@ export default {
     getCrowdstacking() {
       // 获取验证者节点投票卡片信息 --- polkadot
       getCrowdstacking().then((res) => {
-        const crowdstaking = res.map(({ community, project }) => ({
+        const crowdstaking = res.map(({ community, project, nominatorCount, relaychain }) => ({
           community: {
             ...community,
             communityId: stanfiAddress(community.communityId),
@@ -331,16 +332,25 @@ export default {
             projectId: stanfiAddress(project.projectId),
             validators: project.validators.map((v) => stanfiAddress(v)),
           },
+          nominatorCount,
+          relaychain
         }));
-        this.saveCrowdstakings(crowdstaking);
-        this.saveCommunitys(
-          crowdstaking.map(({ community }) => community.communityId)
-        );
+        const polkadotcs = crowdstaking.filter(c => c.relaychain === 'polkadot')
+        const kusamacs = crowdstaking.filter(c => c.relaychain === 'kusama')
+        this.saveCrowdstakings(polkadotcs);
+        this.$store.commit('kusama/saveCrowdstakings', kusamacs)
+        // this.saveCommunitys(
+        //   crowdstaking.map(({ community }) => community.communityId)
+        // );
+        // 所有注册的projectid
         this.saveProjects(crowdstaking.map(({ project }) => project.projectId));
-        let validators = crowdstaking.map(({ project }) => project.validators);
+        // 波卡验证者
+        let validators = polkadotcs.map(({ project }) => project.validators);
         validators = validators.reduce((t, v) => t.concat(...v), []);
         validators = [...new Set(validators)];
         getValidatorsInfo(validators);
+        // kusama验证者
+        // TODO
       });
     },
   },

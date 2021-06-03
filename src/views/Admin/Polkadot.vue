@@ -1,9 +1,9 @@
 <template>
   <div class="contribution-page">
     <div class="font20 mt-3 mb-3 text-left">{{ $t('cl.crowdloan') }}</div>
-    <Crowdloan chain="POLKADOT"/>
+    <Crowdloan chain="polkadot"/>
     <div class="font20 mt-3 mb-3 text-left">{{ $t('cs.crowdstaking') }}</div>
-    <DashboardCard chain="POLKADOT"/>
+    <DashboardCard chain="polkadot"/>
   </div>
 </template>
 
