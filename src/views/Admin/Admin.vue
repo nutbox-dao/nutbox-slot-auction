@@ -15,7 +15,7 @@
 
 <script>
 import { getCrowdstacking } from '@/apis/api'
-import { stanfiAddress } from '@/utils/polkadot/polkadot'
+import { stanfiAddress } from "@/utils/commen/account"
 
 export default {
   name: "Wallet",

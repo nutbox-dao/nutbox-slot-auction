@@ -31,7 +31,7 @@
 import CrowdloanCard from '@/components/Crowdloan/Rococo/ComCRCard'
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from '@/apis/api'
-import { stanfiAddress } from '@/utils/polkadot/polkadot'
+import { stanfiAddress } from "@/utils/commen/account"
 import {
   subscribeFundInfo as subscribeKusamaFundInfo
 } from "@/utils/rococo/crowdloan";

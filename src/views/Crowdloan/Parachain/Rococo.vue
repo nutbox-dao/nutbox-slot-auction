@@ -80,7 +80,7 @@ import { subscribeFundInfo as subscribeKusamaFundInfo } from "@/utils/rococo/cro
 import { formatBalance } from "@/utils/rococo/rococo";
 import { TIME_PERIOD, BLOCK_SECOND } from "@/constant"
 import { calStatus } from "@/utils/rococo/crowdloan";
-import { stanfiAddress } from "@/utils/polkadot/polkadot"
+import { stanfiAddress } from "@/utils/commen/account"
 
 export default {
   name: "Rococo",

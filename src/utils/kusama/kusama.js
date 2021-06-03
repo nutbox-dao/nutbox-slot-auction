@@ -5,8 +5,6 @@ import {
 import {
   isHex,
   hexToU8a,
-  u8aToHex,
-  formatBalance as fb
 } from "@polkadot/util"
 import {
   encodeAddress,
@@ -20,6 +18,7 @@ import {
 } from "@/config"
 import { KUSAMA_DECIMAL } from '@/constant'
 import store from "@/store"
+import { web3FromSource, web3Enable } from '@polkadot/extension-dapp'
 
 export async function getApi() {
   if (store.state.kusama.api) {
@@ -28,6 +27,7 @@ export async function getApi() {
   store.commit('kusama/saveIsConnected', false)
 
   console.log('connecting');
+  await web3Enable('nutbox')
   const wsProvider = new WsProvider(KUSAMA_WEB_SOCKET)
   const api = await ApiPromise.create({
     provider: wsProvider,
@@ -37,6 +37,8 @@ export async function getApi() {
       NutboxRemark: NUTBOX_REMARK_TYPE
     }
   })
+  const injected = await web3FromSource('polkadot-js')
+  api.setSigner(injected.signer)
   console.log('connected');
 
   store.commit('kusama/saveIsConnected', true)

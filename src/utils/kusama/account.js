@@ -16,13 +16,6 @@ import {
   $t
 } from '@/i18n'
 
-export const injectAccount = async (account) => {
-  const injected = await web3FromSource(account.meta.source)
-  const api = await getApi()
-  api.setSigner(injected.signer)
-  return api
-}
-
 export const getBalance = async () => {
   const api = await getApi()
   // cancel last
@@ -72,7 +65,7 @@ export const getBalance = async () => {
  * @param {Number} amount 转账数目 单位为ksm
  */
 export const transfer = async (to, amount, toast, callback) => {
-  const api = await injectAccount(store.state.polkadot.account)
+  const api = await getApi()
   const decimal = new BN(12)
   const from = store.state.polkadot.account.address
   amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))
@@ -106,7 +99,7 @@ export const bond = async (amount, toast, callback) => {
   if (!from) {
     reject('no account')
   }
-  const api = await injectAccount(store.state.polkadot.account)
+  const api = await getApi()
   const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
   const bonded = store.state.kusama.bonded
   console.log('bonded', bonded);
@@ -143,7 +136,7 @@ export const unBond = async (amount, toast, callback) => {
   if (!from) {
     reject('no account')
   }
-  const api = await injectAccount(store.state.polkadot.account)
+  const api = await getApi()
   const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
   const nonce = (await api.query.system.account(from)).nonce.toNumber()
   console.log('unbond');

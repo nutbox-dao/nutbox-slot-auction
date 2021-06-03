@@ -46,7 +46,7 @@ import { CROWD_LOAN_API_URL } from "@/config";
 import axios from "axios";
 import BN from "bn.js";
 import { formatDate } from "@/utils/polkadot/utils";
-import { stanfiAddress } from "@/utils/polkadot/polkadot";
+import { stanfiAddress } from "@/utils/commen/account";
 
 export default {
   name: "UserContributions",

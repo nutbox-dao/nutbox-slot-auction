@@ -204,7 +204,7 @@ import {
   getValidatorsInfo,
 } from "./utils/polkadot/staking";
 import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
-import { stanfiAddress } from "./utils/polkadot/polkadot";
+import { stanfiAddress } from "./utils/commen/account";
 
 export default {
   data() {

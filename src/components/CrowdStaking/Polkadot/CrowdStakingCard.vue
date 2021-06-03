@@ -77,7 +77,7 @@
 import TipBondAndNominator from "./TipBoxes/TipBondAndNominator";
 import TipNominator from "./TipBoxes/TipNominator";
 import { mapState } from "vuex";
-import { stanfiAddress } from "@/utils/polkadot/polkadot";
+import { stanfiAddress } from "@/utils/commen/account";
 import BN from "bn.js";
 
 export default {

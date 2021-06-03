@@ -24,9 +24,6 @@ import {
   stanfiAddress
 } from './kusama'
 import {
-  injectAccount
-} from './account'
-import {
   NumberTo4BytesU8A
 } from '../polkadot/utils'
 
@@ -46,6 +43,7 @@ function createChildKey(trieIndex) {
 }
 
 export const subscribeFundInfo = async (crowdloanCard) => {
+  return;
   let unsubFund = store.state.kusama.subFund
   if (unsubFund) {
     try {
@@ -196,7 +194,7 @@ export function encodeMemo(memo) {
 
 export const withdraw = async (paraId, toast, isInblockCallback) => {
   return new Promise(async (resolve, reject) => {
-    const api = await injectAccount(store.state.polkadot.account)
+    const api = await getApi()
     const from = store.state.polkadot.account?.address
     if (!from) {
       reject('no account')
@@ -275,7 +273,7 @@ export const contribute = async (paraId, amount, communityId, childId, trieIndex
     if (!from) {
       reject('no account')
     }
-    const api = await injectAccount(store.state.polkadot.account)
+    const api = await getApi()
     const decimal = await getDecimal()
     paraId = api.createType('Compact<u32>', paraId)
     amount = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(decimal.sub(new BN(6)))))

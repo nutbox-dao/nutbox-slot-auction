@@ -14,9 +14,6 @@ import {
   stanfiAddress,
   getTxPaymentInfo
 } from './kusama'
-import {
-  injectAccount
-} from './account'
 /**
  * 监听用户的绑定储蓄账户
  */
@@ -108,7 +105,7 @@ export const nominate = async (validators, communityId, projectId, toast, callba
     if (!from) {
       reject('no account')
     }
-    const api = await injectAccount(store.state.polkadot.account)
+    const api = await getApi()
     const nominatorTx = api.tx.staking.nominate(validators)
     const remark = encodeRemark(communityId, projectId)
     const remarkTx = api.tx.system.remarkWithEvent(remark)
@@ -148,7 +145,7 @@ export const bondAndNominate = async (amount, validators, communityId, projectId
   if (!from) {
     reject('no account')
   }
-  const api = await injectAccount(store.state.polkadot.account)
+  const api = await getApi()
   const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
   const bondTx = api.tx.staking.bond(store.state.polkadot.account.address, uni, {
     Staked: null
