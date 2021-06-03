@@ -9,7 +9,7 @@
         </div>
         <div class="account-header" v-if="$route.path!=='/blog'">
           <div @click="copyAddress" >
-          <Identicon id='avatar' :data-clipboard-text='account.address' style="cursor: pointer" :size="32" theme="polkadot" v-if="account" :value="account.address"/>
+          <Identicon id='avatar' :data-clipboard-text='account.address' :size="32" theme="polkadot" v-if="account" :value="account.address"/>
           <b-popover
             target="avatar"
             triggers="hover focus"
@@ -451,6 +451,9 @@ body {
     button {
       border: none;
       padding: .1rem !important;
+    }
+    #avatar{
+      cursor: url("~@/static/images/copy.png") 3 5, pointer;
     }
   }
 }
