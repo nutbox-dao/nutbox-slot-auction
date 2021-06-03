@@ -1,12 +1,13 @@
 <template>
   <div class="crowdloan-parachain scroll-content">
     <div class="parachain-info p-card">
+      <img class="poster" :src="paraInfo.posterUrl" v-show="paraInfo.posterUrl && paraInfo.posterUrl.length>4" alt="">
       <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.back()"/>
       <div class="p-detail-info">
         <img class="logo" :src="paraInfo.iconUrl" alt="" />
         <div class="text-info">
-          <span class="font20 font-bold title" v-if="paraInfo.website.length === 0">
-              {{ paraInfo.website }}
+          <span class="font20 font-bold title" v-if="paraInfo && paraInfo.website.length === 0">
+              {{ paraInfo.paraName }}
           </span>
           <a class="font20 font-bold title official-link" v-else :href="paraInfo.website"
              target="_blank">{{ paraInfo.paraName }}</a>
@@ -113,6 +114,7 @@ export default {
       return [];
     },
     paraInfo() {
+      console.log(3434,this.crowdloanInfo.length > 0 && this.crowdloanInfo[0].para);
       return this.crowdloanInfo.length > 0 && this.crowdloanInfo[0].para;
     },
     getFundInfo() {

@@ -8,11 +8,14 @@
           alt=""
         />
       </div>
-      <div class="font20 font-bold link-title">
+      <div class="card-link-title-text">
+        <div class="font20 font-bold link-title">
           <span @click="toCommunity">
             {{crowdloan.community.communityName }}
           </span>
         <i class="link-icon" @click="toCommunity"></i>
+        </div>
+
       </div>
     </div>
     <div class="h-line"></div>

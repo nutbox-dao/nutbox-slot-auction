@@ -1,11 +1,12 @@
 <template>
   <div class="crowdloan-community scroll-content">
     <div class="community-info p-card">
+      <img class="poster" :src="communityInfo.posterUrl" v-show="communityInfo.posterUrl && communityInfo.posterUrl.length > 4" alt="">
       <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.back()"/>
       <div class="p-detail-info">
         <img class="logo" :src="communityInfo.iconUrl" alt="" />
         <div class="text-info">
-          <span class="font20 font-bold title" v-if="communityInfo.website.length === 0">
+          <span class="font20 font-bold title" v-if="communityInfo.website && communityInfo.website.length === 0">
             {{ communityInfo.communityName }}
           </span>
           <a class="font20 font-bold title official-link"
