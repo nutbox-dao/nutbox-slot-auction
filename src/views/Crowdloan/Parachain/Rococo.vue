@@ -5,7 +5,10 @@
       <div class="p-detail-info">
         <img class="logo" :src="paraInfo.iconUrl" alt="" />
         <div class="text-info">
-          <a class="font20 font-bold title official-link" :href="paraInfo.website"
+          <span class="font20 font-bold title" v-if="paraInfo.website.length === 0">
+              {{ paraInfo.website }}
+          </span>
+          <a class="font20 font-bold title official-link" v-else :href="paraInfo.website"
              target="_blank">{{ paraInfo.paraName }}</a>
           <div class="desc">{{ paraInfo && paraInfo.description[lang] }}</div>
         </div>

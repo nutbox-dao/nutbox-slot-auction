@@ -5,7 +5,11 @@
       <div class="p-detail-info">
         <img class="logo" :src="communityInfo.iconUrl" alt="" />
         <div class="text-info">
+          <span class="font20 font-bold title" v-if="communityInfo.website.length === 0">
+            {{ communityInfo.communityName }}
+          </span>
           <a class="font20 font-bold title official-link"
+             v-else
              :href="communityInfo.website"
              target="_blank">{{ communityInfo.communityName }}</a>
           <div class="desc">{{ communityInfo.description && communityInfo.description[lang] }}</div>
