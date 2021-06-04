@@ -11,7 +11,7 @@
       <div class="card-link-title-text">
         <div class="font20 font-bold link-title">
           <span @click="toCommunity">
-            {{crowdloan.community.communityName }}
+            {{crowdloan.community.communityName + ' ' + $t('cl.community') }}
           </span>
         <i class="link-icon" @click="toCommunity"></i>
         </div>

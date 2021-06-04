@@ -20,7 +20,7 @@
         <div class="card-link-title-text font20 font-bold">
           <div class="link-title">
             <span class="font20" @click="toCommunity">{{
-              getCardInfo && getCardInfo.community.communityName
+              getCardInfo && getCardInfo.community.communityName + " " + $t('cl.community')
             }}</span>
             <i class="link-icon" @click="toCommunity"></i>
           </div>

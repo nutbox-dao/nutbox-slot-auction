@@ -117,6 +117,7 @@ dashboard: {
 },
 cl:{
   crowdloan: 'Crowdloan',
+  community: "Community",
   contribute: "Contribute",
   withdraw: "Withdraw",
   youWillWithdraw: "You Would Withdraw",

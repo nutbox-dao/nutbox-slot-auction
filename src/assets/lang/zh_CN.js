@@ -116,7 +116,8 @@ module.exports = {
     nominators: "提名人数"
   },
   cl: {
-    crowdloan: "平行链拍卖",
+    crowdloan: "平行链插槽拍卖",
+    community: "社区",
     contribute: "投票",
     withdraw: "赎回",
     youWillWithdraw: "你可以赎回",

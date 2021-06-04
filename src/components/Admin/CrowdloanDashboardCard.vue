@@ -9,7 +9,7 @@
       <p>{{ $t("tip.noCrowdloan") }}</p>
     </div>
     <div class="row">
-      <div class="col-xl-4 col-md-6 mb-4" v-for="(item, index) of items.concat(items).concat(items)" :key="index">
+      <div class="col-xl-4 col-md-6 mb-4" v-for="(item, index) of items" :key="index">
         <div class="c-card">
           <div class="card-top-box">
             <!--          <div class="status-container text-right">-->
@@ -22,7 +22,7 @@
               </div>
               <div class="card-link-title-text font20 font-bold">
                 <div class="link-title" @click="$router.push('/crowdloan/'+ chain.toLowerCase() +'/community/' + item.community.communityId)">
-                  <span class="font20">{{ item.community.communityName }}</span>
+                  <span class="font20">{{ item.community.communityName + ' ' + $t('cl.community') }}</span>
                   <i class="link-icon"></i>
                 </div>
                 <div class="link-title" @click="$router.push('/crowdloan/'+ chain.toLowerCase() +'/parachain/' + item.para.paraId)">
