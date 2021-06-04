@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="c-card">
-      <a class="font20 font-bold title link" :href="paraInfo.rewardLink[lang]"
+      <a class="font20 font-bold title link" :href="paraInfo && paraInfo.rewardLink[lang]"
          target="_blank">{{ $t("cl.auctionPlan") }}</a>
       <div class="desc" style="margin-top: .8rem" v-html="paraInfo && paraInfo.rewardPlan[lang]">
         
