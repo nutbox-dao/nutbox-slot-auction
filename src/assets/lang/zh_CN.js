@@ -138,7 +138,11 @@ module.exports = {
     fund: "总需求",
     progress: '众筹进度',
     contributors:"众筹人数",
-    myBalance: "我的 {token} 余额"
+    contributed: "我的投票",
+    myBalance: "我的 {token} 余额",
+    Active: "众筹中",
+    Retired: "退款中",
+    Completed: "众筹结束"
   },
   transaction: {
     broadcasting: "正在广播交易",

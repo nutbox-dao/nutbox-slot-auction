@@ -137,8 +137,12 @@ cl:{
   raised: "Raised",
   fund: "Fund",
   progress: 'Progress',
-  contributors:"Contributor Count",
-  myBalance: "Balance of {token}"
+  contributors:"Contributors",
+  contributed: "My Contributed",
+  myBalance: "Balance of {token}",
+  Active: "Active",
+  Retired: "Retired",
+  Completed: "Completed"
 },
 transaction: {
   broadcasting: "Transaction Is Broadcasting.",

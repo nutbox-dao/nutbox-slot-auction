@@ -2,7 +2,7 @@
   <div class="ro-card">
     <div class="card-link-top-box">
       <div class="status-container text-right">
-        <span :class="status">{{ status }}</span>
+        <span :class="status">{{ $t('cl.'+status) }}</span>
       </div>
       <div class="flex-start-center">
         <div class="card-link-icons">
@@ -36,28 +36,28 @@
     <div class="c-card">
       <div class="detail-info-box">
         <div class="project-info-container">
-          <span class="name"> Lease period </span>
+          <span class="name"> {{ $t('cl.leasePeriod') }} </span>
           <div class="info">{{ leasePeriod || "test data" }}</div>
         </div>
         <div class="project-info-container">
-          <span class="name"> Countdown </span>
+          <span class="name"> {{ $t('cl.countDown') }} </span>
           <div class="info">{{ countDown || "test data" }}</div>
         </div>
         <div class="project-info-container">
-          <span class="name"> Fund </span>
+          <span class="name"> {{ $t('cl.fund') }} </span>
           <div class="info">
             <RaisedLabel :paraId="paraId" />
             <ContributorsLabel :paraId="paraId" />
           </div>
         </div>
       <div class="project-info-container">
-        <span class="name"> Contributed </span>
+        <span class="name"> {{ $t('cl.contributed') }} </span>
         <div class="info">
           <RaisedLabel :paraId="paraId" :isBalance="true" />
         </div>
       </div>
         <div class="project-info-container">
-          <span class="name"> Rewards </span>
+          <span class="name"> {{ $t('cl.rewards') }} </span>
           <div class="info">
             <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
           </div>

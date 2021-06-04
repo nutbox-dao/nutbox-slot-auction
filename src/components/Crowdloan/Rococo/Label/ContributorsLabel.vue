@@ -6,7 +6,7 @@
     <span>
       {{ " " + getFundInfo && getFundInfo.funds.length + " " }}
     </span>
-    <span class="text-grey-light"> contributors </span>
+    <span class="text-grey-light"> {{ $t('cl.contributors') }} </span>
   </div>
 </template>
 

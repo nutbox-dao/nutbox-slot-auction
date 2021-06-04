@@ -18,8 +18,8 @@
     <div class="c-card">
       <a class="font20 font-bold title link" :href="paraInfo.rewardLink"
          target="_blank">{{ $t("cl.auctionPlan") }}</a>
-      <div class="desc" style="margin-top: .8rem">
-        {{ paraInfo && paraInfo.rewardPlan[lang] }}
+      <div class="desc" style="margin-top: .8rem" v-html="paraInfo && paraInfo.rewardPlan[lang]">
+        
       </div>
     </div>
 
@@ -27,20 +27,20 @@
       <div class="flex-between-center mb-2">
         <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
         <div class="status-container">
-          <span :class="status">{{ status }}</span>
+          <span :class="status">{{ $t('cl.'+status) }}</span>
         </div>
       </div>
 
       <b-table-simple responsive>
         <b-thead>
           <b-tr>
-            <b-th>Lease Period</b-th>
-            <b-th>Countdown</b-th>
-            <b-th>Raised</b-th>
-            <b-th>Fund</b-th>
-            <b-th>Progress</b-th>
-            <b-th>Contributors</b-th>
-            <b-th>Contributed</b-th>
+            <b-th>{{ $t('cl.leasePeriod') }}</b-th>
+            <b-th>{{ $t('cl.countDown') }}</b-th>
+            <b-th>{{ $t('cl.raised') }}</b-th>
+            <b-th>{{ $t('cl.fund') }}</b-th>
+            <b-th>{{ $t('cl.progress') }}</b-th>
+            <b-th>{{ $t('cl.contributors') }}</b-th>
+            <b-th>{{ $t('cl.contributed') }}</b-th>
           </b-tr>
         </b-thead>
         <b-tbody>

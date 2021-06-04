@@ -24,7 +24,7 @@
            {{ crowdloan.community.description[this.$store.state.lang] }}
        </p>
      <div class="project-info-container">
-       <span class="name"> Rewards </span>
+       <span class="name"> {{ $t('cl.rewards') }} </span>
        <div class="info">
          <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
        </div>
