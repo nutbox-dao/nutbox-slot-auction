@@ -218,7 +218,7 @@ export default {
             return min + " mins " + sec + " sec";
           }
         }
-        return "Completed";
+        return this.$t('cl.'+this.status)
       } catch (e) {
         console.error("err", e);
         return "";
