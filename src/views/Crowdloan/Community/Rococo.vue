@@ -18,7 +18,7 @@
              v-else
              :href="communityInfo.website"
              target="_blank">{{ communityInfo.communityName }}</a>
-          <div class="desc">{{ communityInfo.description && communityInfo.description[lang] }}</div>
+          <div class="desc" v-html="communityInfo.description && communityInfo.description[lang]"></div>
         </div>
       </div>
     </div>
