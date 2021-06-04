@@ -6,12 +6,12 @@
     <span>
       {{ " " + getFundInfo && getFundInfo.funds.length + " " }}
     </span>
-    <span class="text-grey-light"> {{ $t('cl.contributors') }} </span>
+    <span class="text-grey-light"> {{ lang === 'en' ? 'Contributors' : '人投票' }} </span>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   props: {
@@ -21,6 +21,7 @@ export default {
   },
   computed: {
     ...mapGetters('rococo', ["fundInfo"]),
+    ...mapState(['lang']),
     getFundInfo() {
       return this.fundInfo(this.paraId);
     },

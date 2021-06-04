@@ -1,5 +1,10 @@
 <template>
   <div class="crowdloan-parachain scroll-content">
+    <div class="loading-bg" v-if="!paraInfo">
+      <img src="~@/static/images/loading.gif" alt="" />
+      <p class="font16">{{ $t('tip.loading') }}</p>
+    </div>
+    <template v-else>
     <div class="parachain-info p-card">
       <img class="poster" :src="paraInfo.posterUrl" v-show="paraInfo.posterUrl && paraInfo.posterUrl.length>4" alt="">
       <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.back()"/>
@@ -69,6 +74,7 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
@@ -113,7 +119,7 @@ export default {
         let official = {}
         official.para = {...crowdloan[0].para}
         official.community = {
-          communityId: null,
+          communityId: official.para.paraId,
           iconUrl: official.para.iconUrl,
           communityName: official.para.paraName,
           description: official.para.description,

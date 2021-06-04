@@ -1,5 +1,10 @@
 <template>
   <div class="crowdloan-community scroll-content">
+    <div class="loading-bg" v-if="!communityInfo">
+      <img src="~@/static/images/loading.gif" alt="" />
+      <p class="font16">{{ $t('tip.loading') }}</p>
+    </div>
+    <template v-else>
     <div class="community-info p-card">
       <img class="poster" :src="communityInfo.posterUrl" v-show="communityInfo.posterUrl && communityInfo.posterUrl.length > 4" alt="">
       <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.back()"/>
@@ -24,6 +29,7 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 

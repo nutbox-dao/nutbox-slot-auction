@@ -13,7 +13,7 @@
           <span @click="toCommunity">
             {{crowdloan.community.communityName + ' ' + $t('cl.community') }}
           </span>
-        <i class="link-icon" @click="toCommunity"></i>
+        <i class="link-icon" v-show="crowdloan.community.communityId !== crowdloan.para.paraId" @click="toCommunity"></i>
         </div>
 
       </div>
@@ -107,6 +107,7 @@ export default {
   },
   methods: {
       toCommunity() {
+        if (this.crowdloan.para.paraId === this.crowdloan.community.communityId) return;
         this.$router.push('/crowdloan/rococo/community/' + this.crowdloan.community.communityId)
       }
   },
