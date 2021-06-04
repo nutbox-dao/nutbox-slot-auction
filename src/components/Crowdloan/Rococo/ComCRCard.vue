@@ -167,9 +167,13 @@ export default {
     },
     rewardTokens() {
       if (this.crowdloan) {
-        return this.crowdloan.community.reward.concat(
-          this.crowdloan.para.reward
+        let rewards = this.crowdloan.para.reward.concat(
+          this.crowdloan.community.reward
         );
+        if (rewards.length > 3){
+          rewards = rewards.slice(0, 3)
+        }
+        return rewards
       }
       return [];
     },

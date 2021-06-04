@@ -142,7 +142,11 @@ cl:{
   myBalance: "Balance of {token}",
   Active: "Active",
   Retired: "Retired",
-  Completed: "Completed"
+  Completed: "Completed",
+  chain: "Chain",
+  trieIndex: "TrieIndex",
+  contributeAmount: 'Contribute amount',
+  contributeTime: 'Contribute time'
 },
 transaction: {
   broadcasting: "Transaction Is Broadcasting.",

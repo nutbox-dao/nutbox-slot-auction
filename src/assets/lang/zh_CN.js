@@ -142,7 +142,11 @@ module.exports = {
     myBalance: "我的 {token} 余额",
     Active: "众筹中",
     Retired: "退款中",
-    Completed: "众筹结束"
+    Completed: "众筹结束",
+    chain: "平行链",
+    trieIndex: "竞拍期数",
+    contributeAmount: '投票数',
+    contributeTime: '投票时间'
   },
   transaction: {
     broadcasting: "正在广播交易",

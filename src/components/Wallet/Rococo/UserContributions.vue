@@ -58,19 +58,21 @@ export default {
   computed: {
     ...mapState("polkadot", ["account"]),
     ...mapState("rococo", ["loadingContributions"]),
+    fields(){
+      return [
+        { key: "community", label: this.$t('cl.community'), class: "text-left" },
+        { key: "chain", label: this.$t('cl.chain'), class: "text-left" },
+        { key: "trieIndex", label: this.$t('cl.trieIndex'), class: "text-right" },
+        { key: "date", label: this.$t('cl.leasePeriod'), class: "text-right" },
+        { key: "amount", label: this.$t('cl.contributeAmount'), class: "text-right" },
+        { key: "time", label: this.$t('cl.contributeTime') },
+        { key: "operate", label: "", class: "text-left" },
+      ]
+    }
   },
   data() {
     return {
       cancelToken: null,
-      fields: [
-        { key: "community", label: "Community", class: "text-left" },
-        { key: "chain", label: "Chain", class: "text-left" },
-        { key: "trieIndex", label: "TrieIndex", class: "text-right" },
-        { key: "date", label: "Lease period", class: "text-right" },
-        { key: "amount", label: "Contribute amount", class: "text-right" },
-        { key: "time", label: "Contribute time" },
-        { key: "operate", label: "", class: "text-left" },
-      ],
       items: [],
       currentPage: 1,
       totalRows: 0,

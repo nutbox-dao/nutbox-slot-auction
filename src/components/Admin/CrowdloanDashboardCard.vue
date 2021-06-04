@@ -35,11 +35,11 @@
           <div class="h-line"></div>
           <div class="detail-info-box">
             <div class="project-info-container">
-              <span class="name"> Contributors </span>
+              <span class="name"> {{ $t('cl.contributors') }} </span>
               <div class="info">{{ item.contributorCount }}</div>
             </div>
             <div class="project-info-container">
-              <span class="name"> Fund </span>
+              <span class="name"> {{ $t('cl.raised') }} </span>
               <div class="info">{{ item.raised }}</div>
             </div>
           </div>

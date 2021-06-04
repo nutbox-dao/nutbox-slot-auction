@@ -240,8 +240,13 @@ export default {
     },
     rewardTokens(){
       if (this.getCardInfo){
-        return this.getCardInfo.community.reward.concat(this.getCardInfo.para.reward)
+        let rewards = this.getCardInfo.para.reward.concat(this.getCardInfo.community.reward)
+        if (rewards.length > 3){
+          rewards = rewards.slice(0, 3)
+        }
+        return rewards
       }
+      return []
     },
     contributions() {
       try {
