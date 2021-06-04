@@ -524,7 +524,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   .container {
-    padding: 40px 40px 46px;
+    padding: 0px 40px 0px;
     box-sizing: border-box;
     flex: 1;
     overflow: hidden;

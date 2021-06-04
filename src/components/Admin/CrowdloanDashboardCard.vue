@@ -9,7 +9,7 @@
       <p>{{ $t("tip.noCrowdloan") }}</p>
     </div>
     <div class="row">
-      <div class="col-xl-4 col-md-6 mb-4" v-for="(item, index) of items" :key="index">
+      <div class="col-xl-4 col-md-6 mb-4" v-for="(item, index) of items.concat(items).concat(items)" :key="index">
         <div class="c-card">
           <div class="card-top-box">
             <!--          <div class="status-container text-right">-->

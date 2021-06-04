@@ -43,6 +43,6 @@ export default {
 
 <style lang="less" scoped>
 .sub-page-nav {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 </style>

@@ -55,4 +55,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.sub-page-nav{
+  margin-bottom: 0.5rem;
+}
 </style>
