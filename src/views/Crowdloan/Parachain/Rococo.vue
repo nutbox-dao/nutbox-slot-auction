@@ -107,14 +107,23 @@ export default {
     },
     crowdloanInfo() {
       if (this.showingCard && this.showingCard.length > 0) {
-        return this.showingCard.filter(
+        let crowdloan = this.showingCard.filter(
           (f) => parseInt(f.para.paraId) === this.paraId
         );
+        let official = {}
+        official.para = {...crowdloan[0].para}
+        official.community = {
+          communityId: null,
+          iconUrl: official.para.iconUrl,
+          communityName: official.para.paraName,
+          description: official.para.description,
+          reward: [],
+        }
+        return [official].concat(crowdloan)
       }
       return [];
     },
     paraInfo() {
-      console.log(3434,this.crowdloanInfo.length > 0 && this.crowdloanInfo[0].para);
       return this.crowdloanInfo.length > 0 && this.crowdloanInfo[0].para;
     },
     getFundInfo() {
