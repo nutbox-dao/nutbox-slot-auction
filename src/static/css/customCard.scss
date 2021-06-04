@@ -41,21 +41,19 @@
   position: relative;
   margin-right: 2.4rem;
   img {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    box-shadow: 0 4px 12px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 2.8rem;
+    border: 1px solid white;
   }
   .icon2 {
     position: absolute;
-    left: 1.8rem;
-    border: 1px solid #e3e5e8;
-    border-radius: 2.4rem;
+    left: 2.4rem;
   }
   .icon1 {
     position: relative;
     left: 0;
-    border: 1px solid #e3e5e8;
-    box-shadow: 0 4px 12px 4px rgba(0, 0, 0, 0.05);
-    border-radius: 2.4rem;
   }
 }
 .card-title-text {
@@ -75,6 +73,11 @@
   align-items: flex-end;
   width: 3.5rem;
   margin-right: .4rem;
+  img {
+    box-shadow: 0 4px 12px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 2.8rem;
+    border: 1px solid white;
+  }
   .icon1 {
     width: 2.8rem;
     height: 2.8rem;

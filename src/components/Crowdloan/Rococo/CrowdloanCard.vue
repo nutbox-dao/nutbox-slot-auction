@@ -1,5 +1,5 @@
 <template>
-  <div class="ro-card mb-4">
+  <div class="ro-card">
     <div class="card-link-top-box">
       <div class="status-container text-right">
         <span :class="status">{{ status }}</span>
@@ -267,9 +267,19 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/static/css/customCard";
+.ro-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .c-card {
+  flex: 1;
   margin-top: -1.2rem;
   padding: 1.8rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .detail-info-box {
   margin-top: 0;
