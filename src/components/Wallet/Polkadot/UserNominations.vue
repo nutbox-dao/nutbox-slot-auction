@@ -91,6 +91,7 @@ export default {
 <style lang="less" scoped>
 .nominations {
   margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
 }
 .table-card {
   border-radius: 1.4rem;
