@@ -246,22 +246,6 @@ export default {
         return 0;
       }
     },
-    statusIcon() {
-      switch (this.status) {
-        case "Active":
-          return this.lang === "en"
-            ? require("../../../static/images/card-active.svg")
-            : require("../../../static/images/card-active-cn.png");
-        case "Retired":
-          return this.lang === "en"
-            ? require("../../../static/images/card-retired.svg")
-            : require("../../../static/images/card-retired-cn.png");
-        default:
-          return this.lang === "en"
-            ? require("../../../static/images/card-completed.svg")
-            : require("../../../static/images/card-completed-cn.png");
-      }
-    },
   },
   mounted() {
     this.status = this.getFundInfo.status;

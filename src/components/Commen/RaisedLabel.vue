@@ -39,7 +39,6 @@ export default {
   computed: {
     ...mapState('polkadot', ["account"]),
     items() {
-      console.log(this.fund);
       if (!this.fund) return;
       let raised;
       let cap;

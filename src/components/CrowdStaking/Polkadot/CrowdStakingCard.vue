@@ -14,7 +14,7 @@
       </div>
       <div class="h-line"></div>
       <div class="desc">
-        {{ crowdstaking.community.description }}
+        {{ crowdstaking.community.description[lang] }}
       </div>
       <div class="validator-container">
         <div class="validator" v-for="v in crowdstaking.project.validators" :key="v">

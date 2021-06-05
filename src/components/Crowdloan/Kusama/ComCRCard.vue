@@ -1,87 +1,73 @@
 <template>
-  <div class="ro-card">
-    <div class="card-link-top-box">
-      <div class="status-container text-right">
-        <span :class="status">{{ $t('cl.'+status) }}</span>
-      </div>
-      <div class="flex-start-center">
-        <div class="card-link-icons">
-          <img
-            class="icon1"
-            :src="getCardInfo && getCardInfo.community.iconUrl"
-            alt=""
-          />
-          <img
-            class="icon2"
-            :src="getCardInfo && getCardInfo.para.iconUrl"
-            alt=""
-          />
-        </div>
-        <div class="card-link-title-text font20 font-bold">
-          <div class="link-title">
-            <span class="font20" @click="toCommunity">{{
-              getCardInfo && getCardInfo.community.communityName + " " + $t('cl.community')
-            }}</span>
-            <i class="link-icon" @click="toCommunity"></i>
-          </div>
-          <div class="link-title">
-            <span class="font16" @click="toParachain">{{
-              getCardInfo && getCardInfo.para.paraName
-            }}</span>
-            <i class="link-icon" @click="toParachain"></i>
-          </div>
-        </div>
-      </div>
+  <div class="c-card">
+    <div class="status-container text-right">
+      <span :class="status">{{ $t('cl.'+status) }}</span>
     </div>
-    <div class="c-card">
-      <div class="detail-info-box">
-        <div class="project-info-container">
-          <span class="name"> {{ $t('cl.leasePeriod') }} </span>
-          <div class="info">{{ leasePeriod || "test data" }}</div>
+    <div class="card-title-box flex-start-center">
+      <div class="icons">
+        <img class="icon1" :src="crowdloan.para.iconUrl" alt="" />
+      </div>
+      <div class="card-link-title-text">
+      <div class="title-text font20 font-bold link-title">
+        <span @click="toParaChain">{{ crowdloan.para.paraName }}</span>
+        <i class="link-icon" @click="toParaChain"></i>
+      </div>
+      </div>
+
+    </div>
+    <div class="h-line"></div>
+    <div class="detail-info-box">
+      <div class="project-info-container">
+        <span class="name"> {{ $t('cl.leasePeriod') }} </span>
+        <div class="info">{{ leasePeriod || "test data" }}</div>
+      </div>
+      <div class="project-info-container">
+        <span class="name"> {{ $t('cl.countDown') }} </span>
+        <div class="info">{{ countDown || "test data" }}</div>
+      </div>
+      <div class="project-info-container">
+        <span class="name"> {{ $t('cl.fund') }} </span>
+        <div class="info">
+          <RaisedLabel :fund="getFundInfo" relaychain='kusama' />
+          <ContributorsLabel :fund="getFundInfo"/>
         </div>
-        <div class="project-info-container">
-          <span class="name"> {{ $t('cl.countDown') }} </span>
-          <div class="info">{{ countDown || "test data" }}</div>
-        </div>
-        <div class="project-info-container">
-          <span class="name"> {{ $t('cl.fund') }} </span>
-          <div class="info">
-            <RaisedLabel :fund="getFundInfo" relaychain='kusama'/>
-            <ContributorsLabel :fund="getFundInfo" />
-          </div>
-        </div>
+      </div>
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.contributed') }} </span>
         <div class="info">
-          <RaisedLabel :fund="getFundInfo" relaychain='kusama' :isBalance="true" />
+          <RaisedLabel :fund="getFundInfo" relaychian='kusama' :isBalance="true" />
         </div>
       </div>
-        <div class="project-info-container">
-          <span class="name"> {{ $t('cl.rewards') }} </span>
-          <div class="info">
-            <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
-          </div>
+      <div class="project-info-container">
+        <span class="name"> {{ $t('cl.rewards') }} </span>
+        <div class="info">
+          <RewardToken
+            :icon="token.icon"
+            :token="token.name"
+            v-for="(token, idx) in rewardTokens"
+            :key="idx"
+          />
         </div>
       </div>
-      <div class="text-center" v-if="isConnected">
-        <button
-          class="primary-btn"
-          v-show="status === 'Active'"
-          @click="showContribute = true"
-        >
-          {{ $t("cl.contribute") }}
-        </button>
-        <button
-          class="primary-btn"
-          v-show="status === 'Retired'"
-          @click="showWithdraw = true"
-        >
-          {{ $t("cl.withdraw") }}
-        </button>
-        <button class="primary-btn" disabled v-show="status === 'Completed'">
-          {{ $t("cl.completed") }}
-        </button>
-      </div>
+    </div>
+    <div class="text-center" v-if="isConnected">
+      <button
+        class="primary-btn"
+        v-show="status === 'Active'"
+        @click="showContribute = true"
+      >
+        {{ $t("cl.contribute") }}
+      </button>
+      <button
+        class="primary-btn"
+        v-show="status === 'Retired'"
+        @click="showWithdraw = true"
+      >
+        {{ $t("cl.withdraw") }}
+      </button>
+      <button class="primary-btn" disabled v-show="status === 'Completed'">
+        {{ $t("cl.completed") }}
+      </button>
     </div>
     <!-- <ConnectWallet v-else /> -->
     <b-modal
@@ -96,7 +82,7 @@
         :communityId="communityId"
         :fund="getFundInfo"
         relaychain='kusama'
-        :paraName="getCardInfo && getCardInfo.para.paraName"
+        :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
     </b-modal>
@@ -108,37 +94,32 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund='getFundInfo' relaychain='kusama' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund="getFundInfo" relaychain='kusama' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
-// import ConnectWallet from "./Buttons/ConnectWallet";
 import TipContribute from "@/components/Commen/TipContribute";
 import TipWithdraw from "@/components/Commen/TipWithdraw";
 import ContributorsLabel from "@/components/Commen/ContributorsLabel";
 import RaisedLabel from "@/components/Commen/RaisedLabel";
-import { PARA_STATUS } from "@/config";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
 import { calStatus } from "@/utils/kusama/crowdloan";
-import RewardToken from "@/components/Commen/RewardToken"
+import RewardToken from "@/components/Commen/RewardToken";
 
 export default {
   data() {
     return {
       showContribute: false,
       showWithdraw: false,
-      status: PARA_STATUS.COMPLETED,
+      status: '',
     };
   },
   props: {
-    paraId: {
-      type: Number,
-    },
-    communityId: {
-      type: String,
+    crowdloan: {
+      type: Object,
     },
   },
   components: {
@@ -146,7 +127,12 @@ export default {
     TipWithdraw,
     ContributorsLabel,
     RaisedLabel,
-    RewardToken
+    RewardToken,
+  },
+  methods: {
+    toParaChain() {
+      this.$router.push('/crowdloan/kusama/parachain/' + this.crowdloan.para.paraId)
+    }
   },
   watch: {
     async currentBlockNum(newValue, _) {
@@ -173,9 +159,23 @@ export default {
     getFundInfo() {
       return this.fundInfo(this.paraId);
     },
-    getCardInfo() {
-      const card = this.cardInfo(this.paraId, this.communityId);
-      return card;
+    paraId() {
+      return parseInt(this.crowdloan.para.paraId);
+    },
+    communityId() {
+      return this.crowdloan.community.communityId;
+    },
+    rewardTokens() {
+      if (this.crowdloan) {
+        let rewards = this.crowdloan.para.reward.concat(
+          this.crowdloan.community.reward
+        );
+        if (rewards.length > 3){
+          rewards = rewards.slice(0, 3)
+        }
+        return rewards
+      }
+      return [];
     },
     leasePeriod() {
       try {
@@ -239,30 +239,12 @@ export default {
         return "0.0%";
       }
     },
-    rewardTokens(){
-      if (this.getCardInfo){
-        let rewards = this.getCardInfo.para.reward.concat(this.getCardInfo.community.reward)
-        if (rewards.length > 3){
-          rewards = rewards.slice(0, 3)
-        }
-        return rewards
-      }
-      return []
-    },
     contributions() {
       try {
         return this.getFundInfo.funds.length;
       } catch (e) {
         return 0;
       }
-    },
-  },
-  methods: {
-    toCommunity() {
-      this.$router.push("/crowdloan/kusama/community/" + this.communityId);
-    },
-    toParachain() {
-      this.$router.push("/crowdloan/kusama/parachain/" + this.paraId);
     },
   },
   mounted() {
@@ -272,22 +254,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "src/static/css/customCard";
-.ro-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+@import "src/static/css/crowdloanCard";
 .c-card {
-  flex: 1;
-  margin-top: -1.2rem;
-  padding: 1.8rem 1.2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.detail-info-box {
-  margin-top: 0;
+  padding-top: .8rem;
+  .status-container {
+    top: 0.8rem;
+    right: 1.2rem;
+  }
+  .card-title-box .icons {
+    margin-right: 1rem;
+  }
 }
 </style>

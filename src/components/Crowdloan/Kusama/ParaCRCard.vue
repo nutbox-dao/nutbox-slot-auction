@@ -31,7 +31,7 @@
      </div>
    </div>
 
-    <div class="text-center" v-if="$store.state.rococo.isConnected">
+    <div class="text-center" v-if="$store.state.kusama.isConnected">
       <button
         class="primary-btn"
         v-show="status === 'Active'"
@@ -63,7 +63,7 @@
       <TipContribute
         :communityId="communityId"
         :fund="fundInfo(paraId)"
-        relaychain='rococo'
+        relaychain='kusama'
         :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -76,7 +76,7 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund='fundInfo(paraId)' relaychain='rococo' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund='getFundInfo' relaychain='kusama' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
@@ -111,13 +111,13 @@ export default {
   methods: {
       toCommunity() {
         if (this.crowdloan.para.paraId === this.crowdloan.community.communityId) return;
-        this.$router.push('/crowdloan/rococo/community/' + this.crowdloan.community.communityId)
+        this.$router.push('/crowdloan/kusama/community/' + this.crowdloan.community.communityId)
       }
   },
   mounted () {
   },
   computed: {
-    ...mapGetters("rococo", ["fundInfo"]),
+    ...mapGetters("kusama", ["fundInfo"]),
     paraId() {
         return parseInt(this.crowdloan.para.paraId)
     },
