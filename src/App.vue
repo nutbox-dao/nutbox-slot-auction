@@ -485,8 +485,8 @@ body {
     background-color: #ffffff;
     padding-top: 2rem;
     padding-left: .6rem;
-    box-shadow: 4px 40px 48px 0 rgba(0, 0, 0, 0.06);
-    border-radius: 0 0 4vh 0;
+    //box-shadow: 4px 40px 48px 0 rgba(0, 0, 0, 0.06);
+    border-bottom-right-radius: 1.2rem;
     position: absolute;
     z-index: 1;
     height: 100%;
