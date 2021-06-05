@@ -26,10 +26,15 @@
   display: inline-flex;
   align-items: center;
   margin-left: .5rem;
+  background-color: #F6F7F9;
+  border-radius: 1rem;
+  height: .9rem;
+  padding: 0 .4rem 0 .1rem;
+  line-height: .9rem;
   img {
-    width: .8rem;
-    height: .8rem;
-    margin-right: .2rem;
+    width: .7rem;
+    height: .7rem;
+    margin-right: .1rem;
   }
 }
 </style>
