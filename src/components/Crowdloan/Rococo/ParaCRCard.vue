@@ -76,7 +76,7 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :paraId="paraId" @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund='getFundInfo' relaychain='rococo' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
@@ -84,7 +84,7 @@
 <script>
 // import ConnectWallet from "./Buttons/ConnectWallet";
 import TipContribute from "@/components/Commen/TipContribute";
-import TipWithdraw from "./TipBoxes/TipWithdraw";
+import TipWithdraw from "@/components/Commen/TipWithdraw";
 import RewardToken from "@/components/Commen/RewardToken"
 import { mapGetters } from 'vuex'
 

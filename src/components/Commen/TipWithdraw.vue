@@ -25,15 +25,21 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { withdraw } from "@/utils/rococo/crowdloan";
+import { withdraw as pW } from "@/utils/polkadot/crowdloan";
+import { withdraw as kW, withdraw } from '@/utils/kusama/crowdloan';
+import { withdraw as rW } from "@/utils/rococo/crowdloan";
 import BN from "bn.js";
 import { formatBalance } from "@/utils/helper"
 
 export default {
   props: {
-    paraId: {
-      type: Number,
+    fund: {
+      type: Object
     },
+    relaychain: {
+      type: String,
+      default: 'kusama'
+    }
   },
   data() {
     return {
@@ -46,7 +52,7 @@ export default {
     ...mapGetters('rococo', ["fundInfo"]),
   },
   async mounted () {
-    const fund = this.fundInfo(this.paraId);
+    const fund = this.fund;
       const contributions = fund.funds
         .filter((c) => c.contributor === this.account.address)
         .reduce((total, c) => total.add(c.amount), new BN(0)) / 1e12;
@@ -68,7 +74,12 @@ export default {
       }
       try {
         this.isWithdraw = true
-        const res = await withdraw(this.paraId, (info, param) => {
+        const withdraw = {
+          polkadot: pW,
+          kusama: kW,
+          rococo: rW
+        }
+        const res = await withdraw[this.relaychain](this.fund.paraId, (info, param) => {
           this.$bvToast.toast(info, param);
         },()=>{
           this.$emit("hideWithdraw");

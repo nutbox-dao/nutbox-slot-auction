@@ -94,7 +94,7 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :paraId="paraId" @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund="getFundInfo" relaychain='rococo' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
@@ -102,7 +102,7 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import TipContribute from "@/components/Commen/TipContribute";
-import TipWithdraw from "./TipBoxes/TipWithdraw";
+import TipWithdraw from "@/components/Commen/TipWithdraw";
 import ContributorsLabel from "@/components/Commen/ContributorsLabel";
 import RaisedLabel from "@/components/Commen/RaisedLabel";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
