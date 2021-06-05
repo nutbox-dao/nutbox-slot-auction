@@ -48,10 +48,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
-import { validAddress } from "@/utils/rococo/rococo";
-import { contribute } from "@/utils/rococo/crowdloan"
+import { mapState } from "vuex";
+import { contribute as pC } from "@/utils/polkadot/crowdloan"
+import { contribute as kC } from "@/utils/kusama/crowdloan"
+import { contribute as rC } from "@/utils/rococo/crowdloan"
 import BN from "bn.js";
+import { stanfiAddress } from '@/utils/commen/account';
 
 
 export default {
@@ -66,18 +68,34 @@ export default {
     communityId: {
       type: String,
     },
-    paraId: {
-      type: Number,
-    },
     paraName:{
       type: String,
     },
+    fund: {
+      type: Object
+    },
+    relaychain: {
+      type:String,
+      default: 'kusama'
+    }
   },
   computed: {
-    ...mapState('rococo',["balance", "lang"]),
-    ...mapGetters('rococo', ["fundInfo"]),
+    ...mapState(['lang']),
     getChain (){
-      return 'ROCOCO'
+      return this.relaychain.toUpperCase()
+    },
+    paraId(){
+      return this.fund.paraId
+    },
+    balance(){
+      switch (this.relaychain){
+        case 'polkadot':
+          return this.$store.getters.polkadot.available
+        case 'kusama':
+          return this.$store.getters.kusama.available
+        default:
+          return this.$store.state.rococo.balance
+      }
     }
   },
   methods: {
@@ -100,7 +118,7 @@ export default {
       if (
         this.inputNonimator &&
         this.inputNonimator.length > 0 &&
-        !validAddress(this.inputNonimator)
+        !stanfiAddress(this.inputNonimator)
       ) {
         this.$bvToast.toast(this.$t('tip.wrongNominatorAddress'), {
           title: this.$t('tip.tips'),
@@ -125,7 +143,7 @@ export default {
       }
 
       // below cap
-      const fund = this.fundInfo(this.paraId);
+      const fund = this.fund;
       const raised = fund.raised;
       const cap = fund.cap;
       const gap = cap.sub(raised);
@@ -137,7 +155,7 @@ export default {
         });
         return false;
       }
-      if (this.balance.lte(new BN(amount).mul(new BN(10).pow(new BN(12))))) {
+      if (this.balance.lte(new BN(amount).mul(new BN(10).pow(new BN(this.relaychain === 'polkadot' ? 10 : 12))))) {
         this.$bvToast.toast(this.$t('tip.insufficientBalance'), {
           title: this.$t('tip.tips'),
           autoHideDelay: 5000,
@@ -153,8 +171,13 @@ export default {
       }
       try {
         this.isComtribution = true;
-        const trieIndex = this.fundInfo(this.paraId).trieIndex;
-        const res = await contribute(
+        const trieIndex = this.fund.trieIndex;
+        const contribute = {
+          polkadot: pC,
+          kusama: kC,
+          rococo: rC
+        }
+        const res = await contribute[this.relaychain](
           this.paraId,
           parseFloat(this.inputAmount),
           this.communityId,

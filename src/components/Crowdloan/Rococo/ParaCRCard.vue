@@ -62,7 +62,8 @@
     >
       <TipContribute
         :communityId="communityId"
-        :paraId="paraId"
+        :fund="fundInfo(paraId)"
+        relaychain='rococo'
         :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -82,9 +83,11 @@
 
 <script>
 // import ConnectWallet from "./Buttons/ConnectWallet";
-import TipContribute from "./TipBoxes/TipContribute";
+import TipContribute from "@/components/Commen/TipContribute";
 import TipWithdraw from "./TipBoxes/TipWithdraw";
 import RewardToken from "@/components/Commen/RewardToken"
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -114,6 +117,7 @@ export default {
   mounted () {
   },
   computed: {
+    ...mapGetters("rococo", ["fundInfo"]),
     paraId() {
         return parseInt(this.crowdloan.para.paraId)
     },

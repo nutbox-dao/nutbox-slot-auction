@@ -46,14 +46,14 @@
         <div class="project-info-container">
           <span class="name"> {{ $t('cl.fund') }} </span>
           <div class="info">
-            <RaisedLabel :paraId="paraId" />
-            <ContributorsLabel :paraId="paraId" />
+            <RaisedLabel :fund="getFundInfo" relaychain='rococo'/>
+            <ContributorsLabel :fund="getFundInfo" />
           </div>
         </div>
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.contributed') }} </span>
         <div class="info">
-          <RaisedLabel :paraId="paraId" :isBalance="true" />
+          <RaisedLabel :fund="getFundInfo" relaychain='rococo' :isBalance="true" />
         </div>
       </div>
         <div class="project-info-container">
@@ -94,7 +94,8 @@
     >
       <TipContribute
         :communityId="communityId"
-        :paraId="paraId"
+        :fund="getFundInfo"
+        relaychain='rococo'
         :paraName="getCardInfo && getCardInfo.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -115,10 +116,10 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 // import ConnectWallet from "./Buttons/ConnectWallet";
-import TipContribute from "./TipBoxes/TipContribute";
+import TipContribute from "@/components/Commen/TipContribute";
 import TipWithdraw from "./TipBoxes/TipWithdraw";
-import ContributorsLabel from "./Label/ContributorsLabel";
-import RaisedLabel from "./Label/RaisedLabel";
+import ContributorsLabel from "@/components/Commen/ContributorsLabel";
+import RaisedLabel from "@/components/Commen/RaisedLabel";
 import { PARA_STATUS } from "@/config";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
 import { calStatus } from "@/utils/rococo/crowdloan";

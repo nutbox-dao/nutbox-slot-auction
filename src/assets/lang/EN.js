@@ -153,7 +153,8 @@ transaction: {
   inBlock: "Transaction included at blockHash.",
   contributeOk: "Contribution Success!",
   withdrawOk: "Withdraw Success!",
-  nominateOk: "Nominate Success!"
+  nominateOk: "Nominate Success!",
+  transactionOk:"Transaction Success!",
 },
   stake: {
     stake: 'Staking Mining',

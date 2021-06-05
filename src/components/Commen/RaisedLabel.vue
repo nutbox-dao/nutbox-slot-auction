@@ -19,13 +19,17 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
+import { POLKADOT_RELAYCHAIN_SYMBOL } from '@/constant'
 import BN from "bn.js";
 export default {
   props: {
-    paraId: {
-      type: Number,
-      default: 0,
+    fund: {
+      type:Object,
+    },
+    relaychain: {
+      type: String,
+      default: 'kusama'
     },
     isBalance: {
       type: Boolean,
@@ -34,12 +38,8 @@ export default {
   },
   computed: {
     ...mapState('polkadot', ["account"]),
-    ...mapState('rococo', ["balance"]),
-    ...mapGetters('rococo', ["fundInfo"]),
-    fund() {
-      return this.fundInfo(this.paraId);
-    },
     items() {
+      console.log(this.fund);
       if (!this.fund) return;
       let raised;
       let cap;
@@ -62,9 +62,9 @@ export default {
       return [
         raisedStr[0],
         raisedStr[1],
-        this.isBalance ? raised[1] + 'ROC' : raised[1] + "/" + capStr[0],
+        this.isBalance ? raised[1] + POLKADOT_RELAYCHAIN_SYMBOL[this.relaychain] : raised[1] + "/" + capStr[0],
         capStr[1],
-        cap[1] + 'ROC',
+        cap[1] + POLKADOT_RELAYCHAIN_SYMBOL[this.relaychain],
       ];
     },
   },
@@ -72,7 +72,8 @@ export default {
     convertUni(uni) {
       let unit = " ";
       uni = new BN(uni)
-      uni = uni.div(new BN(10).pow(new BN(12).sub(new BN(4))))
+      uni = uni.div(new BN(10).pow(new BN(this.relaychain === 'polkadlot' ? 10 :12).sub(new BN(4))))
+
       if (uni >= 1e22) {
         uni = uni.div(new BN(1e18));
         unit = " E";
