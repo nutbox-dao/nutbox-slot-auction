@@ -12,9 +12,8 @@ import store from "@/store"
 import {
   getApi,
 } from './rococo'
-import { withdraw as w, contribute as c, calStatus as cs } from '@/utils/commen/crowdloan'
+import { withdraw as w, contribute as c, calStatus } from '@/utils/commen/crowdloan'
 import { DECIMAL } from '@/constant'
-import { PARA_STATUS } from '@/config'
 
 function createChildKey(trieIndex) {
   return u8aToHex(
@@ -71,7 +70,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
           memo: api.createType('(Balance, Vec<u8>)', v.unwrap())[1].toHuman()
         }))
-        const [status, statusIndex] = await cs('rococo', end, firstSlot, raised, cap, pId, bestBlockNumber)
+        const [status, statusIndex] = await calStatus('rococo', end, firstSlot, raised, cap, pId, bestBlockNumber)
         funds.push({
           paraId: pId,
           status,
@@ -103,57 +102,6 @@ export const subscribeFundInfo = async (crowdloanCard) => {
     store.commit('rococo/saveLoadingFunds', false)
   }
 }
-
-// // 获取当前的status
-// export const calStatus = async (end, firstSlot, raised, cap, pId, bestBlockNumber) => {
-//   const api = await getApi()
-//   const auctionEnd = await getAuctionEnd()
-//   const leasePeriod = await getLeasePeriod()
-//   const currentPeriod = Math.floor(bestBlockNumber / leasePeriod)
-//   const leases = (await api.query.slots.leases(pId)).toJSON()
-//   const isWinner = leases.length > 0
-//   const isCapped = (new BN(raised)).gte(new BN(cap))
-//   const isEnded = bestBlockNumber >= end || bestBlockNumber >= auctionEnd
-//   const retiring = (isEnded || currentPeriod > firstSlot) && bestBlockNumber < auctionEnd
-//   let status = ''
-//   let statusIndex = 0
-//   if (retiring) {
-//     status = PARA_STATUS.RETIRED
-//     statusIndex = 1
-//   } else {
-//     if (!(isCapped || isEnded || isWinner) && currentPeriod <= firstSlot) {
-//       status = PARA_STATUS.ACTIVE
-//       statusIndex = 0
-//     } else {
-//       status = PARA_STATUS.COMPLETED
-//       statusIndex = 2
-//     }
-//   }
-//   return [status, statusIndex]
-// }
-
-// export const getAuctionEnd = async () => {
-//   if (store.state.auctionEnd) {
-//     return store.state.auctionEnd
-//   }
-//   const api = await getApi()
-//   const bestBlockHash = await api.rpc.chain.getBlockHash();
-//   const auctionInfo = (await api.query.auctions.auctionInfo.at(bestBlockHash)).toJSON();
-//   const auctionEnd = auctionInfo ? auctionInfo[1] : 0
-//   store.commit('rococo/saveAuctionEnd', auctionEnd)
-//   return auctionEnd
-// }
-
-// //  一个租赁周期
-// export const getLeasePeriod = async () => {
-//   if (store.state.rococo.clLeasePeriod > 0) {
-//     return store.state.rococo.clLeasePeriod
-//   }
-//   const api = await getApi()
-//   const leasePeriod = new BN(api.consts.slots.leasePeriod)
-//   store.commit('rococo/saveClLeasePeriod', leasePeriod)
-//   return leasePeriod
-// }
 
 export const withdraw = async (paraId, toast, callback) => {
     w('rococo', paraId, toast, callback)
