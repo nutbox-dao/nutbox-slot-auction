@@ -106,7 +106,7 @@ import TipWithdraw from "@/components/Commen/TipWithdraw";
 import ContributorsLabel from "@/components/Commen/ContributorsLabel";
 import RaisedLabel from "@/components/Commen/RaisedLabel";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
-import { calStatus } from "@/utils/rococo/crowdloan";
+import { calStatus } from "@/utils/commen/crowdloan";
 import RewardToken from "@/components/Commen/RewardToken";
 
 export default {
@@ -142,6 +142,7 @@ export default {
       const cap = fund.cap;
       const firstSlot = fund.firstSlot;
       const [status] = await calStatus(
+        'rococo',
         end,
         firstSlot,
         raised,

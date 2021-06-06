@@ -10,13 +10,13 @@ import BN from "bn.js"
 import {
   PARA_STATUS,
 } from "@/config"
-import store from "../../store"
+import store from "@/store"
 
 import {
-  getApi
+  getApi,
 } from './kusama'
+import { withdraw as w, contribute as c } from '@/utils/commen/crowdloan'
 import { DECIMAL } from '@/constant'
-import { withdraw as w , contribuite as c } from '@/utils/commen/crowdloan'
 
 function createChildKey(trieIndex) {
   return u8aToHex(
@@ -158,10 +158,10 @@ export const getLeasePeriod = async () => {
 }
 
 export const withdraw = async (paraId, toast, callback) => {
-  w('kusama', paraId, toast, callback)
+    w('kusama', paraId, toast, callback)
 }
 
 
 export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, callback) => {
-  c('kusama', paraId, amount, communityId, childId, trieIndex, toast, callback)
+    c('kusama', paraId, amount, communityId, childId, trieIndex, toast, callback)
 }

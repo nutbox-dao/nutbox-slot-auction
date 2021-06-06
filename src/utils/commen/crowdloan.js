@@ -19,6 +19,8 @@ import {
   handelBlockState
 } from './transactionHandler'
 
+import { PARA_STATUS } from '@/config'
+
 export const withdraw = async (relaychain, paraId, toast, callback) => {
   const api = store.state[relaychain].api
   const from = store.state.polkadot.account?.address
@@ -118,4 +120,57 @@ export const contribute = async (relaychain, paraId, amount, communityId, childI
       return false
     })
   }
+}
+
+
+
+// 获取当前的status
+export const calStatus = async (relaychain, end, firstSlot, raised, cap, pId, bestBlockNumber) => {
+  const api = store.state[relaychain].api
+  const auctionEnd = await getAuctionEnd(relaychain)
+  const leasePeriod = await getLeasePeriod(relaychain)
+  const currentPeriod = Math.floor(bestBlockNumber / leasePeriod)
+  const leases = (await api.query.slots.leases(pId)).toJSON()
+  const isWinner = leases.length > 0
+  const isCapped = (new BN(raised)).gte(new BN(cap))
+  const isEnded = bestBlockNumber >= end || bestBlockNumber >= auctionEnd
+  const retiring = (isEnded || currentPeriod > firstSlot) && bestBlockNumber < auctionEnd
+  let status = ''
+  let statusIndex = 0
+  if (retiring) {
+    status = PARA_STATUS.RETIRED
+    statusIndex = 1
+  } else {
+    if (!(isCapped || isEnded || isWinner) && currentPeriod <= firstSlot) {
+      status = PARA_STATUS.ACTIVE
+      statusIndex = 0
+    } else {
+      status = PARA_STATUS.COMPLETED
+      statusIndex = 2
+    }
+  }
+  return [status, statusIndex]
+}
+
+export const getAuctionEnd = async (relaychain) => {
+  if (store.state[relaychain].auctionEnd) {
+    return store.state[relaychain].auctionEnd
+  }
+  const api = store.state[relaychain].api
+  const bestBlockHash = await api.rpc.chain.getBlockHash();
+  const auctionInfo = (await api.query.auctions.auctionInfo.at(bestBlockHash)).toJSON();
+  const auctionEnd = auctionInfo ? auctionInfo[1] : 0
+  store.commit(relaychain + '/saveAuctionEnd', auctionEnd)
+  return auctionEnd
+}
+
+//  一个租赁周期
+export const getLeasePeriod = async (relaychain) => {
+  if (store.state[relaychain].clLeasePeriod > 0) {
+    return store.state[relaychain].clLeasePeriod
+  }
+  const api = store.state[relaychain].api
+  const leasePeriod = new BN(api.consts.slots.leasePeriod)
+  store.commit(relaychain + '/saveClLeasePeriod', leasePeriod)
+  return leasePeriod
 }

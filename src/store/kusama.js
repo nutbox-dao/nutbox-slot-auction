@@ -33,13 +33,13 @@ export default {
 
     //  crowdloan
     subFund: {},
-    auctionEnd: {},
-    showingCrowdloan: {},
+    auctionEnd: null,
+    showingCrowdloan: null,
     clCommunitys: [],
     loadingFunds: true,
     loadingContributions: true,
     clProjectFundInfos: [],
-    clLeasePeriod: {}
+    clLeasePeriod: null
   },
   mutations: {
     saveCommunitys: (state, communitys) => {

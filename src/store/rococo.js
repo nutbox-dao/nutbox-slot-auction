@@ -32,14 +32,14 @@ export default {
     redeemable: 0,
 
     //  crowdloan
-    subFund: {},
-    auctionEnd: {},
+    subFund: null,
+    auctionEnd: null,
     showingCrowdloan: {},
     clCommunitys: [],
     loadingFunds: true,
     loadingContributions: true,
     clProjectFundInfos: [],
-    clLeasePeriod: {}
+    clLeasePeriod: null
   },
   mutations: {
     saveCommunitys: (state, communitys) => {
