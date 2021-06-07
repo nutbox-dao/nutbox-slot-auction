@@ -21,9 +21,9 @@
                 <img class="icon2" :src="item.para.iconUrl" alt="" />
               </div>
               <div class="card-link-title-text font20 font-bold">
-                <div class="link-title" @click="$router.push('/crowdloan/'+ chain.toLowerCase() +'/community/' + item.community.communityId)">
+                <div class="link-title" @click="!isOfficial(item) && $router.push('/crowdloan/'+ chain.toLowerCase() +'/community/' + item.community.communityId)">
                   <span class="font20">{{ item.community.communityName + ' ' + $t('cl.community') }}</span>
-                  <i class="link-icon"></i>
+                  <i class="link-icon" v-if="!isOfficial(item)"></i>
                 </div>
                 <div class="link-title" @click="$router.push('/crowdloan/'+ chain.toLowerCase() +'/parachain/' + item.para.paraId)">
                   <span class="font16">{{ item.para.paraName }}</span>
@@ -72,6 +72,7 @@ export default {
         "contributor",
         "nominatorId",
         "amount",
+        "blockHash",
         "contributeTime",
       ],
     };
@@ -85,6 +86,9 @@ export default {
     async getRaised(raise) {
       const raised = await formatBalance(raise);
       return raised;
+    },
+    isOfficial(item){
+      return item.para.communityId === item.community.communityId
     },
     downloadCsv(index) {
       const card = this.items[index];
@@ -101,7 +105,6 @@ export default {
         .then(async (res) => {
           let csv = res.data;
           let result = [];
-          console.log("csv1", csv);
           for (let r of csv) {
             const amount = await formatBalance(r.amount);
             result.push({
@@ -113,10 +116,10 @@ export default {
               contributor: r.contributor,
               nominatorId: r.nominatorId,
               amount,
+              blockHash: r.blockHash,
               contributeTime: formatDate(r.createdAt),
             });
           }
-          console.log("csv", result);
           CsvExportor.downloadCsv(
             result,
             { header: this.csvHeader },
