@@ -9,13 +9,12 @@
         />
       </div>
       <div class="card-link-title-text">
-        <div class="font20 font-bold link-title">
-          <span @click="toCommunity">
-            {{crowdloan.community.communityName + ' ' + $t('cl.community') }}
+        <div class="font20 font-bold link-title" @click="toCommunity">
+          <span>
+            {{crowdloan.community.communityName + (isOfficial ? '' : ' ' + $t('cl.community'))}}
           </span>
-        <i class="link-icon" v-show="crowdloan.community.communityId !== crowdloan.para.paraId" @click="toCommunity"></i>
+        <i class="link-icon" v-show="!isOfficial"></i>
         </div>
-
       </div>
     </div>
     <div class="h-line"></div>
@@ -110,7 +109,7 @@ export default {
   },
   methods: {
       toCommunity() {
-        if (this.crowdloan.para.paraId === this.crowdloan.community.communityId) return;
+        if (this.isOfficial) return;
         this.$router.push('/crowdloan/rococo/community/' + this.crowdloan.community.communityId)
       }
   },
@@ -123,6 +122,9 @@ export default {
     },
     communityId() {
         return this.crowdloan.community.communityId
+    },
+    isOfficial(){
+      return this.communityId === this.crowdloan.para.communityId
     },
     rewardTokens(){
       if (this.crowdloan){

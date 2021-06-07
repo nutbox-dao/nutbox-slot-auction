@@ -280,7 +280,7 @@ export default {
       }
     },
     copyAddress(a){
-      console.log(this.account.address);
+    console.log(444, stanfiAddress('5CAPD8xktaPGfPxkrdAVCrSgKTo4tsRX9qa5vLaGLB9rrTwv'));
       var clipboard = new Clipboard('#avatar');
       clipboard.on("success", (e) => {
         clipboard.destroy();

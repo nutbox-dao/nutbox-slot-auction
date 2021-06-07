@@ -79,17 +79,17 @@
 </template>
 
 <script>
-import ParaCRCard from "@/components/Crowdloan/Rococo/ParaCRCard";
+import ParaCRCard from "@/components/Crowdloan/kusama/ParaCRCard";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
-import { subscribeFundInfo as subscribeKusamaFundInfo } from "@/utils/rococo/crowdloan";
-import { formatBalance } from "@/utils/rococo/rococo";
+import { subscribeFundInfo as subscribeKusamaFundInfo } from "@/utils/kusama/crowdloan";
+import { formatBalance } from "@/utils/kusama/kusama";
 import { TIME_PERIOD, BLOCK_SECOND } from "@/constant"
 import { calStatus } from "@/utils/commen/crowdloan";
 import { stanfiAddress } from "@/utils/commen/account"
 
 export default {
-  name: "Rococo",
+  name: "Kusama",
   data() {
       return {
           status: ''
@@ -101,8 +101,8 @@ export default {
   computed: {
     ...mapState(["lang"]),
     ...mapState('polkadot', ['account']),
-    ...mapState("rococo", ["isConnected", "clProjectFundInfos"]),
-    ...mapGetters("rococo", [
+    ...mapState("kusama", ["isConnected", "clProjectFundInfos"]),
+    ...mapGetters("kusama", [
       "showingCard",
       "fundInfo",
       "currentBlockNum",
@@ -213,7 +213,7 @@ export default {
           const cap = fund.cap;
           const firstSlot = fund.firstSlot;
           const [status] = await calStatus(
-            'rococo',
+            'kusama',
             end,
             firstSlot,
             raised,
@@ -234,7 +234,7 @@ export default {
   },
   async created() {
     try{
-      const res = await getOnshowingCrowdloanCard({ relaychain: "rococo" });
+      const res = await getOnshowingCrowdloanCard({ relaychain: "kusama" });
       await subscribeKusamaFundInfo(res);
       this.status = this.getFundInfo.status;
     }catch(e){}

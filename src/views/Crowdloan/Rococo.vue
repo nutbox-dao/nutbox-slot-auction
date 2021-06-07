@@ -14,6 +14,7 @@
           <div class="row">
             <div class="col-xl-4 col-md-6 mb-4" v-for="card, idx of showingCard()" :key="idx">
                 <CrowdloanCard
+                v-if="card.para.communityId !== card.community.communityId"
                   :paraId="parseInt(card.para.paraId)"
                   :communityId="card.community.communityId"
                 />
