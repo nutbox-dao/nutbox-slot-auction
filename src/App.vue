@@ -280,7 +280,7 @@ export default {
       }
     },
     copyAddress(a){
-    console.log(444, stanfiAddress('5CAPD8xktaPGfPxkrdAVCrSgKTo4tsRX9qa5vLaGLB9rrTwv'));
+    console.log(444, stanfiAddress('5F9BYd21i2p6UL4j4CGZ6kFEBqnzyBuH6Tw6rGxhZsVg3e3q'));
       var clipboard = new Clipboard('#avatar');
       clipboard.on("success", (e) => {
         clipboard.destroy();

@@ -114,7 +114,7 @@ export default {
     return {
       showContribute: false,
       showWithdraw: false,
-      status: '',
+      status: 'Completed',
     };
   },
   props: {

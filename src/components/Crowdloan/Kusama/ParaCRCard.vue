@@ -47,7 +47,7 @@
         {{ $t("cl.withdraw") }}
       </button>
       <button class="primary-btn" disabled v-show="status === 'Completed' || status === ''">
-        <b-spinner small type="grow" v-show="status.length === 0"></b-spinner>
+        <b-spinner small type="grow" v-show="status && status.length === 0"></b-spinner>
         {{ $t("cl.completed") }}
       </button>
     </div>
@@ -127,6 +127,7 @@ export default {
     rewardTokens(){
       if (this.crowdloan){
         let rewards = this.crowdloan.para.reward.concat(this.crowdloan.community.reward)
+        console.log(333, this.crowdloan);
         if (rewards.length > 3) {
           rewards = rewards.slice(0, 3)
         }

@@ -69,7 +69,7 @@
              :key="crowdloan.community.communtiyId">
           <ParaCRCard
             :crowdloan="crowdloan"
-            :status="status"
+            :status="status || 'Completed'"
           />
         </div>
       </div>
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import ParaCRCard from "@/components/Crowdloan/kusama/ParaCRCard";
+import ParaCRCard from "@/components/Crowdloan/Kusama/ParaCRCard";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
 import { subscribeFundInfo as subscribeKusamaFundInfo } from "@/utils/kusama/crowdloan";
@@ -92,7 +92,7 @@ export default {
   name: "Kusama",
   data() {
       return {
-          status: ''
+          status: 'Completed'
       }
   },
   components: {
@@ -234,9 +234,13 @@ export default {
   },
   async created() {
     try{
+      if (this.getFundInfo && this.crowdloanInfo) {
+        this.status = this.getFundInfo && this.getFundInfo.status;
+        return;
+      };
       const res = await getOnshowingCrowdloanCard({ relaychain: "kusama" });
       await subscribeKusamaFundInfo(res);
-      this.status = this.getFundInfo.status;
+      this.status = this.getFundInfo && this.getFundInfo.status;
     }catch(e){}
 
   },

@@ -25,7 +25,7 @@
     <div class="card-container">
       <div class="row">
         <div class="col-xl-4 col-md-6" v-for="(crowdloan, idx) of crowdloanInfo" :key="idx">
-          <CrowdloanCard :crowdloan="crowdloan"/>
+          <ComCRCard :crowdloan="crowdloan"/>
         </div>
       </div>
     </div>
@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import CrowdloanCard from '@/components/Crowdloan/Rococo/ComCRCard'
+import ComCRCard from '@/components/Crowdloan/Rococo/ComCRCard'
 import { mapState, mapGetters } from "vuex";
-import { getOnshowingCrowdloanCard } from '@/apis/api'
+import { getOnshowingCrowdloanCard as getOnshowingComCRCard } from '@/apis/api'
 import { stanfiAddress } from "@/utils/commen/account"
 import {
-  subscribeFundInfo as subscribeKusamaFundInfo
+  subscribeFundInfo
 } from "@/utils/rococo/crowdloan";
 export default {
   data() {
@@ -48,7 +48,7 @@ export default {
   },
   name: 'Rococo',
   components: {
-      CrowdloanCard
+      ComCRCard
   },
   props: {},
   computed: {
@@ -67,8 +67,9 @@ export default {
     }
   },
   async created() {
-    const res = await getOnshowingCrowdloanCard({relaychain:"rococo"})
-    await subscribeKusamaFundInfo(res);
+    if (this.communityInfo) return;
+    const res = await getOnshowingComCRCard({relaychain:"rococo"})
+    await subscribeFundInfo(res);
   },
 };
 </script>
