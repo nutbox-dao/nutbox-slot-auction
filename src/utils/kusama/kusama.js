@@ -74,7 +74,7 @@ export const formatBalance = (b) => {
  * @param {object} tx 待执行的交易 
  */
 export async function getTxPaymentInfo(tx) {
-  const info = await tx.paymentInfo(store.state.kusama.account.address)
+  const info = await tx.paymentInfo(store.state.polkadot.account.address)
   console.log(info.partialFee.toHuman());
   return info.partialFee.toNumber()
 }
