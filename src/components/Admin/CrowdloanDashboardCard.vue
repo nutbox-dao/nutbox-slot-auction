@@ -55,7 +55,9 @@
 <script>
 import CsvExportor from "csv-exportor";
 import { getDashboardSummary, getExportContributionInfo } from "@/apis/api";
-import { formatBalance } from "@/utils/rococo/rococo";
+import { formatBalance as fbr } from "@/utils/rococo/rococo";
+import { formatBalance as fbk } from "@/utils/kusama/kusama";
+import { formatBalance as fbp } from "@/utils/polkadot/polkadot";
 import { formatDate } from "@/utils/commen/util";
 
 export default {
@@ -63,12 +65,17 @@ export default {
     return {
       items: [],
       isLoading: true,
+      fbMethod: {
+        polkadot: fbp,
+        kusama: fbk,
+        rocooc: fbr
+      },
       csvHeader: [
         "communityName",
         "paraName",
         "trieIndex",
-        "firstSlot",
-        "lastSlot",
+        "firstPeriod",
+        "lastPeriod",
         "contributor",
         "nominatorId",
         "amount",
@@ -83,8 +90,18 @@ export default {
     },
   },
   methods: {
+    fb(a){
+      const chain = this.chain.toLowerCase()
+      if (chain === 'polkadot'){
+        return fbp(a)
+      }else if(chain === 'kusama'){
+        return fbk(a)
+      }else {
+        return fbr(a)
+      }
+    },
     async getRaised(raise) {
-      const raised = await formatBalance(raise);
+      const raised = await this.fb(raise);
       return raised;
     },
     isOfficial(item){
@@ -106,13 +123,13 @@ export default {
           let csv = res.data;
           let result = [];
           for (let r of csv) {
-            const amount = await formatBalance(r.amount);
+            const amount = await fb(r.amount);
             result.push({
               communityName: card.community.communityName,
               paraName: card.para.paraName,
               trieIndex,
-              firstSlot: card.firstSlot,
-              lastSlot: card.lastSlot,
+              firstPeriod: card.firstPeriod,
+              lastPeriod: card.lastPeriod,
               contributor: r.contributor,
               nominatorId: r.nominatorId,
               amount,

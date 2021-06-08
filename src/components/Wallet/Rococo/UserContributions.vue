@@ -114,7 +114,7 @@ export default {
               community: c.communityName,
               chain: c.paraName,
               trieIndex: c.trieIndex,
-              date: c.firstSlot + "-" + c.lastSlot,
+              date: c.firstPeriod + "-" + c.lastPeriod,
               amount: (
                 new BN(c.amount)
                   .div(new BN(10).pow(decimal.sub(new BN(4))))

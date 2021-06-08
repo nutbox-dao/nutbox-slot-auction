@@ -125,7 +125,7 @@ export const contribute = async (relaychain, paraId, amount, communityId, childI
 
 
 // 获取当前的status
-export const calStatus = async (relaychain, end, firstSlot, raised, cap, pId, bestBlockNumber) => {
+export const calStatus = async (relaychain, end, firstPeriod, raised, cap, pId, bestBlockNumber) => {
   const api = store.state[relaychain].api
   const auctionEnd = await getAuctionEnd(relaychain)
   const leasePeriod = await getLeasePeriod(relaychain)
@@ -134,14 +134,14 @@ export const calStatus = async (relaychain, end, firstSlot, raised, cap, pId, be
   const isWinner = leases.length > 0
   const isCapped = (new BN(raised)).gte(new BN(cap))
   const isEnded = bestBlockNumber >= end || bestBlockNumber >= auctionEnd
-  const retiring = (isEnded || currentPeriod > firstSlot) && bestBlockNumber < auctionEnd
+  const retiring = (isEnded || currentPeriod > firstPeriod) && bestBlockNumber < auctionEnd
   let status = ''
   let statusIndex = 0
   if (retiring) {
     status = PARA_STATUS.RETIRED
     statusIndex = 1
   } else {
-    if (!(isCapped || isEnded || isWinner) && currentPeriod <= firstSlot) {
+    if (!(isCapped || isEnded || isWinner) && currentPeriod <= firstPeriod) {
       status = PARA_STATUS.ACTIVE
       statusIndex = 0
     } else {

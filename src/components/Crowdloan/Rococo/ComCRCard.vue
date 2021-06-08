@@ -140,11 +140,11 @@ export default {
       const end = fund.end;
       const raised = fund.raised;
       const cap = fund.cap;
-      const firstSlot = fund.firstSlot;
+      const firstPeriod = fund.firstPeriod;
       const [status] = await calStatus(
         'rococo',
         end,
-        firstSlot,
+        firstPeriod,
         raised,
         cap,
         this.paraId,
@@ -180,13 +180,13 @@ export default {
     },
     leasePeriod() {
       try {
-        const first = parseInt(this.getFundInfo.firstSlot);
-        const last = parseInt(this.getFundInfo.lastSlot);
+        const first = parseInt(this.getFundInfo.firstPeriod);
+        const last = parseInt(this.getFundInfo.lastPeriod);
         return first === last
           ? first + ""
-          : parseInt(this.getFundInfo.firstSlot) +
+          : parseInt(this.getFundInfo.firstPeriod) +
               " - " +
-              parseInt(this.getFundInfo.lastSlot);
+              parseInt(this.getFundInfo.lastPeriod);
       } catch (e) {
         return "0";
       }

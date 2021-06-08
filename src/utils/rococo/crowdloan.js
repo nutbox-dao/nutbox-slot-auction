@@ -55,8 +55,8 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           cap,
           depositor,
           end,
-          firstSlot,
-          lastSlot,
+          firstPeriod,
+          lastPeriod,
           raised,
           trieIndex
         } = unwrapedFund
@@ -70,7 +70,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
           memo: api.createType('(Balance, Vec<u8>)', v.unwrap())[1].toHuman()
         }))
-        const [status, statusIndex] = await calStatus('rococo', end, firstSlot, raised, cap, pId, bestBlockNumber)
+        const [status, statusIndex] = await calStatus('rococo', end, firstPeriod, raised, cap, pId, bestBlockNumber)
         funds.push({
           paraId: pId,
           status,
@@ -78,8 +78,8 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           cap: new BN(cap),
           depositor,
           end: new BN(end),
-          firstSlot: new BN(firstSlot),
-          lastSlot: new BN(lastSlot),
+          firstPeriod: new BN(firstPeriod),
+          lastPeriod: new BN(lastPeriod),
           raised: new BN(raised),
           trieIndex,
           funds: contributions
