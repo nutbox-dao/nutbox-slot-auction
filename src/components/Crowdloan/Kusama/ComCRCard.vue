@@ -141,10 +141,12 @@ export default {
       const raised = fund.raised;
       const cap = fund.cap;
       const firstPeriod = fund.firstPeriod;
+      const lastPeriod = fund.lastPeriod
       const [status] = await calStatus(
         'kusama',
         end,
         firstPeriod,
+        lastPeriod,
         raised,
         cap,
         this.paraId,

@@ -70,7 +70,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
           memo: api.createType('(Balance, Vec<u8>)', v.unwrap())[1].toHuman()
         }))
-        const [status, statusIndex] = await calStatus('polkadot', end, firstPeriod, raised, cap, pId, bestBlockNumber)
+        const [status, statusIndex] = await calStatus('polkadot', end, firstPeriod, lastPeriod, raised, cap, pId, bestBlockNumber)
         funds.push({
           paraId: pId,
           status,
