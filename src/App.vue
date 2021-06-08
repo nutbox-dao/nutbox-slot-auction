@@ -205,6 +205,7 @@ import {
 } from "./utils/polkadot/staking";
 import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
 import { stanfiAddress } from "./utils/commen/account";
+import { initApis } from "./utils/commen/api"
 
 export default {
   data() {
@@ -370,8 +371,9 @@ export default {
     }
   },
   async created() {
-    await Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
+    await initApis()
     this.isConnectingPolkadot = false
+    Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
     await loadPolkadotAccounts();
     this.getCommnunitys();
     this.getCrowdstacking();
