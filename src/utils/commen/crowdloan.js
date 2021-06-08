@@ -130,10 +130,11 @@ export const calStatus = async (relaychain, end, firstPeriod, raised, cap, pId, 
   const auctionEnd = await getAuctionEnd(relaychain)
   const leasePeriod = await getLeasePeriod(relaychain)
   const currentPeriod = Math.floor(bestBlockNumber / leasePeriod)
+  firstPeriod = firstPeriod.toNumber()
   const leases = (await api.query.slots.leases(pId)).toJSON()
   const isWinner = leases.length > 0
   const isCapped = (new BN(raised)).gte(new BN(cap))
-  const isEnded = bestBlockNumber >= end || bestBlockNumber >= auctionEnd
+  const isEnded = bestBlockNumber >= end || currentPeriod > firstPeriod
   const retiring = (isEnded || currentPeriod > firstPeriod) && bestBlockNumber < auctionEnd
   let status = ''
   let statusIndex = 0
@@ -141,6 +142,7 @@ export const calStatus = async (relaychain, end, firstPeriod, raised, cap, pId, 
     status = PARA_STATUS.RETIRED
     statusIndex = 1
   } else {
+    console.log(pId, isCapped, isEnded, isWinner, currentPeriod, firstPeriod);
     if (!(isCapped || isEnded || isWinner) && currentPeriod <= firstPeriod) {
       status = PARA_STATUS.ACTIVE
       statusIndex = 0
