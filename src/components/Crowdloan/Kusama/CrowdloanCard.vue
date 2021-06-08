@@ -122,7 +122,7 @@ import ContributorsLabel from "@/components/Commen/ContributorsLabel";
 import RaisedLabel from "@/components/Commen/RaisedLabel";
 import { PARA_STATUS } from "@/config";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
-import { calStatus } from "@/utils/kusama/crowdloan";
+import { calStatus } from "@/utils/commen/crowdloan";
 import RewardToken from "@/components/Commen/RewardToken"
 
 export default {
@@ -156,6 +156,7 @@ export default {
       const cap = fund.cap;
       const firstPeriod = fund.firstPeriod;
       const [status] = await calStatus(
+        'kusama',
         end,
         firstPeriod,
         raised,

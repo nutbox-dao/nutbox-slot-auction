@@ -20,6 +20,7 @@ import RococoAdmin from '../views/Admin/Rococo'
 import RococoCommunity from '../views/Crowdloan/Community/Rococo'
 import KusamaCommunity from '../views/Crowdloan/Community/Kusama'
 import RococoParachain from '../views/Crowdloan/Parachain/Rococo'
+import KusamaParachain from '../views/Crowdloan/Parachain/Kusama'
 
 Vue.use(VueRouter)
 
@@ -82,6 +83,10 @@ const routes = [
   {
     path: '/crowdloan/rococo/parachain/:paraid',
     component: RococoParachain
+  },
+  {
+    path: '/crowdloan/kusama/parachain/:paraid',
+    component: KusamaParachain
   },
   {
     path: '/crowdstaking',

@@ -9,13 +9,12 @@
         />
       </div>
       <div class="card-link-title-text">
-        <div class="font20 font-bold link-title">
-          <span @click="toCommunity">
-            {{crowdloan.community.communityName + ' ' + $t('cl.community') }}
+        <div class="font20 font-bold link-title" @click="toCommunity">
+          <span>
+            {{crowdloan.community.communityName + (isOfficial ? '' : ' ' + $t('cl.community'))}}
           </span>
-        <i class="link-icon" v-show="crowdloan.community.communityId !== crowdloan.para.paraId" @click="toCommunity"></i>
+        <i class="link-icon" v-show="!isOfficial"></i>
         </div>
-
       </div>
     </div>
     <div class="h-line"></div>
@@ -47,7 +46,7 @@
         {{ $t("cl.withdraw") }}
       </button>
       <button class="primary-btn" disabled v-show="status === 'Completed' || status === ''">
-        <b-spinner small type="grow" v-show="status && status.length === 0"></b-spinner>
+        <b-spinner small type="grow" v-show="status.length === 0"></b-spinner>
         {{ $t("cl.completed") }}
       </button>
     </div>
@@ -76,7 +75,7 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund='getFundInfo' relaychain='kusama' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund='fundInfo(paraId)' relaychain='kusama' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
@@ -110,7 +109,7 @@ export default {
   },
   methods: {
       toCommunity() {
-        if (this.crowdloan.para.paraId === this.crowdloan.community.communityId) return;
+        if (this.isOfficial) return;
         this.$router.push('/crowdloan/kusama/community/' + this.crowdloan.community.communityId)
       }
   },
@@ -124,10 +123,12 @@ export default {
     communityId() {
         return this.crowdloan.community.communityId
     },
+    isOfficial(){
+      return this.communityId === this.crowdloan.para.communityId
+    },
     rewardTokens(){
       if (this.crowdloan){
         let rewards = this.crowdloan.para.reward.concat(this.crowdloan.community.reward)
-        console.log(333, this.crowdloan);
         if (rewards.length > 3) {
           rewards = rewards.slice(0, 3)
         }

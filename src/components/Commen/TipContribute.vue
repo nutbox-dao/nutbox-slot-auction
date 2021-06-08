@@ -26,7 +26,7 @@
             v-model="inputAmount"
             :placeholder="$t('cl.inputAmount')"
           />
-          <span>ROC</span>
+          <span>{{ symbol }}</span>
         </div>
       </div>
       <div class="input-group-box">
@@ -54,6 +54,7 @@ import { contribute as kC } from "@/utils/kusama/crowdloan"
 import { contribute as rC } from "@/utils/rococo/crowdloan"
 import BN from "bn.js";
 import { stanfiAddress } from '@/utils/commen/account';
+import { POLKADOT_RELAYCHAIN_SYMBOL } from '@/constant'
 
 
 export default {
@@ -86,6 +87,10 @@ export default {
     },
     paraId(){
       return this.fund.paraId
+    },
+    symbol(){
+      console.log(this.relaychain);
+      return POLKADOT_RELAYCHAIN_SYMBOL[this.relaychain.toLowerCase()]
     },
     balance(){
       switch (this.relaychain){

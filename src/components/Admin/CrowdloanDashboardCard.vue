@@ -121,6 +121,7 @@ export default {
       })
         .then(async (res) => {
           let csv = res.data;
+          if(!csv || csv.length === 0) return;
           let result = [];
           for (let r of csv) {
             const amount = await fb(r.amount);
