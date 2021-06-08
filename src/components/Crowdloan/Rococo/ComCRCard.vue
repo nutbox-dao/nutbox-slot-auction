@@ -35,7 +35,7 @@
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.contributed') }} </span>
         <div class="info">
-          <RaisedLabel :fund="getFundInfo" relaychian='rococo' :isBalance="true" />
+          <RaisedLabel :fund="getFundInfo" relaychain='rococo' :isBalance="true" />
         </div>
       </div>
       <div class="project-info-container">
