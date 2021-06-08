@@ -371,10 +371,14 @@ export default {
     }
   },
   async created() {
+    // 初始化apis
     await initApis()
     this.isConnectingPolkadot = false
+    // 订阅区块
     Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
+    // 从钱包加载账号
     await loadPolkadotAccounts();
+    // 获取众贷和验证者投票卡片
     this.getCommnunitys();
     this.getCrowdstacking();
   },
