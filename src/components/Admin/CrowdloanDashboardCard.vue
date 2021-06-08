@@ -121,10 +121,11 @@ export default {
       })
         .then(async (res) => {
           let csv = res.data;
+          console.log(csv);
           if(!csv || csv.length === 0) return;
           let result = [];
           for (let r of csv) {
-            const amount = await fb(r.amount);
+            const amount = await this.fb(r.amount);
             result.push({
               communityName: card.community.communityName,
               paraName: card.para.paraName,
