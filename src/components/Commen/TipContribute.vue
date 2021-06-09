@@ -134,10 +134,14 @@ export default {
       }
 
       const amount = parseFloat(this.inputAmount);
-
-      if (amount < 1) {
+      const mins = {
+        polkadot: 1.0000,
+        kusama: 0.0999,
+        rococo:1
+      }
+      if (amount < mins[this.relaychain]) {
         this.$bvToast.toast(
-          this.$t('tip.belowMinContribution'),
+          this.$t('tip.belowMinContribution', {min: mins[this.relaychain].toFixed(4)}),
           {
             title: this.$t('tip.tips'),
             autoHideDelay: 5000,

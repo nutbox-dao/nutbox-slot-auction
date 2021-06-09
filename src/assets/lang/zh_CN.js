@@ -219,7 +219,7 @@ module.exports = {
     noCrowdloan: "没有进行中的众贷",
     noStakingProject: "没有验证者节点项目",
     tokenSafeTip: "您的资产将被锁定到 {symbol} 的官方众贷合约内，而不是Nutbox的账户内。",
-    belowMinContribution: "投票数小于最小投票数1.0000个。",
+    belowMinContribution: "投票数小于最小投票数 {min} 个。",
     belowMinBond: "绑定数小于最小绑定数0.1个。",
     wrongNominatorAddress: "推荐人地址格式错误",
     insufficientBalance: "余额不足",

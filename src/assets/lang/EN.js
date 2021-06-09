@@ -219,7 +219,7 @@ transaction: {
     noCrowdloan: "No ongoing crowdloan",
     noStakingProject: "No validators",
     tokenSafeTip: "Your asset would be locked into {symbol} official crowdloan pallet directly, not any accounts of Nutobx.",
-    belowMinContribution:"Input is less than the minimum allowed contribution of 1.0000",
+    belowMinContribution:"Input is less than the minimum allowed contribution of  {min}",
     belowMinBond: "Input is less than the minimum surggest bonded of 0.1",
     wrongNominatorAddress: "Wrong Nominator Address",
     insufficientBalance:"Insufficient Balance",
