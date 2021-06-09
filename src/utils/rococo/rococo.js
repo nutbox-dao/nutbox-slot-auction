@@ -6,12 +6,14 @@ import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import BN from "bn.js"
 import {
   ROCOCO_WEB_SOCKET,
-  NUTBOX_REMARK_TYPE
+  NUTBOX_REMARK_TYPE,
+  DEBUG
 } from "@/config"
 import store from "@/store"
 import { web3FromSource, web3Enable } from '@polkadot/extension-dapp'
 
 export async function getApi() {
+  if (!DEBUG) return
   if (store.state.rococo.api) {
     return store.state.rococo.api
   }

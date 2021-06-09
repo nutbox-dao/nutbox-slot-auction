@@ -4,8 +4,7 @@
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t('tip.loading') }}</p>
     </div>
-    <template v-else>
-    <div class="parachain-info p-card">
+    <div class="parachain-info p-card" v-show="paraInfo">
       <img class="poster" :src="paraInfo.posterUrl" v-show="paraInfo.posterUrl && paraInfo.posterUrl.length>4" alt="">
       <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.back()"/>
       <div class="p-detail-info">
@@ -20,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="c-card">
+    <div class="c-card" v-show="paraInfo">
       <a class="font20 font-bold title link" :href="paraInfo && paraInfo.rewardLink[lang]"
          target="_blank">{{ $t("cl.auctionPlan") }}</a>
       <div class="desc" style="margin-top: .8rem" v-html="paraInfo && paraInfo.rewardPlan[lang]">
@@ -28,7 +27,7 @@
       </div>
     </div>
 
-    <div class="c-card crowdloan-detail">
+    <div class="c-card crowdloan-detail" v-show="paraInfo">
       <div class="flex-between-center mb-2">
         <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
         <div class="status-container">
@@ -62,7 +61,7 @@
       </b-table-simple>
     </div>
 
-    <div class="card-container">
+    <div class="card-container" v-show="paraInfo">
       <div class="font20 font-bold title">{{ $t('cl.joinAuction') }}</div>
       <div class="row">
         <div class="col-xl-4 col-md-6 mb-4" v-for="crowdloan in crowdloanInfo"
@@ -74,7 +73,6 @@
         </div>
       </div>
     </div>
-    </template>
   </div>
 </template>
 

@@ -313,10 +313,12 @@ export default {
       this.getCrowdstacking();
     },
     getCommnunitys() {
-      // 获取支持平行链项目的社区信息  -   rococo
+      // 获取支持平行链项目的社区信息  -   所有的社区
       getCommnunitys().then((res) => {
         const ccc = res.map((r) => stanfiAddress(r.communityId))
         this.saveClCommunitys(ccc);
+        this.$store.commit('polkadot/saveClCommunitys', ccc);
+        this.$store.commit('kusama/saveClCommunitys', ccc);
       });
     },
 

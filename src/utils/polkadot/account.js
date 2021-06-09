@@ -26,6 +26,7 @@ import {
   token2Uni
 } from './polkadot'
 import { stanfiAddress } from '@/utils/commen/account'
+import { DEBUG } from  '@/config'
 import {
   $t
 } from '@/i18n'
@@ -50,7 +51,7 @@ export const loadAccounts = async () => {
     store.commit('polkadot/saveAccount', account)
     getBalance(account)
     getKusamaBalance(account)
-    getRococoBalance(account)
+    DEBUG && getRococoBalance(account)
     subNominators()
     subBonded()
   } catch (e) {
