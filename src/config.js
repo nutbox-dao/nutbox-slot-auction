@@ -9,7 +9,7 @@ export const STEEM_API_URLS = [
 ]
 
 // 调试模式
-export const DEBUG = true
+export const DEBUG = false
 
 export const STEEM_CONF_KEY = 'steemNodeKey'
 

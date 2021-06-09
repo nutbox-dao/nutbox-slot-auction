@@ -7,7 +7,8 @@ import {
   POLKADOT_WEB_SOCKET,
   NUTBOX_REMARK_TYPE,
   KUSAMA_WEB_SOCKET,
-  ROCOCO_WEB_SOCKET
+  ROCOCO_WEB_SOCKET,
+  DEBUG
 } from "@/config"
 import store from "@/store"
 import {
@@ -23,6 +24,9 @@ export async function initApis() {
 }
 
 async function initApi(chain) {
+  if (chain === 'rococo' && !DEBUG){
+    return;
+  }
   const apis = {
     polkadot: store.state.polkadot.api,
     kusama: store.state.kusama.api,
@@ -68,6 +72,7 @@ export function inject(){
       rococo: store.state.rococo.api,
     }
     for (const chain of ['polkadot', 'kusama', 'rococo']){
+      if (!DEBUG && chain === 'rococo')return;
       const api = apis[chain]
       const injected = await web3FromSource('polkadot-js')
       api.setSigner(injected.signer)

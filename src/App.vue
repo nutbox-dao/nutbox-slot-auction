@@ -184,7 +184,7 @@
 
 <script>
 import Clipboard from "clipboard";
-import { LOCALE_KEY } from "./config";
+import { LOCALE_KEY, DEBUG } from "./config";
 import TipMessage from "./components/ToolsComponents/TipMessage";
 import { mapState, mapMutations } from "vuex";
 import Identicon from "@polkadot/vue-identicon";
@@ -206,6 +206,7 @@ import {
 import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
 import { stanfiAddress } from "./utils/commen/account";
 import { initApis, inject } from "./utils/commen/api"
+import { isMobile } from "./utils/commen/util"
 
 export default {
   data() {
@@ -281,7 +282,7 @@ export default {
       }
     },
     copyAddress(a){
-    console.log(444, stanfiAddress('5F9BYd21i2p6UL4j4CGZ6kFEBqnzyBuH6Tw6rGxhZsVg3e3q'));
+      console.log(isMobile());
       var clipboard = new Clipboard('#avatar');
       clipboard.on("success", (e) => {
         clipboard.destroy();
@@ -304,7 +305,7 @@ export default {
       this.saveAccount(acc);
       getPolkadotBalance(acc);
       getKusamaBalance(acc);
-      getRococoBalance(acc);
+      DEBUG && getRococoBalance(acc);
       subKusamaBonded();
       subBonded();
       subNominators();
@@ -371,11 +372,19 @@ export default {
     }
   },
   async created() {
+    // 如果是手机端，直接清空账号缓存，用插件中的第一个地址
+    if (isMobile){
+      this.$store.commit('polkadot/saveAccount', null)
+    }
     // 初始化apis
     await initApis()
     this.isConnectingPolkadot = false
     // 订阅区块
-    Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
+    if (DEBUG){
+      Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
+    }else{
+      Promise.all([subPolkadotBlock(), subKusamaBlock()]);
+    }
     // 从钱包加载账号
     await loadPolkadotAccounts();
     // 注入签名工具（波卡钱包）
