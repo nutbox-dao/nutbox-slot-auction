@@ -17,7 +17,6 @@ import {
 
 export async function initApis() {
   web3Enable('nutbox')
-  console.log('start init', new Date().getTime());
   for (const chain of ['polkadot', 'kusama', 'rococo']) {
     await Promise.all([initApi('polkadot'), initApi('kusama'), initApi('rococo')])
   }
@@ -40,6 +39,7 @@ async function initApi(chain) {
   console.log('connecting to', chain);
   store.commit(chain + '/saveIsConnected', false)
 
+  console.log('start init', chain, new Date().getTime());
   const wsProvider = new WsProvider(node[chain])
   const api = await ApiPromise.create({
     provider: wsProvider,
