@@ -41,7 +41,6 @@ export const subscribeFundInfo = async (crowdloanCard) => {
   try {
     unsubFund = (await api.query.crowdloan.funds.multi(paraId, async (unwrapedFunds) => {
       const bestBlockNumber = (await api.derive.chain.bestNumber()).toNumber()
-      const decimal = DECIMAL['rococo']
       let funds = []
       for (let i = 0; i < unwrapedFunds.length; i++) {
         const fund = unwrapedFunds[i]
@@ -49,42 +48,94 @@ export const subscribeFundInfo = async (crowdloanCard) => {
         if (!fund.toJSON()) {
           continue
         }
-        const unwrapedFund = fund.unwrap()
-        const {
-          deposit,
-          cap,
-          depositor,
-          end,
-          firstPeriod,
-          lastPeriod,
-          raised,
-          trieIndex
-        } = unwrapedFund
-        console.log('index', pId, trieIndex.toNumber());
-        const childKey = createChildKey(trieIndex)
-        const keys = await api.rpc.childstate.getKeys(childKey, '0x')
-        const ss58keys = keys.map(k => encodeAddress(k, 0))
-        const values = await Promise.all(keys.map(k => api.rpc.childstate.getStorage(childKey, k)))
-        const contributions = values.map((v, idx) => ({
-          contributor: ss58keys[idx],
-          amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
-          memo: api.createType('(Balance, Vec<u8>)', v.unwrap())[1].toHuman()
-        }))
-        const [status, statusIndex] = await calStatus('polkadot', end, firstPeriod, lastPeriod, raised, cap, pId, bestBlockNumber)
-        funds.push({
-          paraId: pId,
-          status,
-          statusIndex,
-          cap: new BN(cap),
-          depositor,
-          end: new BN(end),
-          firstPeriod: new BN(firstPeriod),
-          lastPeriod: new BN(lastPeriod),
-          raised: new BN(raised),
-          trieIndex,
-          funds: contributions
-        })
+        unwrapedFunds[i] = unwrapedFunds[i].unwrap()
+        unwrapedFunds[i].paraId = pId
       }
+      funds = await Promise.all(unwrapedFunds.map(fund => {
+        console.log('fund', fund);
+        return new Promise(async(res)=>{
+          const pId = fund.paraId;
+          const unwrapedFund = fund
+          const {
+            cap,
+            depositor,
+            end,
+            firstPeriod,
+            lastPeriod,
+            raised,
+            trieIndex
+          } = unwrapedFund
+          console.log('index', pId, trieIndex.toNumber());
+          // const childKey = createChildKey(trieIndex)
+          // const keys = await api.rpc.childstate.getKeys(childKey, '0x')
+          // const ss58keys = keys.map(k => encodeAddress(k, 0))
+          // const values = await Promise.all(keys.map(k => api.rpc.childstate.getStorage(childKey, k)))
+          // const contributions = values.map((v, idx) => ({
+          //   contributor: ss58keys[idx],
+          //   amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
+          //   memo: api.createType('(Balance, Vec<u8>)', v.unwrap())[1].toHuman()
+          // }))
+
+          
+          const [status, statusIndex] = await calStatus('polkadot', end, firstPeriod, lastPeriod, raised, cap, pId, bestBlockNumber)
+          res({
+            paraId: pId,
+            status,
+            statusIndex,
+            cap: new BN(cap),
+            depositor,
+            end: new BN(end),
+            firstPeriod: new BN(firstPeriod),
+            lastPeriod: new BN(lastPeriod),
+            raised: new BN(raised),
+            trieIndex,
+            funds: contributions
+          })
+        })
+      }))
+      // for (let i = 0; i < unwrapedFunds.length; i++) {
+      //   const fund = unwrapedFunds[i]
+      //   const pId = paraId[i]
+      //   if (!fund.toJSON()) {
+      //     continue
+      //   }
+      //   unwrapedFunds[i].paraId = pId
+      //   const unwrapedFund = fund.unwrap()
+      //   const {
+      //     deposit,
+      //     cap,
+      //     depositor,
+      //     end,
+      //     firstPeriod,
+      //     lastPeriod,
+      //     raised,
+      //     trieIndex
+      //   } = unwrapedFund
+      //   console.log('index', pId, trieIndex.toNumber());
+      //   const childKey = createChildKey(trieIndex)
+      //   const keys = await api.rpc.childstate.getKeys(childKey, '0x')
+      //   const ss58keys = keys.map(k => encodeAddress(k, 0))
+      //   const values = await Promise.all(keys.map(k => api.rpc.childstate.getStorage(childKey, k)))
+      //   const contributions = values.map((v, idx) => ({
+      //     contributor: ss58keys[idx],
+      //     amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
+      //     memo: api.createType('(Balance, Vec<u8>)', v.unwrap())[1].toHuman()
+      //   }))
+      //   const [status, statusIndex] = await calStatus('polkadot', end, firstPeriod, lastPeriod, raised, cap, pId, bestBlockNumber)
+      //   funds.push({
+      //     paraId: pId,
+      //     status,
+      //     statusIndex,
+      //     cap: new BN(cap),
+      //     depositor,
+      //     end: new BN(end),
+      //     firstPeriod: new BN(firstPeriod),
+      //     lastPeriod: new BN(lastPeriod),
+      //     raised: new BN(raised),
+      //     trieIndex,
+      //     funds: contributions
+      //   })
+      // }
       funds = funds.sort((a, b) => a.statusIndex - b.statusIndex)
       const idsSort = funds.map(f => f.paraId)
       if (funds.length > 0) {
@@ -102,6 +153,8 @@ export const subscribeFundInfo = async (crowdloanCard) => {
     store.commit('rococo/saveLoadingFunds', false)
   }
 }
+
+
 
 export const withdraw = async (paraId, toast, callback) => {
     w('rococo', paraId, toast, callback)

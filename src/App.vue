@@ -374,7 +374,8 @@ export default {
   },
   async created() {
     // 如果是手机端，直接清空账号缓存，用插件中的第一个地址
-    if (isMobile){
+    if (isMobile()){
+      console.log('Is mobile device');
       this.$store.commit('polkadot/saveAccount', null)
     }
     // 初始化apis

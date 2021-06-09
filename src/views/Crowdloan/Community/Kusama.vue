@@ -36,7 +36,7 @@
             <div
               class="desc"
               v-html="
-                communityInfo.description && communityInfo.description[lang]
+                (communityInfo.description && communityInfo.description[lang])
               "
             ></div>
           </div>
