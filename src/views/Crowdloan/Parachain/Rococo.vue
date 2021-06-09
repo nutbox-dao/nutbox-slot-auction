@@ -212,10 +212,12 @@ export default {
           const raised = fund.raised;
           const cap = fund.cap;
           const firstPeriod = fund.firstPeriod;
+          const lastPeriod = fund.lastPeriod
           const [status] = await calStatus(
             'rococo',
             end,
             firstPeriod,
+            lastPeriod,
             raised,
             cap,
             this.paraId,

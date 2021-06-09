@@ -282,7 +282,6 @@ export default {
       }
     },
     copyAddress(a){
-      console.log(isMobile());
       var clipboard = new Clipboard('#avatar');
       clipboard.on("success", (e) => {
         clipboard.destroy();

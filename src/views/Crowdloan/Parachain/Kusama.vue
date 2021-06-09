@@ -92,7 +92,7 @@ export default {
   name: "Kusama",
   data() {
       return {
-          status: 'Completed'
+        status: 'Compeleted'
       }
   },
   components: {
@@ -212,10 +212,12 @@ export default {
           const raised = fund.raised;
           const cap = fund.cap;
           const firstPeriod = fund.firstPeriod;
+          const lastPeriod = fund.lastPeriod
           const [status] = await calStatus(
             'kusama',
             end,
             firstPeriod,
+            lastPeriod,
             raised,
             cap,
             this.paraId,
@@ -223,7 +225,6 @@ export default {
           );
           this.status = status;
         }catch(e) {
-
         }
       }
   },
