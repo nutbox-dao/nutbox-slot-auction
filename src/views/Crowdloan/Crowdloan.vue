@@ -6,7 +6,7 @@
     <div class="nav sub-page-nav">
       <router-link to="/crowdloan/polkadot">Polkadot</router-link>
       <router-link to="/crowdloan/kusama">Kusama</router-link>
-      <router-link to="/crowdloan/rococo">Rococo</router-link>
+      <router-link v-if="isDebug" to="/crowdloan/rococo">Rococo</router-link>
 
       <div class="center-blank"></div>
     </div>
@@ -16,10 +16,12 @@
 
 <script>
 import { mapState } from "vuex";
+import { DEBUG } from "@/config"
 export default {
   name: "Crowdloan",
   data() {
     return {
+      isDebug: DEBUG
     };
   },
   computed: {

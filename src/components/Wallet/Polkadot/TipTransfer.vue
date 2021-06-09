@@ -40,7 +40,7 @@
 import { mapState, mapGetters } from "vuex";
 import BN from "bn.js";
 import { transfer } from "@/utils/polkadot/account";
-import { validAddress } from "@/utils/polkadot/polkadot"
+import { stanfiAddress } from "@/utils/commen/account"
 
 export default {
   data() {
@@ -74,7 +74,7 @@ export default {
       }
       const amount = parseFloat(this.inputAmount);
 
-      if (!validAddress(this.inputAddress)) {
+      if (!stanfiAddress(this.inputAddress)) {
         this.$bvToast.toast('Input invalid address', {
           title: this.$t('tip.tips'),
           autoHideDelay: 5000,

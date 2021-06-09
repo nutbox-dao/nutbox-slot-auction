@@ -66,10 +66,10 @@
                   <p id="stake-icon" class="my-icon" />
                   <span>{{ $t("cs.crowdstaking") }}</span>
                 </b-nav-item>
-                <b-nav-item to="/blog">
+                <!-- <b-nav-item to="/blog">
                   <p id="blog-icon" class="my-icon" />
                   <span>{{ $t("message.blog") }}</span>
-                </b-nav-item>
+                </b-nav-item> -->
                 <b-nav-item to="/admin" v-if="isAdmin">
                   <p id="admin-icon" class="my-icon" />
                   <span>{{ $t("message.admin") }}</span>

@@ -53,7 +53,7 @@ const routes = [
     path: '/crowdloan',
     name: 'crowdloan',
     component: Crowdloan,
-    redirect: '/crowdloan/rococo',
+    redirect: '/crowdloan/kusama',
     children: [
       {
         path: 'kusama',
