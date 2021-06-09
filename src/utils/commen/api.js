@@ -17,10 +17,9 @@ import {
 } from '@polkadot/extension-dapp'
 
 export async function initApis() {
-  web3Enable('nutbox')
-  for (const chain of ['polkadot', 'kusama', 'rococo']) {
-    await Promise.all([initApi('polkadot'), initApi('kusama'), initApi('rococo')])
-  }
+  initApi('polkadot')
+  initApi('rococo')
+  await initApi('kusama')
 }
 
 async function initApi(chain) {
@@ -54,30 +53,25 @@ async function initApi(chain) {
       NutboxRemark: NUTBOX_REMARK_TYPE
     }
   })
-  // await web3Enable('nutbox')
-  // const injected = await web3FromSource('polkadot-js')
-  // api.setSigner(injected.signer)
   console.log((new Date().getTime() - s) / 1000, chain, 'connected');
+
+  await web3Enable('nutbox')
+  const injected = await web3FromSource('polkadot-js')
+  api.setSigner(injected.signer)
 
   store.commit(chain + '/saveIsConnected', true)
   store.commit(chain + '/saveApi', api)
+  subBlock(api, chain)
 }
 
+const subBlock = async (api, chain) => {
+  // console.log('sub block');
+  const subBlock = await api.rpc.chain.subscribeNewHeads((header) => {
+    try {
+      const number = header.number.toNumber()
+      store.commit(chain + '/saveCurrentBlockNum', number)
+    } catch (e) {
 
-export function inject(){
-  web3Enable('nutbox').then(async ()=>{
-    const apis = {
-      polkadot: store.state.polkadot.api,
-      kusama: store.state.kusama.api,
-      rococo: store.state.rococo.api,
     }
-    for (const chain of ['polkadot', 'kusama', 'rococo']){
-      if (!DEBUG && chain === 'rococo')return;
-      const api = apis[chain]
-      const injected = await web3FromSource('polkadot-js')
-      api.setSigner(injected.signer)
-      store.commit(chain + '/saveApi', api)
-    }
-
   })
-}
+} 

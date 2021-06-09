@@ -19,7 +19,10 @@
         {{ $t('tip.tokenSafeTip', {symbol: getChain}) }}
       </div>
       <div class="input-group-box">
-        <div class="label">{{ $t('cl.amount')}}</div>
+        <div class="label flex-between-start">
+         <span>{{ $t('cl.amount')}}</span>
+         <!-- <span>{{ $t('wallet.balance') }}:{{ fbBalance }}</span> -->
+        </div>
         <div class="flex-between-center">
           <input
             type="number"
@@ -52,9 +55,14 @@ import { mapState } from "vuex";
 import { contribute as pC } from "@/utils/polkadot/crowdloan"
 import { contribute as kC } from "@/utils/kusama/crowdloan"
 import { contribute as rC } from "@/utils/rococo/crowdloan"
+import { formatBalance as fbp } from "@/utils/polkadot/polkadot"
+import { formatBalance as fbk } from "@/utils/kusama/kusama"
+import { formatBalance as fbr } from "@/utils/rococo/rococo"
+
 import BN from "bn.js";
 import { stanfiAddress } from '@/utils/commen/account';
 import { POLKADOT_RELAYCHAIN_SYMBOL } from '@/constant'
+import { formatBalance } from '@/utils/rococo/rococo';
 
 
 export default {
@@ -100,6 +108,16 @@ export default {
           return this.$store.getters['kusama/available']
         default:
           return this.$store.state.rococo.balance
+      }
+    },
+    fbBalance(){
+      switch (this.relaychain){
+        case 'polkadot':
+          return fbp(this.balance)
+          case 'kusama':
+            return fbk(this.balance)
+          case 'rococo':
+            return fbr(this.balance)
       }
     }
   },

@@ -2,9 +2,9 @@
   <div id="app">
     <div class="page-layout">
       <div class="page-header">
-        <img src="./static/images/logo.png" alt="nutbox" class="logo"/>
+        <img src="./static/images/logo.png" @click="gotoOfficial" alt="nutbox" class="logo"/>
         <div class="small-logo-container">
-          <img src="./static/images/logo_small.png" alt="nutbox" class="logo-small"/>
+          <img src="./static/images/logo_small.png" alt="nutbox" @click="gotoOfficial" class="logo-small"/>
           <img src="./static/images/menu.png" alt="" class="menu" v-b-toggle.sidebar-menu/>
         </div>
         <div class="account-header" v-if="$route.path!=='/blog'">
@@ -195,9 +195,6 @@ import {
 } from "./utils/polkadot/account";
 import { getBalance as getKusamaBalance } from "./utils/kusama/account";
 import { getBalance as getRococoBalance } from "./utils/rococo/account";
-import { subBlock as subPolkadotBlock } from "./utils/polkadot/block";
-import { subBlock as subKusamaBlock } from "./utils/kusama/block";
-import { subBlock as subRococoBlock } from "./utils/rococo/block"
 import {
   subBonded,
   subNominators,
@@ -205,7 +202,7 @@ import {
 } from "./utils/polkadot/staking";
 import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
 import { stanfiAddress } from "./utils/commen/account";
-import { initApis, inject } from "./utils/commen/api"
+import { initApis } from "./utils/commen/api"
 import { isMobile } from "./utils/commen/util"
 
 export default {
@@ -263,6 +260,9 @@ export default {
       "saveAccount",
     ]),
     ...mapMutations("rococo", ["saveClCommunitys"]),
+    gotoOfficial(){
+      window.open('https://nutbox.io', '_blank');
+    },
     setLanguage(lang) {
       localStorage.setItem(LOCALE_KEY, lang);
       this.$store.commit("saveLang", lang);
@@ -381,16 +381,9 @@ export default {
     // 初始化apis
     await initApis()
     this.isConnectingPolkadot = false
-    // 订阅区块
-    if (DEBUG){
-      Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
-    }else{
-      Promise.all([subPolkadotBlock(), subKusamaBlock()]);
-    }
+    
     // 从钱包加载账号
     await loadPolkadotAccounts();
-    // 注入签名工具（波卡钱包）
-    inject()
     // 获取众贷和验证者投票卡片
     this.getCommnunitys();
     this.getCrowdstacking();
@@ -462,6 +455,7 @@ body {
     height: 2.8rem;
   }
   .logo-small {
+  cursor: pointer;
     height: 2.8rem;
     width: 2.8rem;
   }
@@ -845,9 +839,11 @@ body {
 .page-header {
   .logo {
     display: block;
+    cursor: pointer;
   }
   .logo_small {
     display: none;
+    cursor: pointer;
   }
 }
 @media only screen and (max-width: 960px) {

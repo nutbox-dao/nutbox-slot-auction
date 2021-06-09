@@ -72,6 +72,12 @@ ponsived {
   align-items: center;
 }
 
+.flex-between-start {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .flex-start-center {
   display: flex;
   justify-content: flex-start;

@@ -17,9 +17,6 @@ import {
   contribute as c,
   calStatus
 } from '@/utils/commen/crowdloan'
-import {
-  DECIMAL
-} from '@/constant'
 
 function createChildKey(trieIndex) {
   return u8aToHex(
@@ -110,7 +107,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
     }));
     store.commit('kusama/saveSubFund', unsubFund);
   } catch (e) {
-    console.error('error', e);
+    console.log('error', e);
     store.commit('kusama/saveLoadingFunds', false)
   }
 }
