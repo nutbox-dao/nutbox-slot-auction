@@ -50,7 +50,6 @@ export default {
   },
   async created() {
     const res = await getOnshowingCrowdloanCard({relaychain:"kusama"})
-    console.log(1111, res);
     await subscribeKusamaFundInfo(res);
   },
 };

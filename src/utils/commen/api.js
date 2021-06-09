@@ -39,7 +39,8 @@ async function initApi(chain) {
   console.log('connecting to', chain);
   store.commit(chain + '/saveIsConnected', false)
 
-  console.log('start init', chain, new Date().getTime());
+  const s = new Date().getTime()
+  console.log('start init', chain, s);
   const wsProvider = new WsProvider(node[chain])
   const api = await ApiPromise.create({
     provider: wsProvider,
@@ -52,7 +53,7 @@ async function initApi(chain) {
   // await web3Enable('nutbox')
   // const injected = await web3FromSource('polkadot-js')
   // api.setSigner(injected.signer)
-  console.log(new Date().getTime(), chain, 'connected');
+  console.log((new Date().getTime() - s) / 1000, chain, 'connected');
 
   store.commit(chain + '/saveIsConnected', true)
   store.commit(chain + '/saveApi', api)
