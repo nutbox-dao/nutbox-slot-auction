@@ -95,9 +95,9 @@ export default {
     balance(){
       switch (this.relaychain){
         case 'polkadot':
-          return this.$store.getters.polkadot.available
+          return this.$store.getters["polkadot/available"]
         case 'kusama':
-          return this.$store.getters.kusama.available
+          return this.$store.getters['kusama/available']
         default:
           return this.$store.state.rococo.balance
       }
