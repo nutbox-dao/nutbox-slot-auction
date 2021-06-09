@@ -49,11 +49,29 @@ async function initApi(chain) {
       NutboxRemark: NUTBOX_REMARK_TYPE
     }
   })
-  await web3Enable('nutbox')
-  const injected = await web3FromSource('polkadot-js')
-  api.setSigner(injected.signer)
+  // await web3Enable('nutbox')
+  // const injected = await web3FromSource('polkadot-js')
+  // api.setSigner(injected.signer)
   console.log(new Date().getTime(), chain, 'connected');
 
   store.commit(chain + '/saveIsConnected', true)
   store.commit(chain + '/saveApi', api)
+}
+
+
+export function inject(){
+  web3Enable('nutbox').then(async ()=>{
+    const apis = {
+      polkadot: store.state.polkadot.api,
+      kusama: store.state.kusama.api,
+      rococo: store.state.rococo.api,
+    }
+    for (const chain of ['polkadot', 'kusama', 'rococo']){
+      const api = apis[chain]
+      const injected = await web3FromSource('polkadot-js')
+      api.setSigner(injected.signer)
+      store.commit(chain + '/saveApi', api)
+    }
+
+  })
 }

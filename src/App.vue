@@ -205,7 +205,7 @@ import {
 } from "./utils/polkadot/staking";
 import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
 import { stanfiAddress } from "./utils/commen/account";
-import { initApis } from "./utils/commen/api"
+import { initApis, inject } from "./utils/commen/api"
 
 export default {
   data() {
@@ -378,6 +378,8 @@ export default {
     Promise.all([subPolkadotBlock(), subKusamaBlock(), subRococoBlock()]);
     // 从钱包加载账号
     await loadPolkadotAccounts();
+    // 注入签名工具（波卡钱包）
+    inject()
     // 获取众贷和验证者投票卡片
     this.getCommnunitys();
     this.getCrowdstacking();
