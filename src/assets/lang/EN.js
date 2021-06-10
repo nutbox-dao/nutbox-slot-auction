@@ -138,7 +138,7 @@ cl:{
   fund: "Fund",
   progress: 'Progress',
   contributors:"Contributors",
-  contributed: "My Contributed",
+  contributed: "My Contribution",
   myBalance: "Balance of {token}",
   Active: "Active",
   Retired: "Retired",
