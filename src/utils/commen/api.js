@@ -93,10 +93,12 @@ export const waitApi = async (relaychain) => {
     if (api && Object.keys(api).length > 0) {
       res(api);
     }
-    setInterval(() => {
+    const interval = setInterval(() => {
+      console.log('timeddddd');
       const api = store.state[relaychain].api
       if (api && Object.keys(api).length > 0) {
         res(api);
+        clearInterval(interval)
       }
     }, 300);
   })
