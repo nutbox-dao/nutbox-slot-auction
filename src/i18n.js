@@ -8,16 +8,16 @@ const DEFAULT_LANG = navigator.language
 console.log('default language', DEFAULT_LANG)
 
 const i18n = new VueI18n({
-  locale: 'en',
+  locale: 'zh-CN',
   messages: {
-    zh: require('./assets/lang/zh_CN'),
+    'zh-CN': require('./assets/lang/zh_CN'),
     en: require('./assets/lang/EN'),
     // kr: require('./assets/lang/KR'),
     // es: require('./assets/lang/ES'),
     // my: require('./assets/lang/MY'),
     // jp: require('./assets/lang/JP')
   },
-  fallbackLocale: 'en',
+  fallbackLocale: 'zh-CN',
   silentFallbackWarn: true
 })
 

@@ -12,7 +12,8 @@
       </div>
       <div class="cards-container">
           <div class="row">
-            <div class="col-xl-4 col-md-6" v-for="card, idx of showingCard()" :key="idx">
+            <div class="col-xl-4 col-md-6 mb-4" 
+                v-show="card.para.communityId !== card.community.communityId" v-for="card, idx of showingCard()" :key="idx">
                 <CrowdloanCard
                   :paraId="parseInt(card.para.paraId)"
                   :communityId="card.community.communityId"
@@ -25,12 +26,12 @@
 </template>
 
 <script>
-import CrowdloanCard from "../../components/Crowdloan/CrowdloanCard";
+import CrowdloanCard from "../../components/Crowdloan/Kusama/CrowdloanCard";
 import {
   subscribeFundInfo as subscribeKusamaFundInfo
-} from "../../utils/kusama/crowdloan";
+} from "@/utils/kusama/crowdloan";
 import { mapState, mapGetters } from "vuex";
-import { getOnshowingCrowdloanCard } from "../../apis/api"
+import { getOnshowingCrowdloanCard } from "@/apis/api"
 
 export default {
   name: "Kusama",
@@ -48,56 +49,12 @@ export default {
     ...mapGetters('kusama', ['showingCard']),
   },
   async created() {
-    const res = await getOnshowingCrowdloanCard({relaychain:"rococo"})
+    const res = await getOnshowingCrowdloanCard({relaychain:"kusama"})
     await subscribeKusamaFundInfo(res);
   },
 };
 </script>
 
-<style lang="less" scoped>
-.crowdloan-page {
-  height: 100%;
-  background: rgba(246, 247, 249, 1);
-  overflow: hidden;
-  position: relative;
-  .bg {
-    position: absolute;
-    left: 50%;
-    top: 4.8rem;
-    transform: translateX(-50%);
-    margin: auto;
-    max-width: 34rem;
-    max-height: 34rem;
-    width: 90vw;
-    height: 90vw;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(255, 219, 27, 0.7),
-      rgba(141, 231, 255, 0)
-    );
-    background-repeat: repeat-x;
-    border-radius: 34rem;
-    background-position: center top;
-  }
-  .loading-bg {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    img {
-      margin-top: 12rem;
-    }
-    p {
-      margin-top: 1rem;
-      font-weight: 400;
-      color: #bdbfc2;
-      line-height: 22px;
-    }
-  }
-  .cards-container {
-    height: 100%;
-    padding-top: 3.6rem;
-  }
-}
+<style lang="scss" scoped>
+@import 'src/static/css/crowdloanPage.scss'
 </style>

@@ -1,7 +1,4 @@
-import {
-  encodeAddress,
-  decodeAddress
-} from "@polkadot/util-crypto"
+
 import store from "@/store"
 
 import {
@@ -11,12 +8,9 @@ import {
 import {
   getApi,
   token2Uni,
-  stanfiAddress,
   getTxPaymentInfo
 } from './kusama'
-import {
-  injectAccount
-} from './account'
+import { stanfiAddress } from '@/utils/commen/account'
 /**
  * 监听用户的绑定储蓄账户
  */
@@ -108,7 +102,7 @@ export const nominate = async (validators, communityId, projectId, toast, callba
     if (!from) {
       reject('no account')
     }
-    const api = await injectAccount(store.state.polkadot.account)
+    const api = await getApi()
     const nominatorTx = api.tx.staking.nominate(validators)
     const remark = encodeRemark(communityId, projectId)
     const remarkTx = api.tx.system.remarkWithEvent(remark)
@@ -122,7 +116,7 @@ export const nominate = async (validators, communityId, projectId, toast, callba
         dispatchError
       }) => {
         try {
-          handelBlockState(api, mstatus, dispatchError, toast, callback, unsub)
+          handelBlockState(api, status, dispatchError, toast, callback, unsub)
         } catch (e) {
           toast(e.message, {
             title: $t('tip.error'),
@@ -148,7 +142,7 @@ export const bondAndNominate = async (amount, validators, communityId, projectId
   if (!from) {
     reject('no account')
   }
-  const api = await injectAccount(store.state.polkadot.account)
+  const api = await getApi()
   const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
   const bondTx = api.tx.staking.bond(store.state.polkadot.account.address, uni, {
     Staked: null
@@ -243,13 +237,4 @@ function handelBlockState(api, status, dispatchError, toast, callback, unsub) {
     // 上传daemon
     return true
   }
-}
-
-export function encodeRemark(communityId, projectId) {
-  // 01 表示使用dot投票
-  let buf = new Uint8Array(65)
-  buf[0] = 1;
-  buf.set(decodeAddress(communityId), 1);
-  buf.set(decodeAddress(projectId), 33)
-  return '0x' + Buffer.from(buf).toString('hex')
 }

@@ -73,12 +73,17 @@ module.exports = {
     install: "立即安装",
     transfer: "转账",
     asset: "资产",
-    nomination: "投票节点",
+    nomination: "验证者提名",
     contribution: "平行链投票",
     balance: "余额",
     bond: "绑定",
     unBond: "解绑",
-    redeem: "领取奖励"
+    redeem: "领取奖励",
+    bindAmount: "绑定金额",
+    inputAmount: '请输入数量',
+    receiveAddress: '收款地址',
+    transferAmount: '转账金额',
+    unbindAmount: '解绑金额'
   },
   admin: {
     admin: "管理员"
@@ -111,7 +116,8 @@ module.exports = {
     nominators: "提名人数"
   },
   cl: {
-    crowdloan: "平行链拍卖",
+    crowdloan: "平行链插槽拍卖",
+    community: "社区",
     contribute: "投票",
     withdraw: "赎回",
     youWillWithdraw: "你可以赎回",
@@ -121,13 +127,33 @@ module.exports = {
     nominator: "推荐人",
     inputNominator: "请输入推荐人地址",
     optional: "(可选)",
-    completed: "已完成"
+    completed: "已完成",
+    leasePeriod: "竞拍周期",
+    countDown: "竞拍时间",
+    rewards: '奖励',
+    auctionPlan: "竞拍方案奖励",
+    auctionInfo: "拍卖信息",
+    joinAuction: "参与拍卖",
+    raised: "已众筹",
+    fund: "总需求",
+    progress: '众筹进度',
+    contributors:"众筹人数",
+    contributed: "我的投票",
+    myBalance: "我的 {token} 余额",
+    Active: "众筹中",
+    Retired: "退款中",
+    Completed: "众筹结束",
+    chain: "平行链",
+    trieIndex: "竞拍期数",
+    contributeAmount: '投票数',
+    contributeTime: '投票时间'
   },
   transaction: {
     broadcasting: "正在广播交易",
     inBlock: "交易已上链",
     contributeOk: "投票成功",
     withdrawOk: "赎回成功",
+    nominateOk: "提名成功",
     transactionOk:"交易成功",
   },
   stake: {
@@ -185,11 +211,15 @@ module.exports = {
   },
   tip: {
     loading: "加载中，请稍等",
+    connectingPolkadot: "正在连接到波卡网络",
     noAuction: "没有进行中的众贷",
     noProject: "没有进行中的项目",
     noNominations: "没有投票验证者节点",
+    noContribuitons: "没有投票记录",
+    noCrowdloan: "没有进行中的众贷",
+    noStakingProject: "没有验证者节点项目",
     tokenSafeTip: "您的资产将被锁定到 {symbol} 的官方众贷合约内，而不是Nutbox的账户内。",
-    belowMinContribution: "投票数小于最小投票数1.0000个。",
+    belowMinContribution: "投票数小于最小投票数 {min} 个。",
     belowMinBond: "绑定数小于最小绑定数0.1个。",
     wrongNominatorAddress: "推荐人地址格式错误",
     insufficientBalance: "余额不足",
@@ -199,7 +229,9 @@ module.exports = {
     success: "成功！",
     warning: "警告！",
     noNeedWithdraw: '没有可赎回投票',
-    comingSoon: '敬请期待'
+    comingSoon: '敬请期待',
+    clipboard:"剪贴板",
+    copyAddress:"已复制地址:  {address}"
   },
   vote: {
     upvote: "点赞",

@@ -1,17 +1,18 @@
 <template>
-  <div class="contribuions">
+  <div class="contributions">
     <div class="loading-bg" v-if="loadingContributions">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t("tip.loading") }}</p>
     </div>
 
-    <div class="empty-bg" v-if="!loadingContributions && items.length === 0">
-      <img src="~@/static/images/empty-data.png" alt="" />
-      <p>{{ $t("tip.noAuction") }}</p>
-    </div>
-    <div v-show="items.length > 0 && !loadingContributions">
+    <template v-else>
       <b-card class="table-card">
-        <b-table
+        <slot name="title"></slot>
+        <div class="empty-bg" v-if="items.length === 0">
+          <img src="~@/static/images/empty-data.png" alt="" />
+          <p>{{ $t("tip.noContribuitons") }}</p>
+        </div>
+        <b-table v-show="items.length > 0"
           :items="items"
           :fields="fields"
           thead-tr-class="th-cell"
@@ -29,13 +30,13 @@
           </template>
         </b-table>
       </b-card>
-      <b-pagination
+      <b-pagination v-if="items.length !== 0"
         v-model="currentPage"
         :total-rows="totalRows"
         :per-page="perPage"
         class="change-page-box"
       ></b-pagination>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -44,8 +45,8 @@ import { mapState, mapMutations } from "vuex";
 import { CROWD_LOAN_API_URL } from "@/config";
 import axios from "axios";
 import BN from "bn.js";
-import { formatDate } from "@/utils/polkadot/utils";
-import { stanfiAddress } from "@/utils/polkadot/polkadot";
+import { formatDate } from "@/utils/commen/util";
+import { stanfiAddress } from "@/utils/commen/account";
 
 export default {
   name: "UserContributions",
@@ -97,8 +98,8 @@ export default {
       const decimal = new BN(12);
       axios
         .post(CROWD_LOAN_API_URL + "/contrib/find/contributor", {
-          relaychain: "rococo",
-          contributor: stanfiAddress(this.account.address, 42),
+          relaychain: "kusama",
+          contributor: stanfiAddress(this.account.address),
           offset,
           limit,
         })
@@ -111,7 +112,7 @@ export default {
               community: c.communityName,
               chain: c.paraName,
               trieIndex: c.trieIndex,
-              date: c.firstSlot + "-" + c.lastSlot,
+              date: c.firstPeriod + "-" + c.lastPeriod,
               amount: (
                 new BN(c.amount)
                   .div(new BN(10).pow(decimal.sub(new BN(4))))
@@ -133,17 +134,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.contributions {
+  margin-top: 1.2rem;
+}
 .table-card {
   border-radius: 1.4rem;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
   border: none;
   .card-body {
     padding: 0;
-    margin: 1rem;
+    margin: 1.6rem 1.2rem;
     overflow: auto;
   }
 }
-
 
 .Active {
   color: rgba(80, 191, 0, 1);

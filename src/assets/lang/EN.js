@@ -73,12 +73,17 @@ module.exports = {
     install:"Install",
     transfer:"Transfer",
     asset: "Asset",
-    nomination: "Nomination",
-    contribution: "Contribution",
+    nomination: "Validator Nomination",
+    contribution: "Crowdloan Contribution",
     balance: "Balance",
     bond: "Bond",
     unBond: "Unbond",
-    redeem: "Redeem"
+    redeem: "Redeem",
+    bindAmount: "Bond amount",
+    inputAmount: 'Please input amount',
+    receiveAddress: 'Send to address',
+    transferAmount: 'Transfer amount',
+    unbindAmount: 'Unbond amount'
   },
   admin: {
     admin: "管理员"
@@ -112,6 +117,7 @@ dashboard: {
 },
 cl:{
   crowdloan: 'Crowdloan',
+  community: "Community",
   contribute: "Contribute",
   withdraw: "Withdraw",
   youWillWithdraw: "You Would Withdraw",
@@ -121,14 +127,34 @@ cl:{
   nominator: "Nominator",
   inputNominator: "Your Nominator's address",
   optional: "(optional)",
-  completed: "Completed"
+  completed: "Completed",
+  leasePeriod: "Lease Period",
+  countDown: "Countdown",
+  rewards: 'Rewards',
+  auctionPlan: "Crowdloan Reward",
+  auctionInfo: "Crowdloan Detail",
+  joinAuction: "Join Crowdloan",
+  raised: "Raised",
+  fund: "Fund",
+  progress: 'Progress',
+  contributors:"Contributors",
+  contributed: "My Contributed",
+  myBalance: "Balance of {token}",
+  Active: "Active",
+  Retired: "Retired",
+  Completed: "Completed",
+  chain: "Chain",
+  trieIndex: "TrieIndex",
+  contributeAmount: 'Contribute amount',
+  contributeTime: 'Contribute time'
 },
 transaction: {
   broadcasting: "Transaction Is Broadcasting.",
   inBlock: "Transaction included at blockHash.",
   contributeOk: "Contribution Success!",
   withdrawOk: "Withdraw Success!",
-  nominateOk: "Nominate Success!"
+  nominateOk: "Nominate Success!",
+  transactionOk:"Transaction Success!",
 },
   stake: {
     stake: 'Staking Mining',
@@ -185,11 +211,15 @@ transaction: {
   },
   tip: {
     loading: "Loading, please wait",
+    connectingPolkadot: "Connecting Polkadot network",
     noAuction : "No ongoing auction",
     noProject:"No ongoing project",
     noNominations: "No nominated validators",
+    noContribuitons: "No contribution records",
+    noCrowdloan: "No ongoing crowdloan",
+    noStakingProject: "No validators",
     tokenSafeTip: "Your asset would be locked into {symbol} official crowdloan pallet directly, not any accounts of Nutobx.",
-    belowMinContribution:"Input is less than the minimum allowed contribution of 1.0000",
+    belowMinContribution:"Input is less than the minimum allowed contribution of  {min}",
     belowMinBond: "Input is less than the minimum surggest bonded of 0.1",
     wrongNominatorAddress: "Wrong Nominator Address",
     insufficientBalance:"Insufficient Balance",
@@ -199,7 +229,9 @@ transaction: {
     success: "Success!",
     warning: "Warning!",
     noNeedWithdraw: 'No Need To Withdraw',
-    comingSoon: 'Coming Soon'
+    comingSoon: 'Coming Soon',
+    clipboard:"	Clipboard",
+    copyAddress:"Copied address:  {address}"
 },
   vote:{
     upvote:"Upvote",
