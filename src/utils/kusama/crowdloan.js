@@ -155,7 +155,6 @@ export function loadFunds(res) {
       funds: [],
     });
   }
-  console.log('funds', funds);
   // 调整显示顺序
   const idsSort = funds.map(f => f.paraId)
   const showingcrowdloanCard = res.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
