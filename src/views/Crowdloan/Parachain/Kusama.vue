@@ -31,7 +31,7 @@
       <div class="flex-between-center mb-2">
         <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
         <div class="status-container">
-          <span :class="status">{{ $t('cl.'+status) }}</span>
+          <span :class="status" v-show="status">{{ $t('cl.'+status) }}</span>
         </div>
       </div>
 
@@ -124,6 +124,8 @@ export default {
       return this.crowdloanInfo.length > 0 && this.crowdloanInfo[0].para;
     },
     getFundInfo() {
+      const fund = this.fundInfo(this.paraId)
+      this.status = fund ? fund.status : null
       return this.fundInfo(this.paraId);
     },
     leasePeriod() {
