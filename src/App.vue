@@ -227,16 +227,6 @@ export default {
     ]),
     ...mapState("rococo", ["clCommunitys"]),
     ...mapState(["lang"]),
-    contributionsIcon() {
-      return this.activeNav === "contributions"
-        ? require("./static/images/contributions_selected.png")
-        : require("./static/images/contributions.png");
-    },
-    dashboardIcon() {
-      return this.activeNav === "dashboard"
-        ? require("./static/images/dashboard_selected.png")
-        : require("./static/images/dashboard.png");
-    },
     isAdmin() {
       if (!this.clCommunitys || !this.projects) return false;
       const isCrowdloanAdmin = this.clCommunitys?.indexOf(this.account?.address) !== -1
@@ -771,17 +761,8 @@ body {
 #farming-icon {
   background-image: url("./static/images/farming.svg");
 }
-#liquid-staking-icon {
-  background-image: url("./static/images/swap.svg");
-}
-#upvote-icon {
-  background-image: url("./static/images/upvote.svg");
-}
 #blog-icon {
   background-image: url("./static/images/blog.svg");
-}
-#nps-icon {
-  background-image: url("./static/images/nps.svg");
 }
 #admin-icon {
   background-image: url("./static/images/admin.svg");
@@ -797,25 +778,12 @@ body {
   #farming-icon {
     background-image: url("./static/images/farming-hover.svg");
   }
-  #liquid-staking-icon {
-    background-image: url("./static/images/swap-hover.svg");
-  }
-  #upvote-icon {
-    background-image: url("./static/images/upvote-hover.svg");
-  }
   #blog-icon {
     background-image: url("./static/images/blog-hover.svg");
-  }
-  #nps-icon {
-    background-image: url("./static/images/nps-hover.svg");
   }
   #admin-icon {
     background-image: url("./static/images/admin-hover.svg");
   }
-}
-
-#justswap-icon {
-  background-image: url("./static/images/just-swap.svg");
 }
 #github-icon {
   background-image: url("./static/images/GitHub.svg");
@@ -830,9 +798,6 @@ body {
   background-image: url("./static/images/telegram.svg");
 }
 
-#justswap-icon:hover {
-  background-image: url("./static/images/just-swap-hover.svg");
-}
 #github-icon:hover {
   background-image: url("./static/images/GitHub-hover.svg");
 }

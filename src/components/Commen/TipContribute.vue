@@ -8,8 +8,8 @@
     />
     <div class="tip-contribute">
       <div class="text-center mb-4 font20" v-if="lang==='en'">
-        Contribute to<span class="big"> {{ paraName }} </span>crowdloan <br />
-        fund in<span class="big"> {{ getChain }} </span>network
+        Contribute to<span class="big"> {{ paraName }} </span>crowdloan fund<br />
+        in<span class="big"> {{ getChain }} </span>network
       </div>
       <div class="text-center mb-4 font20" v-else>
         为<span class="big"> {{ paraName }} </span>项目<br/>
