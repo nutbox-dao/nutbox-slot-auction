@@ -834,7 +834,7 @@ body {
     padding-left: 0;
   }
   .container {
-    padding: 15px!important;
+    padding: 0px 15px !important;
   }
 }
 @media (min-width: 960px) {
