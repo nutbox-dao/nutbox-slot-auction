@@ -2,6 +2,8 @@ import {
   ApiPromise,
   WsProvider
 } from "@polkadot/api"
+import { typesBundle, typesChain } from "@polkadot/apps-config"
+import { TypeRegistry } from '@polkadot/types/create';
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import {
   POLKADOT_WEB_SOCKET,
@@ -26,6 +28,7 @@ async function initApi(chain) {
   if (chain === 'rococo' && !DEBUG){
     return;
   }
+  const registry = new TypeRegistry();
   const apis = {
     polkadot: store.state.polkadot.api,
     kusama: store.state.kusama.api,
@@ -50,18 +53,26 @@ async function initApi(chain) {
     rpc: jsonrpc,
     types: {
       PalletId: 'Raw',
-      NutboxRemark: NUTBOX_REMARK_TYPE
+      NutboxRemark: NUTBOX_REMARK_TYPE,
+      registry,
+      typesBundle,
+      typesChain
     }
   })
   console.log((new Date().getTime() - s) / 1000, chain, 'connected');
 
-  await web3Enable('nutbox')
-  const injected = await web3FromSource('polkadot-js')
-  api.setSigner(injected.signer)
+  // inject async
+  web3Enable('nutbox').then(async ()=>{
+    const injected = await web3FromSource('polkadot-js')
+    api.setSigner(injected.signer)
+    store.commit(chain + '/saveIsConnected', true)
+    store.commit(chain + '/saveApi', api)
+  })
 
   store.commit(chain + '/saveIsConnected', true)
   store.commit(chain + '/saveApi', api)
   subBlock(api, chain)
+  return api
 }
 
 const subBlock = async (api, chain) => {
