@@ -21,26 +21,26 @@
       <div class="input-group-box">
         <div class="label flex-between-start">
          <span>{{ $t('cl.amount')}}</span>
-         <span>{{ $t('wallet.balance') }}:{{ fbBalance }}</span>
+         <span style="min-width: 5rem">{{ $t('wallet.balance') }}:{{ fbBalance }}</span>
         </div>
-        <div class="flex-between-center">
+        <div class="input-bg flex-between-center">
           <input
             type="number"
             v-model="inputAmount"
             :placeholder="$t('cl.inputAmount')"
           />
-          <span>{{ symbol }}</span>
+          <span class="text-right">{{ symbol }}</span>
         </div>
       </div>
       <div class="input-group-box">
         <div class="label">{{ $t('cl.nominator')}}</div>
-        <div class="flex-between-center">
+        <div class="input-bg flex-between-center">
           <input
             type="text"
             v-model="inputNonimator"
             :placeholder="$t('cl.inputNominator')"
           />
-          <span class="text-grey" style="opacity: 0.4">{{ $t('cl.optional') }}</span>
+          <span class="text-grey text-right" style="opacity: 0.4">{{ $t('cl.optional') }}</span>
         </div>
       </div>
       <button class="primary-btn" @click="confirm" :disabled="isComtribution">
