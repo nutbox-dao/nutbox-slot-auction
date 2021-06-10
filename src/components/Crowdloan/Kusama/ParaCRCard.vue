@@ -30,23 +30,27 @@
      </div>
    </div>
 
-    <div class="text-center" v-if="$store.state.kusama.isConnected">
+    <div class="text-center">
       <button
         class="primary-btn"
+        :disabled="!isConnected"
         v-show="status === 'Active'"
         @click="showContribute = true"
       >
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.contribute") }}
       </button>
       <button
         class="primary-btn"
+        :disabled="!isConnected"
         v-show="status === 'Retired'"
         @click="showWithdraw = true"
       >
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.withdraw") }}
       </button>
       <button class="primary-btn" disabled v-show="status === 'Completed' || status === ''">
-        <b-spinner small type="grow" v-show="status.length === 0"></b-spinner>
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.completed") }}
       </button>
     </div>
@@ -85,7 +89,7 @@
 import TipContribute from "@/components/Commen/TipContribute";
 import TipWithdraw from "@/components/Commen/TipWithdraw";
 import RewardToken from "@/components/Commen/RewardToken"
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   data() {
@@ -117,6 +121,7 @@ export default {
   },
   computed: {
     ...mapGetters("kusama", ["fundInfo"]),
+    ...mapState('kusama', ['isConnected']),
     paraId() {
         return parseInt(this.crowdloan.para.paraId)
     },

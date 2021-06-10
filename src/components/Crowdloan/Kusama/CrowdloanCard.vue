@@ -2,7 +2,7 @@
   <div class="ro-card">
     <div class="card-link-top-box">
       <div class="status-container text-right">
-        <span :class="status">{{ $t('cl.'+status) }}</span>
+        <span :class="status">{{ $t("cl." + status) }}</span>
       </div>
       <div class="flex-start-center">
         <div class="card-link-icons">
@@ -20,7 +20,8 @@
         <div class="card-link-title-text font20 font-bold">
           <div class="link-title">
             <span class="font20" @click="toCommunity">{{
-              getCardInfo && getCardInfo.community.communityName + " " + $t('cl.community')
+              getCardInfo &&
+              getCardInfo.community.communityName + " " + $t("cl.community")
             }}</span>
             <i class="link-icon" @click="toCommunity"></i>
           </div>
@@ -36,49 +37,63 @@
     <div class="c-card">
       <div class="detail-info-box">
         <div class="project-info-container">
-          <span class="name"> {{ $t('cl.leasePeriod') }} </span>
+          <span class="name"> {{ $t("cl.leasePeriod") }} </span>
           <div class="info">{{ leasePeriod || "test data" }}</div>
         </div>
         <div class="project-info-container">
-          <span class="name"> {{ $t('cl.countDown') }} </span>
+          <span class="name"> {{ $t("cl.countDown") }} </span>
           <div class="info">{{ countDown || "test data" }}</div>
         </div>
         <div class="project-info-container">
-          <span class="name"> {{ $t('cl.fund') }} </span>
+          <span class="name"> {{ $t("cl.fund") }} </span>
           <div class="info">
-            <RaisedLabel :fund="getFundInfo" relaychain='kusama'/>
+            <RaisedLabel :fund="getFundInfo" relaychain="kusama" />
             <ContributorsLabel :fund="getFundInfo" />
           </div>
         </div>
-      <div class="project-info-container">
-        <span class="name"> {{ $t('cl.contributed') }} </span>
-        <div class="info">
-          <RaisedLabel :fund="getFundInfo" relaychain='kusama' :isBalance="true" />
-        </div>
-      </div>
         <div class="project-info-container">
-          <span class="name"> {{ $t('cl.rewards') }} </span>
+          <span class="name"> {{ $t("cl.contributed") }} </span>
           <div class="info">
-            <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
+            <RaisedLabel
+              :fund="getFundInfo"
+              relaychain="kusama"
+              :isBalance="true"
+            />
+          </div>
+        </div>
+        <div class="project-info-container">
+          <span class="name"> {{ $t("cl.rewards") }} </span>
+          <div class="info">
+            <RewardToken
+              :icon="token.icon"
+              :token="token.name"
+              v-for="(token, idx) in rewardTokens"
+              :key="idx"
+            />
           </div>
         </div>
       </div>
-      <div class="text-center" v-if="isConnected">
+      <div class="text-center">
         <button
           class="primary-btn"
+          :disabled="!isConnected"
           v-show="status === 'Active'"
           @click="showContribute = true"
         >
+          <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
           {{ $t("cl.contribute") }}
         </button>
         <button
           class="primary-btn"
+          :disabled="!isConnected"
           v-show="status === 'Retired'"
           @click="showWithdraw = true"
         >
+          <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
           {{ $t("cl.withdraw") }}
         </button>
         <button class="primary-btn" disabled v-show="status === 'Completed'">
+          <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
           {{ $t("cl.completed") }}
         </button>
       </div>
@@ -95,7 +110,7 @@
       <TipContribute
         :communityId="communityId"
         :fund="getFundInfo"
-        relaychain='kusama'
+        relaychain="kusama"
         :paraName="getCardInfo && getCardInfo.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -108,7 +123,11 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund='getFundInfo' relaychain='kusama' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw
+        :fund="getFundInfo"
+        relaychain="kusama"
+        @hideWithdraw="showWithdraw = false"
+      />
     </b-modal>
   </div>
 </template>
@@ -123,7 +142,7 @@ import RaisedLabel from "@/components/Commen/RaisedLabel";
 import { PARA_STATUS } from "@/config";
 import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
 import { calStatus } from "@/utils/commen/crowdloan";
-import RewardToken from "@/components/Commen/RewardToken"
+import RewardToken from "@/components/Commen/RewardToken";
 
 export default {
   data() {
@@ -146,7 +165,7 @@ export default {
     TipWithdraw,
     ContributorsLabel,
     RaisedLabel,
-    RewardToken
+    RewardToken,
   },
   watch: {
     async currentBlockNum(newValue, _) {
@@ -155,9 +174,9 @@ export default {
       const raised = fund.raised;
       const cap = fund.cap;
       const firstPeriod = fund.firstPeriod;
-      const lastPeriod = fund.lastPeriod
+      const lastPeriod = fund.lastPeriod;
       const [status] = await calStatus(
-        'kusama',
+        "kusama",
         end,
         firstPeriod,
         lastPeriod,
@@ -222,7 +241,7 @@ export default {
             return min + " mins " + sec + " sec";
           }
         }
-        return this.$t('cl.'+this.status)
+        return this.$t("cl." + this.status);
       } catch (e) {
         console.error("err", e);
         return "";
@@ -242,15 +261,17 @@ export default {
         return "0.0%";
       }
     },
-    rewardTokens(){
-      if (this.getCardInfo){
-        let rewards = this.getCardInfo.para.reward.concat(this.getCardInfo.community.reward)
-        if (rewards.length > 3){
-          rewards = rewards.slice(0, 3)
+    rewardTokens() {
+      if (this.getCardInfo) {
+        let rewards = this.getCardInfo.para.reward.concat(
+          this.getCardInfo.community.reward
+        );
+        if (rewards.length > 3) {
+          rewards = rewards.slice(0, 3);
         }
-        return rewards
+        return rewards;
       }
-      return []
+      return [];
     },
     contributions() {
       try {

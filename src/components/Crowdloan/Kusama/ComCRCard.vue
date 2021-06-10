@@ -50,22 +50,27 @@
         </div>
       </div>
     </div>
-    <div class="text-center" v-if="isConnected">
+    <div class="text-center">
       <button
         class="primary-btn"
+        :disabled="!isConnected"
         v-show="status === 'Active'"
         @click="showContribute = true"
       >
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.contribute") }}
       </button>
       <button
         class="primary-btn"
+        :disabled="!isConnected"
         v-show="status === 'Retired'"
         @click="showWithdraw = true"
       >
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.withdraw") }}
       </button>
       <button class="primary-btn" disabled v-show="status === 'Completed'">
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.completed") }}
       </button>
     </div>
