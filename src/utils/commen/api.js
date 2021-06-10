@@ -21,7 +21,7 @@ import {
 export async function initApis() {
   initApi('polkadot')
   initApi('rococo')
-  await initApi('kusama')
+  initApi('kusama')
 }
 
 async function initApi(chain, changedNode) {

@@ -80,7 +80,7 @@
 import ParaCRCard from "@/components/Crowdloan/Kusama/ParaCRCard";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
-import { subscribeFundInfo as subscribeKusamaFundInfo } from "@/utils/kusama/crowdloan";
+import { loadFunds } from "@/utils/kusama/crowdloan";
 import { formatBalance } from "@/utils/kusama/kusama";
 import { TIME_PERIOD, BLOCK_SECOND } from "@/constant"
 import { calStatus } from "@/utils/commen/crowdloan";
@@ -240,8 +240,9 @@ export default {
         return;
       };
       const res = await getOnshowingCrowdloanCard({ relaychain: "kusama" });
-      await subscribeKusamaFundInfo(res);
-      this.status = this.getFundInfo && this.getFundInfo.status;
+      loadFunds(res)
+      const para = res.filter(c => parseInt(c.para.paraId) === this.paraId)
+      this.status = para.length > 0 ? para.status : 'Completed'
     }catch(e){}
 
   },

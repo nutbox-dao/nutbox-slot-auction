@@ -61,7 +61,7 @@ import ComCRCard from "@/components/Crowdloan/Kusama/ComCRCard";
 import { mapState, mapGetters } from "vuex";
 import { stanfiAddress } from "@/utils/commen/account";
 import { getOnshowingCrowdloanCard as getOnshowingComCRCard } from "@/apis/api";
-import { subscribeFundInfo } from "@/utils/kusama/crowdloan";
+import { loadFunds } from "@/utils/kusama/crowdloan";
 export default {
   data() {
     return {};
@@ -91,7 +91,7 @@ export default {
   async created() {
     if (this.communityInfo) return;
     const res = await getOnshowingComCRCard({ relaychain: "kusama" });
-    await subscribeFundInfo(res);
+    loadFunds(res)
   },
 };
 </script>

@@ -71,9 +71,9 @@ export const subscribeFundInfo = async (crowdloanCard) => {
           const [status, statusIndex] = await calStatus('kusama', end, firstPeriod, lastPeriod, raised, cap, pId, bestBlockNumber)
           let contributions = []
           // 如果有缓存，先直接用已经缓存的contribution数据
-          if (storedFunds && storedFunds.length > 0){
+          if (storedFunds && storedFunds.length > 0) {
             const f = storedFunds.filter(a => a.paraId === pId)
-            if (f && f.length > 0){
+            if (f && f.length > 0) {
               contributions = f[0].funds || []
             }
           }
@@ -114,27 +114,56 @@ export const subscribeFundInfo = async (crowdloanCard) => {
 
 // 此过程最慢，使用异步加载的方式
 export const handleContributors = async (api, funds) => {
-  try{
-  const updateFunds = await Promise.all(funds.map(fund => {
-    return new Promise(async (res) => {
-      const childKey = createChildKey(fund.trieIndex)
-      const keys = await api.rpc.childstate.getKeys(childKey, '0x')
-      const ss58keys = keys.map(k => encodeAddress(k, 0))
-      const values = await Promise.all(keys.map(k => api.rpc.childstate.getStorage(childKey, k)))
-      const contributions = values.map((v, idx) => ({
-        contributor: ss58keys[idx],
-        amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
-      }))
-      fund.funds = contributions || []
-      res(fund)
-    })
-  }))
-  store.commit('kusama/saveClProjectFundInfos', updateFunds)
-}catch(e){
-  console.log(4523, e);
-}
+  try {
+    const updateFunds = await Promise.all(funds.map(fund => {
+      return new Promise(async (res) => {
+        const childKey = createChildKey(fund.trieIndex)
+        const keys = await api.rpc.childstate.getKeys(childKey, '0x')
+        const ss58keys = keys.map(k => encodeAddress(k, 0))
+        const values = await Promise.all(keys.map(k => api.rpc.childstate.getStorage(childKey, k)))
+        const contributions = values.map((v, idx) => ({
+          contributor: ss58keys[idx],
+          amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
+        }))
+        fund.funds = contributions || []
+        res(fund)
+      })
+    }))
+    store.commit('kusama/saveClProjectFundInfos', updateFunds)
+  } catch (e) {
+    console.log(4523, e);
+  }
 }
 
+
+
+export function loadFunds(res) {
+  let funds = [];
+  // 预先展示服务器请求的数据
+  for (const crowdloan of res) {
+    const fund = crowdloan.para
+    funds.push({
+      paraId: parseInt(fund.paraId),
+      status: fund.status,
+      statusIndex: fund.statusIndex,
+      cap: new BN(fund.cap),
+      end: new BN(fund.end),
+      firstPeriod: new BN(fund.firstPeriod),
+      lastPeriod: new BN(fund.lastPeriod),
+      raised: new BN(fund.raised),
+      trieIndex: new BN(fund.trieIndex),
+      funds: [],
+    });
+  }
+  console.log('funds', funds);
+  // 调整显示顺序
+  const idsSort = funds.map(f => f.paraId)
+  const showingcrowdloanCard = res.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
+  store.commit("kusama/saveClProjectFundInfos", funds);
+  store.commit("kusama/saveShowingCrowdloan", showingcrowdloanCard);
+  store.commit("kusama/saveLoadingFunds", false)
+  subscribeFundInfo(res)
+}
 
 export const withdraw = async (paraId, toast, callback) => {
   w('kusama', paraId, toast, callback)
