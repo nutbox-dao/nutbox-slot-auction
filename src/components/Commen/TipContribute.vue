@@ -21,7 +21,7 @@
       <div class="input-group-box">
         <div class="label flex-between-start">
          <span>{{ $t('cl.amount')}}</span>
-         <!-- <span>{{ $t('wallet.balance') }}:{{ fbBalance }}</span> -->
+         <span>{{ $t('wallet.balance') }}:{{ fbBalance }}</span>
         </div>
         <div class="flex-between-center">
           <input
