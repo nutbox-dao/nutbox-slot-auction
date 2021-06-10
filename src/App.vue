@@ -383,7 +383,7 @@ export default {
     this.isConnectingPolkadot = false
 
     // 从钱包加载账号
-    await loadPolkadotAccounts();
+    loadPolkadotAccounts();
     // 获取众贷和验证者投票卡片
     this.getCommnunitys();
     this.getCrowdstacking();
