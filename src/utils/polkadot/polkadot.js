@@ -1,41 +1,9 @@
-import {
-  ApiPromise,
-  WsProvider
-} from "@polkadot/api"
-import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import BN from "bn.js"
-import {
-  POLKADOT_WEB_SOCKET,
-  NUTBOX_REMARK_TYPE
-} from "../../config"
 import store from "../../store"
-import { web3FromSource, web3Enable } from '@polkadot/extension-dapp'
+import { waitApi } from '@/utils/commen/api'
 
 export async function getApi() {
-  if (store.state.polkadot.api) {
-    return store.state.polkadot.api
-  }
-  store.commit('polkadot/saveIsConnected', false)
-
-  console.log('connecting');
-  await web3Enable('nutbox')
-  const wsProvider = new WsProvider(POLKADOT_WEB_SOCKET)
-  const api = await ApiPromise.create({
-    provider: wsProvider,
-    rpc: jsonrpc,
-    types: {
-      PalletId: 'Raw',
-      NutboxRemark: NUTBOX_REMARK_TYPE
-    }
-  })
-  const injected = await web3FromSource('polkadot-js')
-  api.setSigner(injected.signer)
-  console.log('connected');
-
-  store.commit('polkadot/saveIsConnected', true)
-  store.commit('polkadot/saveApi', api)
-  console.log('save api');
-  return api
+  return await waitApi('polkadot')
 }
 
 export const formatBalance = (b) => {

@@ -86,3 +86,18 @@ const subBlock = async (api, chain) => {
     }
   })
 } 
+
+export const waitApi = async (relaychain) => {
+  return new Promise(res => {
+    const api = store.state[relaychain].api
+    if (api && Object.keys(api).length > 0) {
+      res(api);
+    }
+    setInterval(() => {
+      const api = store.state[relaychain].api
+      if (api && Object.keys(api).length > 0) {
+        res(api);
+      }
+    }, 300);
+  })
+}
