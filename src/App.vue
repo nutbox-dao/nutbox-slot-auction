@@ -381,7 +381,7 @@ export default {
     // 初始化apis
     await initApis()
     this.isConnectingPolkadot = false
-    
+
     // 从钱包加载账号
     await loadPolkadotAccounts();
     // 获取众贷和验证者投票卡片
@@ -670,13 +670,25 @@ body {
     }
     #language {
       width: 100%;
-      background-image: url("./static/images/lang.svg");
+      background-image: url("~@/static/images/lang.svg");
       background-repeat: no-repeat;
-      background-position: .4rem center;
+      background-position: center left;
       background-size: .8rem .8rem;
-      height: 1.6rem;
-      background-color: white;
-      border-radius: .6rem;
+      .dropdown-menu {
+        border: none;
+        border-radius: 1.2rem;
+        width: 10rem;
+        min-width: 10rem;
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+      }
+      .dropdown-toggle {
+        color: var(--primary-text) !important;
+        background-color: rgba(0, 0, 0, 0);
+        border: none;
+        font-size: .6rem;
+        text-align: left;
+        padding-left: 1.1rem;
+      }
     }
     .btn {
       color: var(--primary-text) !important;
@@ -687,10 +699,7 @@ body {
       padding: 0 1.6rem !important;
       height: 1.6rem;
     }
-    .dropdown-menu {
-      transform: translate3d(0, -130px, 0px)!important;
-      box-shadow: 0 2px 20px 0 rgba(0, 0, 0, .2);
-    }
+
   }
 }
 .loading-bg {
