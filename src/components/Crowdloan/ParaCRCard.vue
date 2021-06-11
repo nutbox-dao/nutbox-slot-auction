@@ -66,7 +66,7 @@
       <TipContribute
         :communityId="communityId"
         :fund="fundInfo(paraId)"
-        relaychain='kusama'
+        :relaychain='chain'
         :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -79,7 +79,7 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund='fundInfo(paraId)' relaychain='kusama' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund='fundInfo(paraId)' :relaychain='chain' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
@@ -109,19 +109,26 @@ export default {
     },
     status: {
         type: String
+    },
+    chain: {
+      type: String
     }
   },
   methods: {
       toCommunity() {
         if (this.isOfficial) return;
-        this.$router.push('/crowdloan/kusama/community/' + this.crowdloan.community.communityId)
+        this.$router.push('/crowdloan/' + this.chain + '/community/' + this.crowdloan.community.communityId)
       }
   },
   mounted () {
   },
   computed: {
-    ...mapGetters("kusama", ["fundInfo"]),
-    ...mapState('kusama', ['isConnected']),
+    fundInfo() {
+      return this.$store.getters[this.chain + '/fundInfo']
+    },
+    isConnected(){
+      return this.$store.state[this.chain].isConnected
+    },
     paraId() {
         return parseInt(this.crowdloan.para.paraId)
     },

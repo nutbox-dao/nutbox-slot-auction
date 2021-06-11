@@ -28,14 +28,14 @@
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.fund') }} </span>
         <div class="info">
-          <RaisedLabel :fund="getFundInfo" relaychain='kusama' />
+          <RaisedLabel :fund="getFundInfo" :relaychain='chain' />
           <ContributorsLabel :fund="getFundInfo"/>
         </div>
       </div>
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.contributed') }} </span>
         <div class="info">
-          <RaisedLabel :fund="getFundInfo" relaychain='kusama' :isBalance="true" />
+          <RaisedLabel :fund="getFundInfo" :relaychain='chain' :isBalance="true" />
         </div>
       </div>
       <div class="project-info-container">
@@ -86,7 +86,7 @@
       <TipContribute
         :communityId="communityId"
         :fund="getFundInfo"
-        relaychain='kusama'
+        :relaychain='chain'
         :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -99,13 +99,13 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund="getFundInfo" relaychain='kusama' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund="getFundInfo" :relaychain='chain' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 import TipContribute from "@/components/Commen/TipContribute";
 import TipWithdraw from "@/components/Commen/TipWithdraw";
 import ContributorsLabel from "@/components/Commen/ContributorsLabel";
@@ -126,6 +126,9 @@ export default {
     crowdloan: {
       type: Object,
     },
+    chain: {
+      type: String
+    }
   },
   components: {
     TipContribute,
@@ -136,7 +139,7 @@ export default {
   },
   methods: {
     toParaChain() {
-      this.$router.push('/crowdloan/kusama/parachain/' + this.crowdloan.para.paraId)
+      this.$router.push('/crowdloan/' + this.chain + '/parachain/' + this.crowdloan.para.paraId)
     }
   },
   watch: {
@@ -148,7 +151,7 @@ export default {
       const firstPeriod = fund.firstPeriod;
       const lastPeriod = fund.lastPeriod
       const [status] = await calStatus(
-        'kusama',
+        this.chain,
         end,
         firstPeriod,
         lastPeriod,
@@ -161,11 +164,24 @@ export default {
     },
   },
   computed: {
-    ...mapState("kusama", ["isConnected", "clProjectFundInfos"]),
     ...mapState(["lang"]),
-    ...mapGetters("kusama", ["fundInfo", "currentBlockNum", "cardInfo"]),
     getFundInfo() {
       return this.fundInfo(this.paraId);
+    },
+    isConnected(){
+     return this.$store.state[this.chain].isConnected
+    },
+    clProjectFundInfos(){
+      return this.$store.state[this.chain].clProjectFundInfos
+    },
+    fundInfo(){
+      return this.$store.getters[this.chain + '/fundInfo']
+    },
+    currentBlockNum(){
+      return this.$store.getters[this.chain+'/currentBlockNum']
+    },
+    cardInfo(){
+      return this.$store.getters[this.chain+'/cardInfo']
     },
     paraId() {
       return parseInt(this.crowdloan.para.paraId);

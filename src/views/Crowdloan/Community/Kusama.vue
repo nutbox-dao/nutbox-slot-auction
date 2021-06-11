@@ -49,7 +49,7 @@
             v-for="(crowdloan, idx) of crowdloanInfo"
             :key="idx"
           >
-            <ComCRCard :crowdloan="crowdloan" />
+            <ComCRCard :crowdloan="crowdloan" chain="kusama"/>
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import ComCRCard from "@/components/Crowdloan/Kusama/ComCRCard";
+import ComCRCard from "@/components/Crowdloan/ComCRCard";
 import { mapState, mapGetters } from "vuex";
 import { stanfiAddress } from "@/utils/commen/account";
 import { getOnshowingCrowdloanCard as getOnshowingComCRCard } from "@/apis/api";

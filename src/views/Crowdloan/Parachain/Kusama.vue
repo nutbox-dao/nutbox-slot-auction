@@ -69,6 +69,7 @@
           <ParaCRCard
             :crowdloan="crowdloan"
             :status="status || 'Completed'"
+            chain='kusama'
           />
         </div>
       </div>
@@ -77,7 +78,7 @@
 </template>
 
 <script>
-import ParaCRCard from "@/components/Crowdloan/Kusama/ParaCRCard";
+import ParaCRCard from "@/components/Crowdloan/ParaCRCard";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
 import { loadFunds } from "@/utils/kusama/crowdloan";

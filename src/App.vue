@@ -272,6 +272,7 @@ export default {
       }
     },
     copyAddress(a){
+      console.log(stanfiAddress('EY1js3mL4RDgNKse3y4gozpfLHSzRTeUcobn3DWVK23ZpTM'))
       var clipboard = new Clipboard('#avatar');
       clipboard.on("success", (e) => {
         clipboard.destroy();

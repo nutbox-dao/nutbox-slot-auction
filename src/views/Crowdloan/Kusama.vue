@@ -21,6 +21,7 @@
             <CrowdloanCard
               :paraId="parseInt(card.para.paraId)"
               :communityId="card.community.communityId"
+              chain='kusama'
             />
           </div>
         </div>
@@ -30,7 +31,7 @@
 </template>
 
 <script>
-import CrowdloanCard from "../../components/Crowdloan/Kusama/CrowdloanCard";
+import CrowdloanCard from "../../components/Crowdloan/CrowdloanCard";
 import { loadFunds } from "@/utils/kusama/crowdloan";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
@@ -51,6 +52,9 @@ export default {
     ...mapGetters("kusama", ["showingCard"]),
   },
   async created() {
+    if (this.showingCard() && this.showingCard().length > 0) {
+      return
+    };
     const res = await getOnshowingCrowdloanCard({ relaychain: "kusama" });
     // 缓存数据
     loadFunds(res)

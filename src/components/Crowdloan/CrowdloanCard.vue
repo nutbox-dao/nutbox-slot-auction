@@ -47,7 +47,7 @@
         <div class="project-info-container">
           <span class="name"> {{ $t("cl.fund") }} </span>
           <div class="info">
-            <RaisedLabel :fund="getFundInfo" relaychain="kusama" />
+            <RaisedLabel :fund="getFundInfo" :relaychain="chain" />
             <ContributorsLabel :fund="getFundInfo" />
           </div>
         </div>
@@ -56,7 +56,7 @@
           <div class="info">
             <RaisedLabel
               :fund="getFundInfo"
-              relaychain="kusama"
+              :relaychain="chain"
               :isBalance="true"
             />
           </div>
@@ -110,7 +110,7 @@
       <TipContribute
         :communityId="communityId"
         :fund="getFundInfo"
-        relaychain="kusama"
+        :relaychain="chain"
         :paraName="getCardInfo && getCardInfo.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -125,7 +125,7 @@
     >
       <TipWithdraw
         :fund="getFundInfo"
-        relaychain="kusama"
+        :relaychain="chain"
         @hideWithdraw="showWithdraw = false"
       />
     </b-modal>
@@ -159,6 +159,9 @@ export default {
     communityId: {
       type: String,
     },
+    chain: {
+      type: String
+    }
   },
   components: {
     TipContribute,
@@ -176,7 +179,7 @@ export default {
       const firstPeriod = fund.firstPeriod;
       const lastPeriod = fund.lastPeriod;
       const [status] = await calStatus(
-        "kusama",
+        this.chain,
         end,
         firstPeriod,
         lastPeriod,
@@ -189,9 +192,22 @@ export default {
     },
   },
   computed: {
-    ...mapState("kusama", ["isConnected", "clProjectFundInfos"]),
     ...mapState(["lang"]),
-    ...mapGetters("kusama", ["fundInfo", "currentBlockNum", "cardInfo"]),
+    isConnected() {
+      return this.$store.state[this.chain].isConnected
+    },
+    clProjectFundInfos () {
+      return this.$store.state[this.chain].clProjectFundInfos
+    },
+    fundInfo() {
+      return this.$store.getters[this.chain + '/fundInfo']
+    },
+    currentBlockNum() {
+      return this.$store.getters[this.chain + '/currentBlockNum']
+    },
+    cardInfo() {
+      return this.$store.getters[this.chain + '/cardInfo']
+    },
     getFundInfo() {
       return this.fundInfo(this.paraId);
     },
@@ -283,10 +299,10 @@ export default {
   },
   methods: {
     toCommunity() {
-      this.$router.push("/crowdloan/kusama/community/" + this.communityId);
+      this.$router.push("/crowdloan/" + this.chain + "/community/" + this.communityId);
     },
     toParachain() {
-      this.$router.push("/crowdloan/kusama/parachain/" + this.paraId);
+      this.$router.push("/crowdloan/" + this.chain + "/parachain/" + this.paraId);
     },
   },
   mounted() {
