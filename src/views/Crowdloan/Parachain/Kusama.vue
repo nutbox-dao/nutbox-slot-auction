@@ -50,7 +50,7 @@
         <b-tbody>
           <b-tr>
             <td data-label="Lease Period">{{ leasePeriod }}</td>
-            <td data-label="Countdown">{{ countDown }}</td>
+            <td data-label="Countdown">{{ countDown || 'Loading' }}</td>
             <td data-label="Raised">{{ getFundInfo && fb(getFundInfo.raised) }}</td>
             <td data-label="Fund">{{ getFundInfo && fb(getFundInfo.cap) }}</td>
             <td data-label="Progress">{{ percent }}</td>
@@ -83,9 +83,9 @@ import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
 import { loadFunds } from "@/utils/kusama/crowdloan";
 import { formatBalance } from "@/utils/kusama/kusama";
-import { TIME_PERIOD, BLOCK_SECOND } from "@/constant"
 import { calStatus } from "@/utils/commen/crowdloan";
 import { stanfiAddress } from "@/utils/commen/account"
+import { formatCountdown } from '@/utils/helper'
 
 export default {
   name: "Kusama",
@@ -146,35 +146,10 @@ export default {
       try {
         if (!this.getFundInfo) return;
         const end = parseInt(this.getFundInfo.end);
-        const diff = end - parseInt(this.currentBlockNum);
-        const timePeriod = TIME_PERIOD;
-        if (diff > 0) {
-          const secs = diff * BLOCK_SECOND;
-          const month = Math.floor(secs / timePeriod["MONTH"]);
-          const day = Math.floor(
-            (secs % timePeriod["MONTH"]) / timePeriod["DAY"]
-          );
-          const hour = Math.floor(
-            (secs % timePeriod["DAY"]) / timePeriod["HOUR"]
-          );
-          const min = Math.floor(
-            (secs % timePeriod["HOUR"]) / timePeriod["MINUTES"]
-          );
-          const sec = Math.floor(secs % timePeriod["MINUTES"]);
-          if (secs >= timePeriod["MONTH"]) {
-            return month + " mons " + day + " days " + hour + " hrs";
-          } else if (secs >= timePeriod["DAY"]) {
-            return day + " days " + hour + " hrs " + min + " mins";
-          } else if (secs >= timePeriod["HOUR"]) {
-            return hour + " hrs " + min + " mins ";
-          } else {
-            return min + " mins " + sec + " sec";
-          }
-        }
-        return "Completed";
+        return formatCountdown(end, this.currentBlockNum)
       } catch (e) {
         console.error("err", e);
-        return "";
+        return "Loading";
       }
     },
     percent() {

@@ -38,11 +38,11 @@
       <div class="detail-info-box">
         <div class="project-info-container">
           <span class="name"> {{ $t("cl.leasePeriod") }} </span>
-          <div class="info">{{ leasePeriod || "test data" }}</div>
+          <div class="info">{{ leasePeriod || "Loading" }}</div>
         </div>
         <div class="project-info-container">
           <span class="name"> {{ $t("cl.countDown") }} </span>
-          <div class="info">{{ countDown || "test data" }}</div>
+          <div class="info">{{ countDown || "Loading" }}</div>
         </div>
         <div class="project-info-container">
           <span class="name"> {{ $t("cl.fund") }} </span>
@@ -140,9 +140,9 @@ import TipWithdraw from "@/components/Commen/TipWithdraw";
 import ContributorsLabel from "@/components/Commen/ContributorsLabel";
 import RaisedLabel from "@/components/Commen/RaisedLabel";
 import { PARA_STATUS } from "@/config";
-import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
 import { calStatus } from "@/utils/commen/crowdloan";
 import RewardToken from "@/components/Commen/RewardToken";
+import { formatCountdown } from '@/utils/helper'
 
 export default {
   data() {
@@ -232,35 +232,10 @@ export default {
       try {
         if (!this.getFundInfo) return;
         const end = parseInt(this.getFundInfo.end);
-        const diff = end - parseInt(this.currentBlockNum);
-        const timePeriod = TIME_PERIOD;
-        if (diff > 0) {
-          const secs = diff * BLOCK_SECOND;
-          const month = Math.floor(secs / timePeriod["MONTH"]);
-          const day = Math.floor(
-            (secs % timePeriod["MONTH"]) / timePeriod["DAY"]
-          );
-          const hour = Math.floor(
-            (secs % timePeriod["DAY"]) / timePeriod["HOUR"]
-          );
-          const min = Math.floor(
-            (secs % timePeriod["HOUR"]) / timePeriod["MINUTES"]
-          );
-          const sec = Math.floor(secs % timePeriod["MINUTES"]);
-          if (secs >= timePeriod["MONTH"]) {
-            return month + " mons " + day + " days " + hour + " hrs";
-          } else if (secs >= timePeriod["DAY"]) {
-            return day + " days " + hour + " hrs " + min + " mins";
-          } else if (secs >= timePeriod["HOUR"]) {
-            return hour + " hrs " + min + " mins ";
-          } else {
-            return min + " mins " + sec + " sec";
-          }
-        }
-        return this.$t("cl." + this.status);
+        return formatCountdown(end, this.currentBlockNum)
       } catch (e) {
         console.error("err", e);
-        return "";
+        return "Loading";
       }
     },
     completion() {

@@ -89,7 +89,6 @@
 import TipContribute from "@/components/Commen/TipContribute";
 import TipWithdraw from "@/components/Commen/TipWithdraw";
 import RewardToken from "@/components/Commen/RewardToken"
-import { mapGetters, mapState } from 'vuex'
 
 export default {
   data() {

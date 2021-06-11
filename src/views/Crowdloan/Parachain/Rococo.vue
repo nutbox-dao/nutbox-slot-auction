@@ -4,8 +4,7 @@
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t('tip.loading') }}</p>
     </div>
-    <template v-else>
-    <div class="parachain-info p-card">
+    <div class="parachain-info p-card" v-show="paraInfo">
       <img class="poster" :src="paraInfo.posterUrl" v-show="paraInfo.posterUrl && paraInfo.posterUrl.length>4" alt="">
       <img class="back-icon" src="~@/static/images/left-arrow.png" alt="" @click="$router.back()"/>
       <div class="p-detail-info">
@@ -20,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="c-card">
+    <div class="c-card" v-show="paraInfo">
       <a class="font20 font-bold title link" :href="paraInfo && paraInfo.rewardLink[lang]"
          target="_blank">{{ $t("cl.auctionPlan") }}</a>
       <div class="desc" style="margin-top: .8rem" v-html="paraInfo && paraInfo.rewardPlan[lang]">
@@ -28,11 +27,11 @@
       </div>
     </div>
 
-    <div class="c-card crowdloan-detail">
+    <div class="c-card crowdloan-detail" v-show="paraInfo">
       <div class="flex-between-center mb-2">
         <div class="font20 font-bold title">{{ $t("cl.auctionInfo") }}</div>
         <div class="status-container">
-          <span :class="status">{{ $t('cl.'+status) }}</span>
+          <span :class="status" v-show="status">{{ $t('cl.'+status) }}</span>
         </div>
       </div>
 
@@ -51,7 +50,7 @@
         <b-tbody>
           <b-tr>
             <td data-label="Lease Period">{{ leasePeriod }}</td>
-            <td data-label="Countdown">{{ countDown }}</td>
+            <td data-label="Countdown">{{ countDown || 'Loading' }}</td>
             <td data-label="Raised">{{ getFundInfo && fb(getFundInfo.raised) }}</td>
             <td data-label="Fund">{{ getFundInfo && fb(getFundInfo.cap) }}</td>
             <td data-label="Progress">{{ percent }}</td>
@@ -62,7 +61,7 @@
       </b-table-simple>
     </div>
 
-    <div class="card-container">
+    <div class="card-container" v-show="paraInfo">
       <div class="font20 font-bold title">{{ $t('cl.joinAuction') }}</div>
       <div class="row">
         <div class="col-xl-4 col-md-6 mb-4" v-for="crowdloan in crowdloanInfo"
@@ -70,29 +69,29 @@
           <ParaCRCard
             :crowdloan="crowdloan"
             :status="status || 'Completed'"
+            chain='rococo'
           />
         </div>
       </div>
     </div>
-    </template>
   </div>
 </template>
 
 <script>
-import ParaCRCard from "@/components/Crowdloan/Rococo/ParaCRCard";
+import ParaCRCard from "@/components/Crowdloan/ParaCRCard";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
-import { subscribeFundInfo as subscribeKusamaFundInfo } from "@/utils/rococo/crowdloan";
+import { loadFunds } from "@/utils/rococo/crowdloan";
 import { formatBalance } from "@/utils/rococo/rococo";
-import { TIME_PERIOD, BLOCK_SECOND } from "@/constant"
 import { calStatus } from "@/utils/commen/crowdloan";
 import { stanfiAddress } from "@/utils/commen/account"
+import { formatCountdown } from '@/utils/helper'
 
 export default {
   name: "Rococo",
   data() {
       return {
-          status: 'Completed'
+        status: 'Compeleted'
       }
   },
   components: {
@@ -126,6 +125,8 @@ export default {
       return this.crowdloanInfo.length > 0 && this.crowdloanInfo[0].para;
     },
     getFundInfo() {
+      const fund = this.fundInfo(this.paraId)
+      this.status = fund ? fund.status : null
       return this.fundInfo(this.paraId);
     },
     leasePeriod() {
@@ -145,35 +146,10 @@ export default {
       try {
         if (!this.getFundInfo) return;
         const end = parseInt(this.getFundInfo.end);
-        const diff = end - parseInt(this.currentBlockNum);
-        const timePeriod = TIME_PERIOD;
-        if (diff > 0) {
-          const secs = diff * BLOCK_SECOND;
-          const month = Math.floor(secs / timePeriod["MONTH"]);
-          const day = Math.floor(
-            (secs % timePeriod["MONTH"]) / timePeriod["DAY"]
-          );
-          const hour = Math.floor(
-            (secs % timePeriod["DAY"]) / timePeriod["HOUR"]
-          );
-          const min = Math.floor(
-            (secs % timePeriod["HOUR"]) / timePeriod["MINUTES"]
-          );
-          const sec = Math.floor(secs % timePeriod["MINUTES"]);
-          if (secs >= timePeriod["MONTH"]) {
-            return month + " mons " + day + " days " + hour + " hrs";
-          } else if (secs >= timePeriod["DAY"]) {
-            return day + " days " + hour + " hrs " + min + " mins";
-          } else if (secs >= timePeriod["HOUR"]) {
-            return hour + " hrs " + min + " mins ";
-          } else {
-            return min + " mins " + sec + " sec";
-          }
-        }
-        return "Completed";
+        return formatCountdown(end, this.currentBlockNum)
       } catch (e) {
         console.error("err", e);
-        return "";
+        return "Loading";
       }
     },
     percent() {
@@ -225,7 +201,6 @@ export default {
           );
           this.status = status;
         }catch(e) {
-
         }
       }
   },
@@ -241,8 +216,9 @@ export default {
         return;
       };
       const res = await getOnshowingCrowdloanCard({ relaychain: "rococo" });
-      await subscribeKusamaFundInfo(res);
-      this.status = this.getFundInfo && this.getFundInfo.status;
+      loadFunds(res)
+      const para = res.filter(c => parseInt(c.para.paraId) === this.paraId)
+      this.status = para.length > 0 ? para.status : 'Completed'
     }catch(e){}
 
   },

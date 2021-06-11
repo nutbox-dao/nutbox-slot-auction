@@ -111,6 +111,14 @@ module.exports = {
     ownStake: "自己的质押",
     waiting: "候选"
   },
+  date: {
+    year: ' 年 ',
+    month: ' 月 ',
+    day: ' 天 ',
+    hour: ' 小时 ',
+    min: ' 分 ',
+    sec: ' 秒 '
+  },
   dashboard: {
     export: "导出",
     nominators: "提名人数"

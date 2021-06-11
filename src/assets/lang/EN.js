@@ -111,6 +111,14 @@ validator: {
     ownStake: "OwnStake",
     waiting: "Waiting"
 },
+date: {
+  year: ' year ',
+  month: ' mons ',
+  day: ' days ',
+  hour: ' hrs ',
+  min: ' mins ',
+  sec: ' sec '
+},
 dashboard: {
   export: "Export",
   nominators: "Nominators"
