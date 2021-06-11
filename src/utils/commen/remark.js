@@ -32,7 +32,7 @@ export const createKhalaReferrerRemark = (api, paraId, referrer) => {
   const refAcc = api.createType('AccountId', referrer)
   const remark = api.createType('PhalaCrowdloanReferrerRemark', {
     magic: 'CR',
-    paraId: paraId,
+    paraId,
     referrer: refAcc,
     referrerHash: refAcc.hash.toHex()
   })

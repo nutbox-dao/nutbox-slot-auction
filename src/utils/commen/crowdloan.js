@@ -75,10 +75,15 @@ export const contribute = async (relaychain, paraId, amount, communityId, childI
     let trans = []
     const remark = createCrowdloanRemark(api, trieIndex, communityId, childId)
     const remarkTx = api.tx.system.remarkWithEvent(remark)
-    trans.push(contributeTx, remarkTx)
+    trans.push(contributeTx)
+    trans.push(remarkTx)
+
     if (parseInt(paraId) === 2004){
       // 添加phala的remark
-      trans.push(createKhalaReferrerRemark(api, paraId, stanfiAddress(communityId, 2)))
+      const referrer = api.createType('AccountId', communityId)
+      const pid = api.createType('ParaId', 2004)
+      const khalaTx = api.tx.system.remarkWithEvent(createKhalaReferrerRemark(api, pid, referrer))
+      trans.push(khalaTx)
     }
     const unsub = await api.tx.utility
       .batch(trans).signAndSend(from, {
