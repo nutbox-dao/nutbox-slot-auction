@@ -8,6 +8,7 @@ import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import {
   POLKADOT_WEB_SOCKET,
   NUTBOX_REMARK_TYPE,
+  PhalaCrowdloanReferrerRemark,
   KUSAMA_WEB_SOCKET,
   ROCOCO_WEB_SOCKET,
   DEBUG
@@ -54,6 +55,7 @@ async function initApi(chain, changedNode) {
     types: {
       PalletId: 'Raw',
       NutboxRemark: NUTBOX_REMARK_TYPE,
+      PhalaCrowdloanReferrerRemark,
       registry,
       typesBundle,
       typesChain

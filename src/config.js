@@ -31,3 +31,11 @@ export const NUTBOX_REMARK_TYPE = {
   projectId: 'Option<Text>', // 平行链项目方管理id，crowdloan时该字段为空
   nominatorId: 'Option<Text>' // 推荐人id
 }
+
+// Phala推荐机制 remark
+export const   PhalaCrowdloanReferrerRemark = {
+  "magic": "Bytes",
+  "paraId": "ParaId",
+  "referrer": "AccountId",
+  "referrerHash": "Bytes"
+}

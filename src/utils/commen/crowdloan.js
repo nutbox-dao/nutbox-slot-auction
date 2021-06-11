@@ -8,7 +8,8 @@ import {
 } from '@/i18n'
 
 import {
-  createCrowdloanRemark
+  createCrowdloanRemark,
+  createKhalaReferrerRemark
 } from './remark'
 
 import {
@@ -71,10 +72,16 @@ export const contribute = async (relaychain, paraId, amount, communityId, childI
   const nonce = (await api.query.system.account(from)).nonce.toNumber()
   const contributeTx = api.tx.crowdloan.contribute(paraId, amount, null)
   if (communityId) {
+    let trans = []
     const remark = createCrowdloanRemark(api, trieIndex, communityId, childId)
     const remarkTx = api.tx.system.remarkWithEvent(remark)
+    trans.push(contributeTx, remarkTx)
+    if (parseInt(paraId) === 2004){
+      // 添加phala的remark
+      trans.push(createKhalaReferrerRemark(api, paraId, communityId))
+    }
     const unsub = await api.tx.utility
-      .batch([contributeTx, remarkTx]).signAndSend(from, {
+      .batch(trans).signAndSend(from, {
         nonce
       }, ({
         status,
