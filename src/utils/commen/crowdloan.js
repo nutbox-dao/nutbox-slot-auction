@@ -78,7 +78,7 @@ export const contribute = async (relaychain, paraId, amount, communityId, childI
     trans.push(contributeTx, remarkTx)
     if (parseInt(paraId) === 2004){
       // 添加phala的remark
-      trans.push(createKhalaReferrerRemark(api, paraId, communityId))
+      trans.push(createKhalaReferrerRemark(api, paraId, stanfiAddress(communityId, 2)))
     }
     const unsub = await api.tx.utility
       .batch(trans).signAndSend(from, {
