@@ -111,6 +111,14 @@ validator: {
     ownStake: "OwnStake",
     waiting: "Waiting"
 },
+date: {
+  year: ' year ',
+  month: ' mons ',
+  day: ' days ',
+  hour: ' hrs ',
+  min: ' mins ',
+  sec: ' sec '
+},
 dashboard: {
   export: "Export",
   nominators: "Nominators"
@@ -138,7 +146,7 @@ cl:{
   fund: "Fund",
   progress: 'Progress',
   contributors:"Contributors",
-  contributed: "My Contributed",
+  contributed: "My Contribution",
   myBalance: "Balance of {token}",
   Active: "Active",
   Retired: "Retired",

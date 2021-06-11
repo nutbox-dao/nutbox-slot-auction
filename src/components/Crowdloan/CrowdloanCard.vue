@@ -2,7 +2,7 @@
   <div class="ro-card">
     <div class="card-link-top-box">
       <div class="status-container text-right">
-        <span :class="status">{{ $t('cl.'+status) }}</span>
+        <span :class="status">{{ $t("cl." + status) }}</span>
       </div>
       <div class="flex-start-center">
         <div class="card-link-icons">
@@ -20,7 +20,8 @@
         <div class="card-link-title-text font20 font-bold">
           <div class="link-title">
             <span class="font20" @click="toCommunity">{{
-              getCardInfo && getCardInfo.community.communityName + " " + $t('cl.community')
+              getCardInfo &&
+              getCardInfo.community.communityName + " " + $t("cl.community")
             }}</span>
             <i class="link-icon" @click="toCommunity"></i>
           </div>
@@ -36,49 +37,63 @@
     <div class="c-card">
       <div class="detail-info-box">
         <div class="project-info-container">
-          <span class="name"> {{ $t('cl.leasePeriod') }} </span>
-          <div class="info">{{ leasePeriod || "test data" }}</div>
+          <span class="name"> {{ $t("cl.leasePeriod") }} </span>
+          <div class="info">{{ leasePeriod || "Loading" }}</div>
         </div>
         <div class="project-info-container">
-          <span class="name"> {{ $t('cl.countDown') }} </span>
-          <div class="info">{{ countDown || "test data" }}</div>
+          <span class="name"> {{ $t("cl.countDown") }} </span>
+          <div class="info">{{ countDown || "Loading" }}</div>
         </div>
         <div class="project-info-container">
-          <span class="name"> {{ $t('cl.fund') }} </span>
+          <span class="name"> {{ $t("cl.fund") }} </span>
           <div class="info">
-            <RaisedLabel :fund="getFundInfo" relaychain='kusama'/>
+            <RaisedLabel :fund="getFundInfo" :relaychain="chain" />
             <ContributorsLabel :fund="getFundInfo" />
           </div>
         </div>
-      <div class="project-info-container">
-        <span class="name"> {{ $t('cl.contributed') }} </span>
-        <div class="info">
-          <RaisedLabel :fund="getFundInfo" relaychain='kusama' :isBalance="true" />
-        </div>
-      </div>
         <div class="project-info-container">
-          <span class="name"> {{ $t('cl.rewards') }} </span>
+          <span class="name"> {{ $t("cl.contributed") }} </span>
           <div class="info">
-            <RewardToken :icon='token.icon' :token='token.name' v-for="(token, idx) in rewardTokens" :key="idx"/>
+            <RaisedLabel
+              :fund="getFundInfo"
+              :relaychain="chain"
+              :isBalance="true"
+            />
+          </div>
+        </div>
+        <div class="project-info-container">
+          <span class="name"> {{ $t("cl.rewards") }} </span>
+          <div class="info">
+            <RewardToken
+              :icon="token.icon"
+              :token="token.name"
+              v-for="(token, idx) in rewardTokens"
+              :key="idx"
+            />
           </div>
         </div>
       </div>
-      <div class="text-center" v-if="isConnected">
+      <div class="text-center">
         <button
           class="primary-btn"
+          :disabled="!isConnected"
           v-show="status === 'Active'"
           @click="showContribute = true"
         >
+          <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
           {{ $t("cl.contribute") }}
         </button>
         <button
           class="primary-btn"
+          :disabled="!isConnected"
           v-show="status === 'Retired'"
           @click="showWithdraw = true"
         >
+          <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
           {{ $t("cl.withdraw") }}
         </button>
         <button class="primary-btn" disabled v-show="status === 'Completed'">
+          <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
           {{ $t("cl.completed") }}
         </button>
       </div>
@@ -95,7 +110,7 @@
       <TipContribute
         :communityId="communityId"
         :fund="getFundInfo"
-        relaychain='kusama'
+        :relaychain="chain"
         :paraName="getCardInfo && getCardInfo.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -108,7 +123,11 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund='getFundInfo' relaychain='kusama' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw
+        :fund="getFundInfo"
+        :relaychain="chain"
+        @hideWithdraw="showWithdraw = false"
+      />
     </b-modal>
   </div>
 </template>
@@ -121,9 +140,9 @@ import TipWithdraw from "@/components/Commen/TipWithdraw";
 import ContributorsLabel from "@/components/Commen/ContributorsLabel";
 import RaisedLabel from "@/components/Commen/RaisedLabel";
 import { PARA_STATUS } from "@/config";
-import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
 import { calStatus } from "@/utils/commen/crowdloan";
-import RewardToken from "@/components/Commen/RewardToken"
+import RewardToken from "@/components/Commen/RewardToken";
+import { formatCountdown } from '@/utils/helper'
 
 export default {
   data() {
@@ -140,13 +159,16 @@ export default {
     communityId: {
       type: String,
     },
+    chain: {
+      type: String
+    }
   },
   components: {
     TipContribute,
     TipWithdraw,
     ContributorsLabel,
     RaisedLabel,
-    RewardToken
+    RewardToken,
   },
   watch: {
     async currentBlockNum(newValue, _) {
@@ -155,9 +177,9 @@ export default {
       const raised = fund.raised;
       const cap = fund.cap;
       const firstPeriod = fund.firstPeriod;
-      const lastPeriod = fund.lastPeriod
+      const lastPeriod = fund.lastPeriod;
       const [status] = await calStatus(
-        'kusama',
+        this.chain,
         end,
         firstPeriod,
         lastPeriod,
@@ -170,9 +192,22 @@ export default {
     },
   },
   computed: {
-    ...mapState("kusama", ["isConnected", "clProjectFundInfos"]),
     ...mapState(["lang"]),
-    ...mapGetters("kusama", ["fundInfo", "currentBlockNum", "cardInfo"]),
+    isConnected() {
+      return this.$store.state[this.chain].isConnected
+    },
+    clProjectFundInfos () {
+      return this.$store.state[this.chain].clProjectFundInfos
+    },
+    fundInfo() {
+      return this.$store.getters[this.chain + '/fundInfo']
+    },
+    currentBlockNum() {
+      return this.$store.getters[this.chain + '/currentBlockNum']
+    },
+    cardInfo() {
+      return this.$store.getters[this.chain + '/cardInfo']
+    },
     getFundInfo() {
       return this.fundInfo(this.paraId);
     },
@@ -197,35 +232,10 @@ export default {
       try {
         if (!this.getFundInfo) return;
         const end = parseInt(this.getFundInfo.end);
-        const diff = end - parseInt(this.currentBlockNum);
-        const timePeriod = TIME_PERIOD;
-        if (diff > 0) {
-          const secs = diff * BLOCK_SECOND;
-          const month = Math.floor(secs / timePeriod["MONTH"]);
-          const day = Math.floor(
-            (secs % timePeriod["MONTH"]) / timePeriod["DAY"]
-          );
-          const hour = Math.floor(
-            (secs % timePeriod["DAY"]) / timePeriod["HOUR"]
-          );
-          const min = Math.floor(
-            (secs % timePeriod["HOUR"]) / timePeriod["MINUTES"]
-          );
-          const sec = Math.floor(secs % timePeriod["MINUTES"]);
-          if (secs >= timePeriod["MONTH"]) {
-            return month + " mons " + day + " days " + hour + " hrs";
-          } else if (secs >= timePeriod["DAY"]) {
-            return day + " days " + hour + " hrs " + min + " mins";
-          } else if (secs >= timePeriod["HOUR"]) {
-            return hour + " hrs " + min + " mins ";
-          } else {
-            return min + " mins " + sec + " sec";
-          }
-        }
-        return this.$t('cl.'+this.status)
+        return formatCountdown(end, this.currentBlockNum)
       } catch (e) {
         console.error("err", e);
-        return "";
+        return "Loading";
       }
     },
     completion() {
@@ -242,15 +252,17 @@ export default {
         return "0.0%";
       }
     },
-    rewardTokens(){
-      if (this.getCardInfo){
-        let rewards = this.getCardInfo.para.reward.concat(this.getCardInfo.community.reward)
-        if (rewards.length > 3){
-          rewards = rewards.slice(0, 3)
+    rewardTokens() {
+      if (this.getCardInfo) {
+        let rewards = this.getCardInfo.para.reward.concat(
+          this.getCardInfo.community.reward
+        );
+        if (rewards.length > 3) {
+          rewards = rewards.slice(0, 3);
         }
-        return rewards
+        return rewards;
       }
-      return []
+      return [];
     },
     contributions() {
       try {
@@ -262,10 +274,10 @@ export default {
   },
   methods: {
     toCommunity() {
-      this.$router.push("/crowdloan/kusama/community/" + this.communityId);
+      this.$router.push("/crowdloan/" + this.chain + "/community/" + this.communityId);
     },
     toParachain() {
-      this.$router.push("/crowdloan/kusama/parachain/" + this.paraId);
+      this.$router.push("/crowdloan/" + this.chain + "/parachain/" + this.paraId);
     },
   },
   mounted() {

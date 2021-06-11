@@ -272,6 +272,7 @@ export default {
       }
     },
     copyAddress(a){
+      console.log(stanfiAddress('EY1js3mL4RDgNKse3y4gozpfLHSzRTeUcobn3DWVK23ZpTM'))
       var clipboard = new Clipboard('#avatar');
       clipboard.on("success", (e) => {
         clipboard.destroy();
@@ -368,15 +369,15 @@ export default {
       console.log('Is mobile device');
       this.$store.commit('polkadot/saveAccount', null)
     }
+    // 获取众贷和验证者投票卡片
+    this.getCommnunitys();
+    this.getCrowdstacking();
     // 初始化apis
-    await initApis()
+    initApis()
     this.isConnectingPolkadot = false
 
     // 从钱包加载账号
     loadPolkadotAccounts();
-    // 获取众贷和验证者投票卡片
-    this.getCommnunitys();
-    this.getCrowdstacking();
   },
 };
 </script>

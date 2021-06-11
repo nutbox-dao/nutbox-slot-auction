@@ -21,10 +21,10 @@ import {
 export async function initApis() {
   initApi('polkadot')
   initApi('rococo')
-  await initApi('kusama')
+  initApi('kusama')
 }
 
-async function initApi(chain) {
+async function initApi(chain, changedNode) {
   if (chain === 'rococo' && !DEBUG){
     return;
   }
@@ -47,7 +47,7 @@ async function initApi(chain) {
 
   const s = new Date().getTime()
   console.log('start init', chain, s);
-  const wsProvider = new WsProvider(node[chain])
+  const wsProvider = new WsProvider(changedNode || node[chain])
   const api = await ApiPromise.create({
     provider: wsProvider,
     rpc: jsonrpc,

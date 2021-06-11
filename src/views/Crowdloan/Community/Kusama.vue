@@ -49,7 +49,7 @@
             v-for="(crowdloan, idx) of crowdloanInfo"
             :key="idx"
           >
-            <ComCRCard :crowdloan="crowdloan" />
+            <ComCRCard :crowdloan="crowdloan" chain="kusama"/>
           </div>
         </div>
       </div>
@@ -57,11 +57,11 @@
 </template>
 
 <script>
-import ComCRCard from "@/components/Crowdloan/Kusama/ComCRCard";
+import ComCRCard from "@/components/Crowdloan/ComCRCard";
 import { mapState, mapGetters } from "vuex";
 import { stanfiAddress } from "@/utils/commen/account";
 import { getOnshowingCrowdloanCard as getOnshowingComCRCard } from "@/apis/api";
-import { subscribeFundInfo } from "@/utils/kusama/crowdloan";
+import { loadFunds } from "@/utils/kusama/crowdloan";
 export default {
   data() {
     return {};
@@ -91,7 +91,7 @@ export default {
   async created() {
     if (this.communityInfo) return;
     const res = await getOnshowingComCRCard({ relaychain: "kusama" });
-    await subscribeFundInfo(res);
+    loadFunds(res)
   },
 };
 </script>

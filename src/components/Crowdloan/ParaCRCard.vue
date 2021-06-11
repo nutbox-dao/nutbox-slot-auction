@@ -30,23 +30,27 @@
      </div>
    </div>
 
-    <div class="text-center" v-if="$store.state.kusama.isConnected">
+    <div class="text-center">
       <button
         class="primary-btn"
+        :disabled="!isConnected"
         v-show="status === 'Active'"
         @click="showContribute = true"
       >
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.contribute") }}
       </button>
       <button
         class="primary-btn"
+        :disabled="!isConnected"
         v-show="status === 'Retired'"
         @click="showWithdraw = true"
       >
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.withdraw") }}
       </button>
       <button class="primary-btn" disabled v-show="status === 'Completed' || status === ''">
-        <b-spinner small type="grow" v-show="status.length === 0"></b-spinner>
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.completed") }}
       </button>
     </div>
@@ -62,7 +66,7 @@
       <TipContribute
         :communityId="communityId"
         :fund="fundInfo(paraId)"
-        relaychain='kusama'
+        :relaychain='chain'
         :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -75,7 +79,7 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund='fundInfo(paraId)' relaychain='kusama' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund='fundInfo(paraId)' :relaychain='chain' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
@@ -85,7 +89,6 @@
 import TipContribute from "@/components/Commen/TipContribute";
 import TipWithdraw from "@/components/Commen/TipWithdraw";
 import RewardToken from "@/components/Commen/RewardToken"
-import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -105,18 +108,26 @@ export default {
     },
     status: {
         type: String
+    },
+    chain: {
+      type: String
     }
   },
   methods: {
       toCommunity() {
         if (this.isOfficial) return;
-        this.$router.push('/crowdloan/kusama/community/' + this.crowdloan.community.communityId)
+        this.$router.push('/crowdloan/' + this.chain + '/community/' + this.crowdloan.community.communityId)
       }
   },
   mounted () {
   },
   computed: {
-    ...mapGetters("kusama", ["fundInfo"]),
+    fundInfo() {
+      return this.$store.getters[this.chain + '/fundInfo']
+    },
+    isConnected(){
+      return this.$store.state[this.chain].isConnected
+    },
     paraId() {
         return parseInt(this.crowdloan.para.paraId)
     },

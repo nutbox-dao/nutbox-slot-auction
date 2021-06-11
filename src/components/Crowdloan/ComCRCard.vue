@@ -19,23 +19,23 @@
     <div class="detail-info-box">
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.leasePeriod') }} </span>
-        <div class="info">{{ leasePeriod || "test data" }}</div>
+        <div class="info">{{ leasePeriod || "Loading" }}</div>
       </div>
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.countDown') }} </span>
-        <div class="info">{{ countDown || "test data" }}</div>
+        <div class="info">{{ countDown || "Loading" }}</div>
       </div>
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.fund') }} </span>
         <div class="info">
-          <RaisedLabel :fund="getFundInfo" relaychain='kusama' />
+          <RaisedLabel :fund="getFundInfo" :relaychain='chain' />
           <ContributorsLabel :fund="getFundInfo"/>
         </div>
       </div>
       <div class="project-info-container">
         <span class="name"> {{ $t('cl.contributed') }} </span>
         <div class="info">
-          <RaisedLabel :fund="getFundInfo" relaychain='kusama' :isBalance="true" />
+          <RaisedLabel :fund="getFundInfo" :relaychain='chain' :isBalance="true" />
         </div>
       </div>
       <div class="project-info-container">
@@ -50,22 +50,27 @@
         </div>
       </div>
     </div>
-    <div class="text-center" v-if="isConnected">
+    <div class="text-center">
       <button
         class="primary-btn"
+        :disabled="!isConnected"
         v-show="status === 'Active'"
         @click="showContribute = true"
       >
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.contribute") }}
       </button>
       <button
         class="primary-btn"
+        :disabled="!isConnected"
         v-show="status === 'Retired'"
         @click="showWithdraw = true"
       >
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.withdraw") }}
       </button>
       <button class="primary-btn" disabled v-show="status === 'Completed'">
+        <b-spinner small type="grow" v-show="!isConnected"></b-spinner>
         {{ $t("cl.completed") }}
       </button>
     </div>
@@ -81,7 +86,7 @@
       <TipContribute
         :communityId="communityId"
         :fund="getFundInfo"
-        relaychain='kusama'
+        :relaychain='chain'
         :paraName="crowdloan.para.paraName"
         @hideContribute="showContribute = false"
       />
@@ -94,20 +99,20 @@
       hide-footer
       no-close-on-backdrop
     >
-      <TipWithdraw :fund="getFundInfo" relaychain='kusama' @hideWithdraw="showWithdraw = false" />
+      <TipWithdraw :fund="getFundInfo" :relaychain='chain' @hideWithdraw="showWithdraw = false" />
     </b-modal>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 import TipContribute from "@/components/Commen/TipContribute";
 import TipWithdraw from "@/components/Commen/TipWithdraw";
 import ContributorsLabel from "@/components/Commen/ContributorsLabel";
 import RaisedLabel from "@/components/Commen/RaisedLabel";
-import { BLOCK_SECOND, TIME_PERIOD } from "@/constant";
 import { calStatus } from "@/utils/commen/crowdloan";
 import RewardToken from "@/components/Commen/RewardToken";
+import { formatCountdown } from "@/utils/helper"
 
 export default {
   data() {
@@ -121,6 +126,9 @@ export default {
     crowdloan: {
       type: Object,
     },
+    chain: {
+      type: String
+    }
   },
   components: {
     TipContribute,
@@ -131,7 +139,7 @@ export default {
   },
   methods: {
     toParaChain() {
-      this.$router.push('/crowdloan/kusama/parachain/' + this.crowdloan.para.paraId)
+      this.$router.push('/crowdloan/' + this.chain + '/parachain/' + this.crowdloan.para.paraId)
     }
   },
   watch: {
@@ -143,7 +151,7 @@ export default {
       const firstPeriod = fund.firstPeriod;
       const lastPeriod = fund.lastPeriod
       const [status] = await calStatus(
-        'kusama',
+        this.chain,
         end,
         firstPeriod,
         lastPeriod,
@@ -156,11 +164,24 @@ export default {
     },
   },
   computed: {
-    ...mapState("kusama", ["isConnected", "clProjectFundInfos"]),
     ...mapState(["lang"]),
-    ...mapGetters("kusama", ["fundInfo", "currentBlockNum", "cardInfo"]),
     getFundInfo() {
       return this.fundInfo(this.paraId);
+    },
+    isConnected(){
+     return this.$store.state[this.chain].isConnected
+    },
+    clProjectFundInfos(){
+      return this.$store.state[this.chain].clProjectFundInfos
+    },
+    fundInfo(){
+      return this.$store.getters[this.chain + '/fundInfo']
+    },
+    currentBlockNum(){
+      return this.$store.getters[this.chain+'/currentBlockNum']
+    },
+    cardInfo(){
+      return this.$store.getters[this.chain+'/cardInfo']
     },
     paraId() {
       return parseInt(this.crowdloan.para.paraId);
@@ -197,35 +218,10 @@ export default {
       try {
         if (!this.getFundInfo) return;
         const end = parseInt(this.getFundInfo.end);
-        const diff = end - parseInt(this.currentBlockNum);
-        const timePeriod = TIME_PERIOD;
-        if (diff > 0) {
-          const secs = diff * BLOCK_SECOND;
-          const month = Math.floor(secs / timePeriod["MONTH"]);
-          const day = Math.floor(
-            (secs % timePeriod["MONTH"]) / timePeriod["DAY"]
-          );
-          const hour = Math.floor(
-            (secs % timePeriod["DAY"]) / timePeriod["HOUR"]
-          );
-          const min = Math.floor(
-            (secs % timePeriod["HOUR"]) / timePeriod["MINUTES"]
-          );
-          const sec = Math.floor(secs % timePeriod["MINUTES"]);
-          if (secs >= timePeriod["MONTH"]) {
-            return month + " mons " + day + " days " + hour + " hrs";
-          } else if (secs >= timePeriod["DAY"]) {
-            return day + " days " + hour + " hrs " + min + " mins";
-          } else if (secs >= timePeriod["HOUR"]) {
-            return hour + " hrs " + min + " mins ";
-          } else {
-            return min + " mins " + sec + " sec";
-          }
-        }
-        return this.$t('cl.'+this.status)
+        return formatCountdown(end, this.currentBlockNum)
       } catch (e) {
         console.error("err", e);
-        return "";
+        return "Loading";
       }
     },
     completion() {
