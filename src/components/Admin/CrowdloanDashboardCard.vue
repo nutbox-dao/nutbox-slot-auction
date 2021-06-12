@@ -59,6 +59,8 @@ import { formatBalance as fbr } from "@/utils/rococo/rococo";
 import { formatBalance as fbk } from "@/utils/kusama/kusama";
 import { formatBalance as fbp } from "@/utils/polkadot/polkadot";
 import { formatDate } from "@/utils/commen/util";
+import { POLKADTO_ADDRESS_FORMAT_CODE } from "@/config"
+import { stanfiAddress } from '@/utils/commen/account'
 
 export default {
   data() {
@@ -132,8 +134,8 @@ export default {
               trieIndex,
               firstPeriod: card.firstPeriod,
               lastPeriod: card.lastPeriod,
-              contributor: r.contributor,
-              nominatorId: r.nominatorId,
+              contributor: stanfiAddress(r.contributor, POLKADTO_ADDRESS_FORMAT_CODE[this.chain]),
+              nominatorId: stanfiAddress(r.nominatorId, POLKADTO_ADDRESS_FORMAT_CODE[this.chain]),
               amount,
               blockHash: r.blockHash,
               contributeTime: formatDate(r.createdAt),
