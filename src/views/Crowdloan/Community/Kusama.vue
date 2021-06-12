@@ -49,7 +49,7 @@
             v-for="(crowdloan, idx) of crowdloanInfo"
             :key="idx"
           >
-            <ComCRCard :crowdloan="crowdloan" chain="kusama"/>
+            <ComCRCard :crowdloan="crowdloan" :communityNominatorId='communityNominatorId' chain="kusama"/>
           </div>
         </div>
       </div>
@@ -64,7 +64,9 @@ import { getOnshowingCrowdloanCard as getOnshowingComCRCard } from "@/apis/api";
 import { loadFunds } from "@/utils/kusama/crowdloan";
 export default {
   data() {
-    return {};
+    return {
+      communityNominatorId: null
+    };
   },
   name: "Kusama",
   components: {
@@ -87,6 +89,12 @@ export default {
     communityInfo() {
       return this.crowdloanInfo.length > 0 && this.crowdloanInfo[0].community;
     },
+  },
+  mounted () {
+    const nominator = stanfiAddress(this.$route.params.nominatorId)
+    if (nominator){
+      this.communityNominatorId = nominator;
+    } 
   },
   async created() {
     if (this.communityInfo) return;

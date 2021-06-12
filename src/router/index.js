@@ -73,11 +73,15 @@ const routes = [
     ]
   },
   {
-    path: '/crowdloan/rococo/community/:communityid',
+    path: '/crowdloan/rococo/community/:communityid/:nominatorId',
     component: RococoCommunity
   },
   {
     path: '/crowdloan/kusama/community/:communityid',
+    component: KusamaCommunity
+  },
+  {
+    path: '/crowdloan/kusama/community/:communityid/:nominatorId',
     component: KusamaCommunity
   },
   {

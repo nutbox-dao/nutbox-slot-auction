@@ -22,6 +22,12 @@ export const PARA_STATUS = {
   OTHER: "Other"
 }
 
+export const POLKADTO_ADDRESS_FORMAT_CODE = {
+  polkadot: 0,
+  kusama: 2,
+  substrate: 42
+}
+
 // 添加到交易batch的remark结构
 export const NUTBOX_REMARK_TYPE = {
   magic: 'Text',      // 默认为nutbox
