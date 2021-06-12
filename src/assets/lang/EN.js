@@ -230,6 +230,8 @@ transaction: {
     belowMinContribution:"Input is less than the minimum allowed contribution of  {min}",
     belowMinBond: "Input is less than the minimum surggest bonded of 0.1",
     wrongNominatorAddress: "Wrong Nominator Address",
+    wrongTransferAddress: "Wrong Transfer Address",
+    inputAddressType: "Please Input {relaychain} Address",
     insufficientBalance:"Insufficient Balance",
     outOfCap: "Out of cap",
     tips:"Tips",
