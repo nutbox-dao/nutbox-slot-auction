@@ -204,11 +204,6 @@ import { subBonded as subKusamaBonded } from "./utils/kusama/staking";
 import { stanfiAddress } from "./utils/commen/account";
 import { initApis } from "./utils/commen/api"
 import { isMobile } from "./utils/commen/util"
-  import {
-    encodeAddress,
-    decodeAddress,
-  } from "@polkadot/util-crypto"
-  import { u8aToHex, stringToHex } from "@polkadot/util"
 
 export default {
   data() {
@@ -277,10 +272,6 @@ export default {
       }
     },
     copyAddress(a){
-      console.log(stanfiAddress('EY1js3mL4RDgNKse3y4gozpfLHSzRTeUcobn3DWVK23ZpTM'))
-      console.log(stringToHex('1561W29uLi6V9TmMEpRTXTc4Qd7d2GQCaCPtiq5ewRVHxDNp'));
-      console.log(stringToHex('Asfm1hJizyDJXAp9MJUuMsV47Fv5T2im8x2LWixQH5nEbGQ'));
-      console.log(stringToHex('GfL21Ei7HqwTaaH3tBWHG8uhbQD8dfEx5W9xCNFs8gGWtu9'));
       var clipboard = new Clipboard('#avatar');
       clipboard.on("success", (e) => {
         clipboard.destroy();
