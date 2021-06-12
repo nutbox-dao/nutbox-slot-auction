@@ -62,6 +62,7 @@ import { formatBalance as fbr } from "@/utils/rococo/rococo"
 import BN from "bn.js";
 import { stanfiAddress } from '@/utils/commen/account';
 import { POLKADOT_RELAYCHAIN_SYMBOL } from '@/constant'
+import { POLKADTO_ADDRESS_FORMAT_CODE } from '@/config'
 
 
 export default {
@@ -139,13 +140,14 @@ export default {
         });
         return false;
       }
+      // check nominator address
       this.inputNonimator = this.inputNonimator?.trim()
       if (
         this.inputNonimator &&
         this.inputNonimator.length > 0 &&
-        !stanfiAddress(this.inputNonimator)
+        this.inputNonimator != stanfiAddress(this.inputNonimator, POLKADTO_ADDRESS_FORMAT_CODE[this.relaychain])
       ) {
-        this.$bvToast.toast(this.$t('tip.wrongNominatorAddress'), {
+        this.$bvToast.toast(this.$t('tip.inputAddressType',{relaychain: this.relaychain.toUpperCase()}), {
           title: this.$t('tip.tips'),
           autoHideDelay: 5000,
           variant: "warning", // info success danger

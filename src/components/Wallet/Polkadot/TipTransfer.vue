@@ -14,7 +14,7 @@
       <div class="input-group-box">
         <div class="label">{{$t('wallet.receiveAddress')}}</div>
         <div class="flex-between-center">
-          <input type="string" v-model="inputAddress" class="font16" />
+          <input type="string" v-model="inputAddress" :placeholder="$t('tip.inputAddressType', {relaychain: 'POLKADOT'})" class="font16" />
         </div>
       </div>
       <div class="input-group-box">
@@ -74,8 +74,8 @@ export default {
       }
       const amount = parseFloat(this.inputAmount);
 
-      if (!stanfiAddress(this.inputAddress)) {
-        this.$bvToast.toast('Input invalid address', {
+      if (this.inputAddress !== stanfiAddress(this.inputAddress, 0)) {
+        this.$bvToast.toast(this.$t('tip.inputAddressType', {relaychain: 'POLKADOT'}), {
           title: this.$t('tip.tips'),
           autoHideDelay: 5000,
           variant: 'warning'

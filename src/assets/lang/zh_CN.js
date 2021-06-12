@@ -230,6 +230,8 @@ module.exports = {
     belowMinContribution: "投票数小于最小投票数 {min} 个。",
     belowMinBond: "绑定数小于最小绑定数0.1个。",
     wrongNominatorAddress: "推荐人地址格式错误",
+    wrongTransferAddress: "转账地址错误或格式不正确",
+    inputAddressType: "请输入 {relaychain} 格式的地址",
     insufficientBalance: "余额不足",
     outOfCap: "超过最大需求数",
     tips: "提示信息",
