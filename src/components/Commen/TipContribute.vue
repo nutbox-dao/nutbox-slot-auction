@@ -62,7 +62,6 @@ import { formatBalance as fbr } from "@/utils/rococo/rococo"
 import BN from "bn.js";
 import { stanfiAddress } from '@/utils/commen/account';
 import { POLKADOT_RELAYCHAIN_SYMBOL } from '@/constant'
-import { formatBalance } from '@/utils/rococo/rococo';
 
 
 export default {
@@ -86,6 +85,9 @@ export default {
     relaychain: {
       type:String,
       default: 'kusama'
+    },
+    communityNominatorId: {
+      type: String
     }
   },
   computed: {
@@ -230,6 +232,9 @@ export default {
     },
   },
   mounted() {
+    if (this.communityNominatorId) {
+      this.inputNonimator = stanfiAddress(this.communityNominatorId, 2)
+    }
   },
 };
 </script>

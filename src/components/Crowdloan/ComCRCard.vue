@@ -88,6 +88,7 @@
         :fund="getFundInfo"
         :relaychain='chain'
         :paraName="crowdloan.para.paraName"
+        :communityNominatorId="communityNominatorId"
         @hideContribute="showContribute = false"
       />
     </b-modal>
@@ -128,6 +129,10 @@ export default {
     },
     chain: {
       type: String
+    },
+    communityNominatorId: {
+      type: String,
+      default: null
     }
   },
   components: {
