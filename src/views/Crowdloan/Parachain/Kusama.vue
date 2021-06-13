@@ -15,14 +15,14 @@
           </span>
           <a class="font20 font-bold title official-link" v-else :href="paraInfo.website"
              target="_blank">{{ paraInfo.paraName }}</a>
-          <div class="desc">{{ paraInfo && paraInfo.description[lang] }}</div>
+          <div class="desc">{{ paraInfo && (paraInfo.description[lang] || paraInfo.description['zh-CN']) }}</div>
         </div>
       </div>
     </div>
     <div class="c-card" v-show="paraInfo">
-      <a class="font20 font-bold title link" :href="paraInfo && paraInfo.rewardLink[lang]"
+      <a class="font20 font-bold title link" :href="paraInfo && (paraInfo.rewardLink[lang] || paraInfo.rewardLink['zh-CN'])"
          target="_blank">{{ $t("cl.auctionPlan") }}</a>
-      <div class="desc" style="margin-top: .8rem" v-html="paraInfo && paraInfo.rewardPlan[lang]">
+      <div class="desc" style="margin-top: .8rem" v-html="paraInfo && (paraInfo.rewardPlan[lang] || paraInfo.rewardPlan['zh-CN'])">
         
       </div>
     </div>

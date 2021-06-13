@@ -20,7 +20,7 @@
     <div class="h-line"></div>
    <div class="detail-info-box">
        <p class="description font14">
-           {{ crowdloan.community.description[this.$store.state.lang] }}
+           {{ crowdloan.community.description[this.$store.state.lang] || crowdloan.community.description['zh-CN'] }}
        </p>
      <div class="project-info-container">
        <span class="name"> {{ $t('cl.rewards') }} </span>
