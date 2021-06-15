@@ -157,10 +157,10 @@ export const subscribeFundInfo = async (crowdloanCard) => {
 
 
 export const withdraw = async (paraId, toast, callback) => {
-    w('rococo', paraId, toast, callback)
+   await w('rococo', paraId, toast, callback)
 }
 
 
 export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, callback) => {
-    c('rococo', paraId, amount, communityId, childId, trieIndex, toast, callback)
+    await c('rococo', paraId, amount, communityId, childId, trieIndex, toast, callback)
 }

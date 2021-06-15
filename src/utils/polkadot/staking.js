@@ -10,7 +10,6 @@ import {
 
 import {
   getApi,
-  token2Uni,
   getTxPaymentInfo
 } from './polkadot'
 import { stanfiAddress } from '@/utils/commen/account'
@@ -171,7 +170,7 @@ export const bondAndNominate = async (amount, validators, communityId, projectId
     reject('no account')
   }
   const api = await getApi()
-  const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
+  const uni = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(new BN(4))))
   const bondTx = api.tx.staking.bond(store.state.polkadot.account.address, uni, {
     Staked: null
   })

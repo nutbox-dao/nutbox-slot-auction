@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     hide() {
-      if (this.isComtribution) return;
+      // if (this.isComtribution) return;
       this.$emit("hideContribute");
     },
     checkInput() {
@@ -197,10 +197,18 @@ export default {
       return true;
     },
     async confirm() {
+      this.isComtribution = true;
+      console.log('sign');
       if (!this.checkInput()) {
+        this.isComtribution = false
         return;
       }
       try {
+        this.$bvToast.toast(this.$t('tip.signing'), {
+          title: this.$t('tip.tips'),
+          autoHideDelay: 6000,
+          variant: "warning",
+        });
         this.isComtribution = true;
         const trieIndex = this.fund.trieIndex;
         const contribute = {

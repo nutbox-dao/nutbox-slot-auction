@@ -241,7 +241,8 @@ module.exports = {
     noNeedWithdraw: '没有可赎回投票',
     comingSoon: '敬请期待',
     clipboard:"剪贴板",
-    copyAddress:"已复制地址:  {address}"
+    copyAddress:"已复制地址:  {address}",
+    signing: "签名中"
   },
   vote: {
     upvote: "点赞",

@@ -241,7 +241,8 @@ transaction: {
     noNeedWithdraw: 'No Need To Withdraw',
     comingSoon: 'Coming Soon',
     clipboard:"	Clipboard",
-    copyAddress:"Copied address:  {address}"
+    copyAddress:"Copied address:  {address}",
+    signing: "Signing"
 },
   vote:{
     upvote:"Upvote",

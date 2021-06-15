@@ -4,7 +4,6 @@ import store from "@/store"
 
 import {
   getApi,
-  token2Uni
 } from './kusama'
 import {
   $t
@@ -94,7 +93,7 @@ export const bond = async (amount, toast, callback) => {
     reject('no account')
   }
   const api = await getApi()
-  const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
+  const uni = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(new BN(6))))
   const bonded = store.state.kusama.bonded
   console.log('bonded', bonded);
   const bondTx = bonded ? api.tx.staking.bondExtra(uni) : api.tx.staking.bond(from, uni, {
@@ -131,7 +130,7 @@ export const unBond = async (amount, toast, callback) => {
     reject('no account')
   }
   const api = await getApi()
-  const uni = api.createType('Compact<BalanceOf>', token2Uni(amount))
+  const uni = api.createType('Compact<BalanceOf>', new BN(amount * 1e6).mul(new BN(10).pow(new BN(6))))
   const nonce = (await api.query.system.account(from)).nonce.toNumber()
   console.log('unbond');
   const unsub = await api.tx.staking.unbond(uni).signAndSend(from, {

@@ -105,7 +105,6 @@ export const contribute = async (relaychain, paraId, amount, communityId, childI
           title: $t('tip.error'),
           variant: 'danger'
         })
-        console.log(err);
         return false
       })
   }else{ // 没有社区id， 就是官方直接投票，不加remark
@@ -128,7 +127,6 @@ export const contribute = async (relaychain, paraId, amount, communityId, childI
         title: $t('tip.error'),
         variant: 'danger'
       })
-      console.log(err);
       return false
     })
   }
