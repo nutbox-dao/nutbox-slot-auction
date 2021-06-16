@@ -225,7 +225,7 @@ export default {
       "communitys",
       "projects",
     ]),
-    ...mapState("rococo", ["clCommunitys"]),
+    ...mapState("polkadot", ["clCommunitys"]),
     ...mapState(["lang"]),
     isAdmin() {
       if (!this.clCommunitys || !this.projects) return false;
@@ -249,7 +249,7 @@ export default {
       "saveProjects",
       "saveAccount",
     ]),
-    ...mapMutations("rococo", ["saveClCommunitys"]),
+    ...mapMutations("polkadot", ["saveClCommunitys"]),
     gotoOfficial(){
       window.open('https://nutbox.io', '_blank');
     },
@@ -307,7 +307,7 @@ export default {
       getCommnunitys().then((res) => {
         const ccc = res.map((r) => stanfiAddress(r.communityId))
         this.saveClCommunitys(ccc);
-        this.$store.commit('polkadot/saveClCommunitys', ccc);
+        this.$store.commit('rococo/saveClCommunitys', ccc);
         this.$store.commit('kusama/saveClCommunitys', ccc);
       });
     },
