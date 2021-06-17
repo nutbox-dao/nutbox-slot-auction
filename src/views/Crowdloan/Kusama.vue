@@ -1,5 +1,6 @@
 <template>
   <div class="k-page crowdloan-page scroll-content">
+    <Searchbar></Searchbar>
     <div class="loading-bg" v-if="loadingFunds">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t("tip.loading") }}</p>
@@ -36,11 +37,13 @@ import { loadFunds } from "@/utils/kusama/crowdloan";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
 import { initCustomApi } from '@/utils/commen/api'
+import Searchbar from '@/components/ToolsComponents/Searchbar'
 
 export default {
   name: "Kusama",
   components: {
     CrowdloanCard,
+    Searchbar
   },
   computed: {
     ...mapState("kusama", ["clProjectFundInfos", "loadingFunds"]),
