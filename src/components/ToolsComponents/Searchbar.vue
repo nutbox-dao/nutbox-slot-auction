@@ -39,7 +39,7 @@ export default {
 }
 .search-bar {
   position: absolute;
-  top: 0;
+  top: .5rem;
   right: 0;
   height: 2.4rem;
   padding: .6rem;
@@ -47,6 +47,7 @@ export default {
   transition: 0.4s;
   width: 15rem;
   max-width: 15rem;
+  border-radius: .6rem;
   .search-icon {
     @include icon(1.2rem, 1.2rem);
     background-image: url("~@/static/images/search-icon.svg");
@@ -79,13 +80,16 @@ export default {
     width: 4rem;
     overflow: hidden;
     height: 3rem;
+    top: 0;
+    right: -15px;
+    border-radius: 0;
     .search-icon {
       margin-right: 2rem;
     }
     &.expand {
       background: white;
-      width: 100%;
-      max-width: 100%;
+      width: calc(100% + 30px);
+      max-width: calc(100% + 30px);
       transition: 0.4s;
       .search-icon {
         margin-right: .5rem;
