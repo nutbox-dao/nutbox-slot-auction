@@ -18,9 +18,17 @@ export default {
       searchText: ''
     }
   },
+  watch: {
+    searchText(newValue, oldValue) {
+      this.$store.commit('saveCrowdloanCardSearchText', newValue)
+    },
+  },
   methods: {
     onSearchIcon () {
 
+    },
+    clearSearch(){
+      this.searchText = ''
     }
   }
 }

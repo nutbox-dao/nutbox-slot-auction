@@ -18,7 +18,8 @@ export default new Vuex.Store({
     customApis:{},
     subCustomBalance: {},
     customApiStates:{},
-    customBalance:{}
+    customBalance:{},
+    crowdloanCardSearchText: ''
   },
   mutations: {
     saveLang: (state, lang) => {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     // update all balances to UI
     saveCustomBalance: (state, balance) => {
       state.customBalance = balance
+    },
+    saveCrowdloanCardSearchText: (state, text) => {
+      state.crowdloanCardSearchText = text
     }
   },
   modules: {

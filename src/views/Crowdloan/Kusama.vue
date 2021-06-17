@@ -1,6 +1,5 @@
 <template>
   <div class="k-page crowdloan-page scroll-content">
-    <Searchbar></Searchbar>
     <div class="loading-bg" v-if="loadingFunds">
       <img src="~@/static/images/loading.gif" alt="" />
       <p class="font16">{{ $t("tip.loading") }}</p>
@@ -16,13 +15,13 @@
           <div
             class="col-xl-4 col-md-6 mb-4"
             v-show="card.para.communityId !== card.community.communityId"
-            v-for="(card, idx) of showingCard()"
+            v-for="(card, idx) of searchedCards || showingCard()"
             :key="idx"
           >
             <CrowdloanCard
               :paraId="parseInt(card.para.paraId)"
               :communityId="card.community.communityId"
-              chain='kusama'
+              chain="kusama"
             />
           </div>
         </div>
@@ -36,17 +35,21 @@ import CrowdloanCard from "../../components/Crowdloan/CrowdloanCard";
 import { loadFunds } from "@/utils/kusama/crowdloan";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
-import { initCustomApi } from '@/utils/commen/api'
-import Searchbar from '@/components/ToolsComponents/Searchbar'
+import { initCustomApi } from "@/utils/commen/api";
 
 export default {
   name: "Kusama",
   components: {
     CrowdloanCard,
-    Searchbar
+  },
+  data() {
+    return {
+      searchedCards: null,
+    };
   },
   computed: {
     ...mapState("kusama", ["clProjectFundInfos", "loadingFunds"]),
+    ...mapState(["crowdloanCardSearchText"]),
     funds() {
       const fundInfos = this.clProjectFundInfos;
       return fundInfos || [];
@@ -55,19 +58,37 @@ export default {
   methods: {
     ...mapGetters("kusama", ["showingCard"]),
   },
+  watch: {
+    crowdloanCardSearchText(newValue, oldValue) {
+      if (!newValue || newValue === "") {
+        this.searchedCards = null;
+        return null;
+      }
+      const seachText = newValue.toLowerCase();
+      this.searchedCards = this.showingCard().filter(
+        ({ community, para }) =>
+          community.communityName.toLowerCase().includes(seachText) ||
+          para.paraName.toLowerCase().includes(seachText)
+      );
+    },
+  },
   async created() {
+    //  clear seach box
     if (this.showingCard() && this.showingCard().length > 0) {
-      return
-    };
+      return;
+    }
     const res = await getOnshowingCrowdloanCard({ relaychain: "kusama" });
     // get all custom node
-    const nodes = res.reduce((t, r) => t.concat(r.para.reward), []).filter(r => r.node && r.pallet).map(r=>r.node)
-    console.log('All nodes', new Set(nodes));
-    for (const node of new Set(nodes)){
-      initCustomApi(node)
+    const nodes = res
+      .reduce((t, r) => t.concat(r.para.reward), [])
+      .filter((r) => r.node && r.pallet)
+      .map((r) => r.node);
+    console.log("All nodes", new Set(nodes));
+    for (const node of new Set(nodes)) {
+      initCustomApi(node);
     }
     // 缓存数据
-    loadFunds(res)
+    loadFunds(res);
   },
 };
 </script>
