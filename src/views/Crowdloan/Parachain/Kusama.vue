@@ -45,6 +45,7 @@
             <b-th>{{ $t('cl.progress') }}</b-th>
             <b-th>{{ $t('cl.contributors') }}</b-th>
             <b-th>{{ $t('cl.contributed') }}</b-th>
+            <b-th v-show="reward.node && reward.pallet" v-for="reward of paraInfo.reward" :key="reward.name">{{ reward.name }}</b-th>
           </b-tr>
         </b-thead>
         <b-tbody>
@@ -56,6 +57,9 @@
             <td data-label="Progress">{{ percent }}</td>
             <td data-label="Contributors">{{ getFundInfo && getFundInfo.funds.length }}</td>
             <td data-label="Contributed">{{ fb(contributed) }}</td>
+            <td :data-label="reward.name" v-show="reward.node && reward.pallet" v-for="reward of paraInfo.reward" :key='reward.name'>
+              {{ $store.state.customBalance[reward.name] / 1e12 || 0  | formatReward }}
+            </td>
           </b-tr>
         </b-tbody>
       </b-table-simple>
@@ -83,22 +87,25 @@ import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
 import { loadFunds } from "@/utils/kusama/crowdloan";
 import { formatBalance } from "@/utils/kusama/kusama";
+import { formatBalance as fbReward } from "@/utils/helper"
 import { calStatus } from "@/utils/commen/crowdloan";
 import { stanfiAddress } from "@/utils/commen/account"
 import { formatCountdown } from '@/utils/helper'
+import { initCustomApi } from '@/utils/commen/api'
+import { subCustomBalance } from '@/utils/commen/account'
 
 export default {
   name: "Kusama",
   data() {
       return {
-        status: 'Compeleted'
+        status: 'Compeleted',
       }
   },
   components: {
     ParaCRCard,
   },
   computed: {
-    ...mapState(["lang"]),
+    ...mapState(["lang", 'customBalance']),
     ...mapState('polkadot', ['account']),
     ...mapState("kusama", ["isConnected", "clProjectFundInfos"]),
     ...mapGetters("kusama", [
@@ -180,7 +187,12 @@ export default {
       }
     }
   },
-    watch: {
+  filters: {
+    formatReward: function(value) {
+      return fbReward(value);
+    }
+  },
+  watch: {
       async currentBlockNum(newValue, _) {
         try{
           const fund = this.getFundInfo;
@@ -202,22 +214,36 @@ export default {
           this.status = status;
         }catch(e) {
         }
-      }
+      },
+      account(newValue, _){
+        this.getRewardBalance(this.paraInfo.reward)
+      },
   },
   methods: {
-      fb(a){
-        return formatBalance(a)
+    fb(a){
+      return formatBalance(a)
+    },
+    getRewardBalance(rewards) {
+      if(!rewards) return
+      for (const reward of rewards){
+        const { name, node, pallet } = reward
+        if (!node || !pallet) continue;
+        initCustomApi(node)
+        subCustomBalance(reward)
       }
+    }
   },
   async created() {
     try{
       if (this.getFundInfo && this.crowdloanInfo) {
         this.status = this.getFundInfo && this.getFundInfo.status;
+        this.getRewardBalance(this.paraInfo.reward)
         return;
       };
       const res = await getOnshowingCrowdloanCard({ relaychain: "kusama" });
       loadFunds(res)
       const para = res.filter(c => parseInt(c.para.paraId) === this.paraId)
+      this.getRewardBalance(para[0].para?.reward)
       this.status = para.length > 0 ? para.status : 'Completed'
     }catch(e){}
 

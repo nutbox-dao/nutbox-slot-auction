@@ -35,6 +35,7 @@ import CrowdloanCard from "../../components/Crowdloan/CrowdloanCard";
 import { loadFunds } from "@/utils/kusama/crowdloan";
 import { mapState, mapGetters } from "vuex";
 import { getOnshowingCrowdloanCard } from "@/apis/api";
+import { initCustomApi } from '@/utils/commen/api'
 
 export default {
   name: "Kusama",
@@ -56,6 +57,12 @@ export default {
       return
     };
     const res = await getOnshowingCrowdloanCard({ relaychain: "kusama" });
+    // get all custom node
+    const nodes = res.reduce((t, r) => t.concat(r.para.reward), []).filter(r => r.node && r.pallet).map(r=>r.node)
+    console.log('All nodes', new Set(nodes));
+    for (const node of new Set(nodes)){
+      initCustomApi(node)
+    }
     // 缓存数据
     loadFunds(res)
   },

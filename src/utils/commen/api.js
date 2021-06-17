@@ -18,6 +18,7 @@ import {
   web3FromSource,
   web3Enable
 } from '@polkadot/extension-dapp'
+import { typesBundleForPolkadot } from '@crustio/type-definitions'
 
 export async function initApis() {
   initApi('polkadot')
@@ -89,6 +90,11 @@ const subBlock = async (api, chain) => {
   })
 } 
 
+/**
+ * Get api, waiting if the api isnt initianized
+ * @param {*} relaychain 
+ * @returns 
+ */
 export const waitApi = async (relaychain) => {
   return new Promise(res => {
     const api = store.state[relaychain].api
@@ -102,5 +108,43 @@ export const waitApi = async (relaychain) => {
         clearInterval(interval)
       }
     }, 300);
+  })
+}
+
+/**
+ * Init custom api
+ * @param {*} node 
+ * @returns 
+ */
+export const initCustomApi = async (node) => {
+  if (store.state.customApis[node]){
+    return store.state.customApis[node]
+  }
+  if (store.state.customApiStates[node]){
+    // API is connecting or is ok
+    return;
+  }
+  store.commit('saveCustomApiState', {node, state:'connecting'})
+  const wsProvider = new WsProvider(node);
+  const api = await ApiPromise.create({ provider: wsProvider, typesBundle: typesBundleForPolkadot });
+  const _api = await api.isReadyOrError;
+  store.commit('saveCustomApi', {customApi: _api, node});
+  store.commit('saveCustomApiState', {node, state:'initOk'})
+  return _api;
+}
+
+export  const waitingCustomApi = async (node) => {
+  return new Promise(res => {
+    const api = store.state.customApis[node]
+    if (api){
+      res(api)
+    };
+    const interval = setInterval(() => {
+      const api = store.state.customApis[node]
+      if (api){
+        res(api)
+        clearInterval(interval)
+      }
+    }, 300)
   })
 }

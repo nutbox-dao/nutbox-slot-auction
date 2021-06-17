@@ -14,14 +14,30 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     lang: Cookie.get(LOCALE_KEY) || 'zh-CN',
+    // custom apis 
+    customApis:{},
+    subCustomBalance: {},
+    customApiStates:{},
+    customBalance:{}
   },
   mutations: {
     saveLang: (state, lang) => {
       state.lang = lang;
       Cookie.set(LOCALE_KEY, lang, '30d')
     },
-  },
-  getters: {
+    saveCustomApi: (state, {node, customApi}) => {
+      state.customApis[node] = customApi
+    },
+    saveSubCustomBalance: (state, {name, subBalance}) => {
+      state.subCustomBalance[name] = subBalance
+    },
+    saveCustomApiState: (state, {node, apiState}) => {
+      state.customApiStates[node] = apiState
+    },
+    // update all balances to UI
+    saveCustomBalance: (state, balance) => {
+      state.customBalance = balance
+    }
   },
   modules: {
     polkadot,
