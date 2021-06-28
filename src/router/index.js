@@ -99,12 +99,10 @@ const routes = [
     children: [
       {
         path: 'kusama',
-        name: 'kusama',
         component: KusamaCrowdstaking
       },
       {
         path: 'polkadot',
-        name: 'polkadot',
         component: PolkadotCrowdstaking
       }
     ]
