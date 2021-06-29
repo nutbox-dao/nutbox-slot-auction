@@ -67,7 +67,6 @@ export const subscribeFundInfo = async (crowdloanCard) => {
             raised,
             trieIndex
           } = fund
-          console.log('index', pId, trieIndex.toNumber());
           const [status, statusIndex] = await calStatus('kusama', end, firstPeriod, lastPeriod, raised, cap, pId, bestBlockNumber)
           let contributions = []
           // 如果有缓存，先直接用已经缓存的contribution数据
