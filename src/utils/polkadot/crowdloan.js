@@ -67,7 +67,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
             raised,
             trieIndex
           } = fund
-          console.log('polkadot index', pId, trieIndex.toNumber());
+
           const [status, statusIndex] = await calStatus('polkadot', end, firstPeriod, lastPeriod, raised, cap, pId, bestBlockNumber)
           let contributions = []
           // 如果有缓存，先直接用已经缓存的contribution数据
@@ -164,6 +164,7 @@ export function loadFunds(res) {
   store.commit("polkadot/saveClProjectFundInfos", funds);
   store.commit("polkadot/saveShowingCrowdloan", showingcrowdloanCard);
   store.commit("polkadot/saveLoadingFunds", false)
+  // 在去链上订阅数据
   subscribeFundInfo(res)
 }
 
