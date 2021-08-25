@@ -67,6 +67,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
             raised,
             trieIndex
           } = fund
+
           const [status, statusIndex] = await calStatus('polkadot', end, firstPeriod, lastPeriod, raised, cap, pId, bestBlockNumber)
           let contributions = []
           // 如果有缓存，先直接用已经缓存的contribution数据
@@ -134,6 +135,10 @@ export const handleContributors = async (api, funds) => {
   }
 }
 
+/**
+ * Handel crowdloan cards from backend
+ * @param {*} res 
+ */
 export function loadFunds(res) {
   let funds = [];
   // 预先展示服务器请求的数据
@@ -153,6 +158,7 @@ export function loadFunds(res) {
     });
   }
   // 调整显示顺序
+  funds = funds.sort((a, b) => a.statusIndex - b.statusIndex)
   const idsSort = funds.map(f => f.paraId)
   const showingcrowdloanCard = res.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
   store.commit("polkadot/saveClProjectFundInfos", funds);
@@ -165,7 +171,6 @@ export function loadFunds(res) {
 export const withdraw = async (paraId, toast, callback) => {
   return await w('polkadot', paraId, toast, callback)
 }
-
 
 export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, callback) => {
   return await c('polkadot', paraId, amount, communityId, childId, trieIndex, toast, callback)

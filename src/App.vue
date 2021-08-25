@@ -330,6 +330,7 @@ export default {
         }));
         const polkadotcs = crowdstaking.filter(c => c.relaychain === 'polkadot')
         const kusamacs = crowdstaking.filter(c => c.relaychain === 'kusama')
+        console.log('kusama', kusamacs);
         this.saveCrowdstakings(polkadotcs);
         this.$store.commit('kusama/saveCrowdstakings', kusamacs)
         // this.saveCommunitys(
