@@ -92,7 +92,17 @@ export const subscribeFundInfo = async (crowdloanCard) => {
         })
       }))
       funds = funds.sort((a, b) => a.statusIndex - b.statusIndex)
-      const idsSort = funds.map(f => f.paraId)
+      const active = funds.filter(f => f.statusIndex === 0)
+      const activeC = active.filter(f => f.posterUrl)
+      const activeNC = active.filter(f => !f.posterUrl)
+      const withdraw = funds.filter(f => f.statusIndex === 1)
+      const completed = funds.filter(f => f.statusIndex === 2)
+      console.log(funds);
+      console.log(activeC, activeNC);
+      let idsSort = activeC.concat(activeNC).concat(withdraw).concat(completed)
+      idsSort = idsSort.map(id => parseInt(id.paraId))
+
+      funds = funds.sort((a, b) => a.statusIndex - b.statusIndex)
       if (funds.length > 0) {
         const showingcrowdloanCard = crowdloanCard.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
         store.commit('kusama/saveClProjectFundInfos', funds)
@@ -153,12 +163,19 @@ export function loadFunds(res) {
       lastPeriod: new BN(fund.lastPeriod),
       raised: new BN(fund.raised),
       trieIndex: new BN(fund.trieIndex),
+      posterUrl: fund.posterUrl,
       funds: [],
     });
   }
   // 调整显示顺序
   funds = funds.sort((a, b) => a.statusIndex - b.statusIndex)
-  const idsSort = funds.map(f => f.paraId)
+  const active = funds.filter(f => f.statusIndex === 0)
+  const activeC = active.filter(f => f.posterUrl)
+  const activeNC = active.filter(f => !f.posterUrl)
+  const withdraw = funds.filter(f => f.statusIndex === 1)
+  const completed = funds.filter(f => f.statusIndex === 2)
+  let idsSort = activeC.concat(activeNC).concat(withdraw).concat(completed)
+  idsSort = idsSort.map(id => parseInt(id.paraId))
   const showingcrowdloanCard = res.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
   store.commit("kusama/saveClProjectFundInfos", funds);
   store.commit("kusama/saveShowingCrowdloan", showingcrowdloanCard);

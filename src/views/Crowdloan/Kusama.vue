@@ -79,7 +79,9 @@ export default {
     }
     const res = await getOnshowingCrowdloanCard({ relaychain: "kusama" });
     // get all custom node
-    const nodes = res
+    const nodes = res.filter(
+        r => r.para.reward
+      )
       .reduce((t, r) => t.concat(r.para.reward), [])
       .filter((r) => r.node && r.pallet)
       .map((r) => r.node);
