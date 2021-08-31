@@ -134,6 +134,10 @@ export const handleContributors = async (api, funds) => {
   }
 }
 
+/**
+ * Handel crowdloan cards from backend
+ * @param {*} res 
+ */
 export function loadFunds(res) {
   let funds = [];
   // 预先展示服务器请求的数据
@@ -165,7 +169,6 @@ export function loadFunds(res) {
 export const withdraw = async (paraId, toast, callback) => {
   return await w('kusama', paraId, toast, callback)
 }
-
 
 export const contribute = async (paraId, amount, communityId, childId, trieIndex, toast, callback) => {
   return await c('kusama', paraId, amount, communityId, childId, trieIndex, toast, callback)
