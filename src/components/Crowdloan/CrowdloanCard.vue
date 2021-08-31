@@ -63,7 +63,7 @@
         </div>
         <div class="project-info-container">
           <span class="name"> {{ $t("cl.rewards") }} </span>
-          <div class="info">
+          <div class="info" v-if="rewardTokens.length > 0">
             <RewardToken
               :icon="token.icon"
               :token="token.name"
@@ -256,7 +256,7 @@ export default {
       }
     },
     rewardTokens() {
-      if (this.getCardInfo) {
+      if (this.getCardInfo && this.getCardInfo.para.reward) {
         let rewards = this.getCardInfo.para.reward.concat(
           this.getCardInfo.community.reward
         );
@@ -284,7 +284,7 @@ export default {
         this.$router.push("/crowdloan/" + this.chain + "/parachain/" + this.paraId);
         return;
       } else {
-        this.$router.push(this.getCardInfo.para.website)
+        window.open(this.getCardInfo.para.website, '_blank');
       }
     },
   },
