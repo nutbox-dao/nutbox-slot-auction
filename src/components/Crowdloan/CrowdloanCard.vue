@@ -27,7 +27,7 @@
           </div>
           <div class="link-title">
             <span class="font16" @click="toParachain">{{
-              getCardInfo && getCardInfo.para.paraName
+              getCardInfo && (getCardInfo.para.paraName || getCardInfo.para.paraId)
             }}</span>
             <i class="link-icon" @click="toParachain"></i>
           </div>
@@ -215,6 +215,9 @@ export default {
       const card = this.cardInfo(this.paraId, this.communityId);
       return card;
     },
+    cooperationPara() {
+      return this.getCardInfo && this.getCardInfo.para.posterUrl
+    },
     leasePeriod() {
       try {
         const first = parseInt(this.getFundInfo.firstPeriod);
@@ -277,7 +280,12 @@ export default {
       this.$router.push("/crowdloan/" + this.chain + "/community/" + this.communityId);
     },
     toParachain() {
-      this.$router.push("/crowdloan/" + this.chain + "/parachain/" + this.paraId);
+      if (this.cooperationPara) {
+        this.$router.push("/crowdloan/" + this.chain + "/parachain/" + this.paraId);
+        return;
+      } else {
+        this.$router.push(this.getCardInfo.para.website)
+      }
     },
   },
   mounted() {

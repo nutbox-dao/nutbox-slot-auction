@@ -153,6 +153,7 @@ export function loadFunds(res) {
     });
   }
   // 调整显示顺序
+  funds = funds.sort((a, b) => a.statusIndex - b.statusIndex)
   const idsSort = funds.map(f => f.paraId)
   const showingcrowdloanCard = res.filter(c => idsSort.indexOf(parseInt(c.para.paraId)) !== -1).sort((a, b) => idsSort.indexOf(parseInt(a.para.paraId)) - idsSort.indexOf(parseInt(b.para.paraId)))
   store.commit("kusama/saveClProjectFundInfos", funds);
