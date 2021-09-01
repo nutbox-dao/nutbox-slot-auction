@@ -45,7 +45,8 @@
             <b-th>{{ $t('cl.progress') }}</b-th>
             <b-th>{{ $t('cl.contributors') }}</b-th>
             <b-th>{{ $t('cl.contributed') }}</b-th>
-            <b-th v-show="reward.node && reward.pallet" v-for="reward of paraInfo.reward" :key="reward.name">{{ reward.name }}</b-th>
+            <b-th v-show="reward && reward.node && reward.pallet" v-for="reward of paraInfo.reward" :key="reward.name">{{ reward.name }}</b-th>
+
           </b-tr>
         </b-thead>
         <b-tbody>
@@ -57,7 +58,7 @@
             <td data-label="Progress">{{ percent }}</td>
             <td data-label="Contributors">{{ getFundInfo && getFundInfo.funds.length }}</td>
             <td data-label="Contributed">{{ fb(contributed) }}</td>
-            <td :data-label="reward.name" v-show="reward.node && reward.pallet" v-for="reward of paraInfo.reward" :key='reward.name'>
+            <td :data-label="reward.name" v-show="reward && reward.node && reward.pallet" v-for="reward of paraInfo.reward" :key='reward.name'>
               {{ $store.state.customBalance[reward.name] / 1e12 || 0  | formatReward }}
             </td>
           </b-tr>

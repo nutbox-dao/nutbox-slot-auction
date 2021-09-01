@@ -27,7 +27,7 @@
           </div>
           <div class="link-title">
             <span class="font16" @click="toParachain">{{
-              getCardInfo && getCardInfo.para.paraName
+              getCardInfo && (getCardInfo.para.paraName || getCardInfo.para.paraId)
             }}</span>
             <i class="link-icon" @click="toParachain"></i>
           </div>
@@ -63,7 +63,7 @@
         </div>
         <div class="project-info-container">
           <span class="name"> {{ $t("cl.rewards") }} </span>
-          <div class="info">
+          <div class="info" v-if="rewardTokens.length > 0">
             <RewardToken
               :icon="token.icon"
               :token="token.name"
@@ -215,6 +215,9 @@ export default {
       const card = this.cardInfo(this.paraId, this.communityId);
       return card;
     },
+    cooperationPara() {
+      return this.getCardInfo && this.getCardInfo.para.posterUrl
+    },
     leasePeriod() {
       try {
         const first = parseInt(this.getFundInfo.firstPeriod);
@@ -253,7 +256,7 @@ export default {
       }
     },
     rewardTokens() {
-      if (this.getCardInfo) {
+      if (this.getCardInfo && this.getCardInfo.para.reward) {
         let rewards = this.getCardInfo.para.reward.concat(
           this.getCardInfo.community.reward
         );
@@ -277,7 +280,12 @@ export default {
       this.$router.push("/crowdloan/" + this.chain + "/community/" + this.communityId);
     },
     toParachain() {
-      this.$router.push("/crowdloan/" + this.chain + "/parachain/" + this.paraId);
+      if (this.cooperationPara) {
+        this.$router.push("/crowdloan/" + this.chain + "/parachain/" + this.paraId);
+        return;
+      } else {
+        window.open(this.getCardInfo.para.website, '_blank');
+      }
     },
   },
   mounted() {

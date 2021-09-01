@@ -29,6 +29,7 @@ export const stanfiAddress = (address, type = 0) => {
  * @param {*} reward 
  */
 export const subCustomBalance = async (reward) => {
+  if (!reward) return;
   const { node,  name, pallet } = reward
   if (!node || !pallet){
     return

@@ -144,7 +144,12 @@ export default {
   },
   methods: {
     toParaChain() {
-      this.$router.push('/crowdloan/' + this.chain + '/parachain/' + this.crowdloan.para.paraId)
+      if (this.crowdloan && this.crowdloan.para.posterUrl){
+        this.$router.push('/crowdloan/' + this.chain + '/parachain/' + this.crowdloan.para.paraId)
+      } else{
+        window.open(this.crowdloan.para.website, '__blank')
+      }
+      
     }
   },
   watch: {
@@ -195,7 +200,7 @@ export default {
       return this.crowdloan.community.communityId;
     },
     rewardTokens() {
-      if (this.crowdloan) {
+      if (this.crowdloan && this.crowdloan.para.reward) {
         let rewards = this.crowdloan.para.reward.concat(
           this.crowdloan.community.reward
         );
