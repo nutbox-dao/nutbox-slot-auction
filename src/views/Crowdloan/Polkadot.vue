@@ -78,9 +78,9 @@ export default {
       return;
     }
     const res = await getOnshowingCrowdloanCard({ relaychain: "polkadot" });
-    console.log(2354,res);
     // get all custom node
     const nodes = res
+      .filter(r => r.para && r.para.reward)
       .reduce((t, r) => t.concat(r.para.reward), [])
       .filter((r) => r.node && r.pallet)
       .map((r) => r.node);
