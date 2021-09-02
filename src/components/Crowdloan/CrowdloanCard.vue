@@ -256,8 +256,9 @@ export default {
       }
     },
     rewardTokens() {
-      if (this.getCardInfo && this.getCardInfo.para.reward) {
-        let rewards = this.getCardInfo.para.reward.concat(
+      if (this.getCardInfo) {
+        const paraReward = this.getCardInfo.para.reward ?? []
+        let rewards = paraReward.concat(
           this.getCardInfo.community.reward
         );
         if (rewards.length > 3) {
