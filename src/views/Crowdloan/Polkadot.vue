@@ -16,7 +16,7 @@
             class="col-xl-4 col-md-6 mb-4"
             v-show="card.para.communityId !== card.community.communityId"
             v-for="(card, idx) of searchedCards || showingCard()"
-            :key="idx"
+            :key="card.para.paraId + idx"
           >
             <CrowdloanCard
               :paraId="parseInt(card.para.paraId)"
