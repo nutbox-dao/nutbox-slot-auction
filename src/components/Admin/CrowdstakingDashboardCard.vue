@@ -98,7 +98,6 @@ export default {
         .then(async (res) => {
           this.isDownloading = false;
           let result = [];
-          console.log("csv1", res);
           if (res.lenght === 0) {
             return;
           }
@@ -108,7 +107,6 @@ export default {
             nominator: n.nominator,
             createAt: n.createAt,
           }));
-          console.log("csv", result);
           CsvExportor.downloadCsv(
             result,
             { header: this.csvHeader },

@@ -107,7 +107,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
     }));
     store.commit('rococo/saveSubFund', unsubFund);
   } catch (e) {
-    console.log('error', e);
+    console.log('sub rococo contribution fial', e);
     store.commit('rococo/saveLoadingFunds', false)
   }
 }
@@ -131,7 +131,7 @@ export const handleContributors = async (api, funds) => {
     }))
     store.commit('rococo/saveClProjectFundInfos', updateFunds)
   } catch (e) {
-    console.log(4523, e);
+    console.log('Hand rococo contributions fail', e);
   }
 }
 
