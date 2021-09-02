@@ -123,7 +123,6 @@ export default {
       })
         .then(async (res) => {
           let csv = res.data;
-          console.log(csv);
           if(!csv || csv.length === 0) return;
           let result = [];
           for (let r of csv) {

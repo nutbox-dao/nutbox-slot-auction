@@ -107,7 +107,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
     }));
     store.commit('polkadot/saveSubFund', unsubFund);
   } catch (e) {
-    console.log('error', e);
+    console.log('sub crowdloan fail', e);
     store.commit('polkadot/saveLoadingFunds', false)
   }
 }
@@ -131,7 +131,7 @@ export const handleContributors = async (api, funds) => {
     }))
     store.commit('polkadot/saveClProjectFundInfos', updateFunds)
   } catch (e) {
-    console.log(4523, e);
+    console.log('handleContributors fail', e);
   }
 }
 

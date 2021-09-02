@@ -99,7 +99,7 @@ export default {
           }
         );
       } catch (e) {
-        console.log("eee", e);
+        console.log("unbond fail", e);
         this.$bvToast.toast(e.message, {
           title: this.$t("tip.error"),
           autoHideDelay: 5000,

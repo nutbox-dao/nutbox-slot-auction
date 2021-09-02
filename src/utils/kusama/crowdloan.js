@@ -97,8 +97,6 @@ export const subscribeFundInfo = async (crowdloanCard) => {
       const activeNC = active.filter(f => !f.posterUrl)
       const withdraw = funds.filter(f => f.statusIndex === 1)
       const completed = funds.filter(f => f.statusIndex === 2)
-      console.log(funds);
-      console.log(activeC, activeNC);
       let idsSort = activeC.concat(activeNC).concat(withdraw).concat(completed)
       idsSort = idsSort.map(id => parseInt(id.paraId))
 
@@ -116,7 +114,7 @@ export const subscribeFundInfo = async (crowdloanCard) => {
     }));
     store.commit('kusama/saveSubFund', unsubFund);
   } catch (e) {
-    console.log('error', e);
+    console.log('subcrowdloan fail', e);
     store.commit('kusama/saveLoadingFunds', false)
   }
 }
@@ -140,7 +138,7 @@ export const handleContributors = async (api, funds) => {
     }))
     store.commit('kusama/saveClProjectFundInfos', updateFunds)
   } catch (e) {
-    console.log(4523, e);
+    console.log('Handle contributions fail', e);
   }
 }
 

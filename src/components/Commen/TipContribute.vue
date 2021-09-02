@@ -100,7 +100,6 @@ export default {
       return this.fund.paraId
     },
     symbol(){
-      console.log(this.relaychain);
       return POLKADOT_RELAYCHAIN_SYMBOL[this.relaychain.toLowerCase()]
     },
     balance(){
@@ -198,7 +197,6 @@ export default {
     },
     async confirm() {
       this.isComtribution = true;
-      console.log('sign');
       if (!this.checkInput()) {
         this.isComtribution = false
         return;
@@ -230,7 +228,7 @@ export default {
           }
         );
       } catch (e) {
-        console.log("eee", e);
+        console.log("contribute fail", e);
         this.$bvToast.toast(e.message, {
           title: this.$t('tip.error'),
           autoHideDelay: 5000,
