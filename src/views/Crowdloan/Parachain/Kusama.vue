@@ -34,7 +34,6 @@
           <span :class="status" v-show="status">{{ $t('cl.'+status) }}</span>
         </div>
       </div>
-      sl;agl;
       <b-table-simple responsive>
         <b-thead>
           <b-tr>
