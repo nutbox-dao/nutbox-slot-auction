@@ -34,7 +34,7 @@
           <span :class="status" v-show="status">{{ $t('cl.'+status) }}</span>
         </div>
       </div>
-
+      sl;agl;
       <b-table-simple responsive>
         <b-thead>
           <b-tr>
@@ -55,7 +55,7 @@
             <td data-label="Raised">{{ getFundInfo && fb(getFundInfo.raised) }}</td>
             <td data-label="Fund">{{ getFundInfo && fb(getFundInfo.cap) }}</td>
             <td data-label="Progress">{{ percent }}</td>
-            <td data-label="Contributors">{{ getFundInfo && getFundInfo.funds.length }}</td>
+            <td data-label="Contributors">{{ getFundInfo && (getFundInfo.funds.count | 0) }}</td>
             <td data-label="Contributed">{{ fb(contributed) }}</td>
             <td :data-label="reward.name" v-show="reward && reward.node && reward.pallet" v-for="reward of paraInfo.reward" :key='reward.name'>
               {{ $store.state.customBalance[reward.name] / 1e12 || 0  | formatReward }}
@@ -176,12 +176,7 @@ export default {
     },
     contributed(){
       try{
-        const c = this.getFundInfo.funds.filter(c=>stanfiAddress(c.contributor) == this.account.address)
-        if (c.length === 0){
-          return 0
-        }else{
-          return c[0].amount
-        }
+        return this.getFundInfo.funds.ownContribution
       }catch(e){
         return 0
       }
