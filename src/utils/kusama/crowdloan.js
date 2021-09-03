@@ -1,10 +1,11 @@
 import {
   u8aConcat,
   u8aToHex,
+  stringToHex
 } from "@polkadot/util"
 import {
   blake2AsU8a,
-  encodeAddress,
+  decodeAddress
 } from "@polkadot/util-crypto"
 import BN from "bn.js"
 import store from "@/store"
@@ -122,17 +123,19 @@ export const subscribeFundInfo = async (crowdloanCard) => {
 // 此过程最慢，使用异步加载的方式
 export const handleContributors = async (api, funds) => {
   try {
+    let account = store.state.polkadot.account?.address
+    if (!account) return;
+    account = decodeAddress(account)
+    account = u8aToHex(account)
     const updateFunds = await Promise.all(funds.map(fund => {
       return new Promise(async (res) => {
-        const childKey = createChildKey(fund.trieIndex)
-        const keys = await api.rpc.childstate.getKeys(childKey, '0x')
-        const ss58keys = keys.map(k => encodeAddress(k, 0))
-        const values = await Promise.all(keys.map(k => api.rpc.childstate.getStorage(childKey, k)))
-        const contributions = values.map((v, idx) => ({
-          contributor: ss58keys[idx],
-          amount: BN(api.createType('(Balance, Vec<u8>)', v.unwrap())[0]),
-        }))
-        fund.funds = contributions || []
+        const pid = fund.paraId
+        const contributions = await api.derive.crowdloan.contributions(pid)
+        const own = await api.derive.crowdloan.ownContributions(pid, [account])
+        fund.funds = {
+          count: contributions.contributorsHex.length,
+          ownContribution: own[account]
+        }
         res(fund)
       })
     }))

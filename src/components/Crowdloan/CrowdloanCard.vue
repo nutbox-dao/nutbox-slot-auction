@@ -171,24 +171,27 @@ export default {
     RewardToken,
   },
   watch: {
+    // update status
     async currentBlockNum(newValue, _) {
-      const fund = this.getFundInfo;
-      const end = fund.end;
-      const raised = fund.raised;
-      const cap = fund.cap;
-      const firstPeriod = fund.firstPeriod;
-      const lastPeriod = fund.lastPeriod;
-      const [status] = await calStatus(
-        this.chain,
-        end,
-        firstPeriod,
-        lastPeriod,
-        raised,
-        cap,
-        this.paraId,
-        newValue
-      );
-      this.status = status;
+      if (newValue % 3 === 0){
+        const fund = this.getFundInfo;
+        const end = fund.end;
+        const raised = fund.raised;
+        const cap = fund.cap;
+        const firstPeriod = fund.firstPeriod;
+        const lastPeriod = fund.lastPeriod;
+        const [status] = await calStatus(
+          this.chain,
+          end,
+          firstPeriod,
+          lastPeriod,
+          raised,
+          cap,
+          this.paraId,
+          newValue
+        );
+        this.status = status;
+      }
     },
   },
   computed: {
@@ -267,14 +270,7 @@ export default {
         return rewards;
       }
       return [];
-    },
-    contributions() {
-      try {
-        return this.getFundInfo.funds.length;
-      } catch (e) {
-        return 0;
-      }
-    },
+    }
   },
   methods: {
     toCommunity() {

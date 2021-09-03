@@ -154,6 +154,7 @@ export default {
   },
   watch: {
     async currentBlockNum(newValue, _) {
+      if (newValue % 3 !== 0) return;
       const fund = this.getFundInfo;
       const end = fund.end;
       const raised = fund.raised;
